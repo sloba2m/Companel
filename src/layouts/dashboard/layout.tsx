@@ -29,7 +29,7 @@ import { navData as dashboardNavData } from '../config-nav-dashboard';
 
 // ----------------------------------------------------------------------
 
-export type DashboardLayoutProps = {
+export type NavigationLayoutProps = {
   sx?: SxProps<Theme>;
   children: React.ReactNode;
   data?: {
@@ -37,7 +37,7 @@ export type DashboardLayoutProps = {
   };
 };
 
-export function DashboardLayout({ sx, children, data }: DashboardLayoutProps) {
+export function NavigationLayout({ sx, children, data }: NavigationLayoutProps) {
   const theme = useTheme();
 
   const mobileNavOpen = useBoolean();

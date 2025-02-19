@@ -48,9 +48,9 @@ export const navData = [
   {
     subheader: 'Overview 6.0.0',
     items: [
-      { title: 'One', path: paths.dashboard.root, icon: ICONS.dashboard },
-      { title: 'Two', path: paths.dashboard.two, icon: ICONS.ecommerce },
-      { title: 'Three', path: paths.dashboard.three, icon: ICONS.analytics },
+      { title: 'One', path: paths.navigation.root, icon: ICONS.dashboard },
+      { title: 'Two', path: paths.navigation.two, icon: ICONS.ecommerce },
+      { title: 'Three', path: paths.navigation.three, icon: ICONS.analytics },
     ],
   },
   /**
@@ -61,12 +61,12 @@ export const navData = [
     items: [
       {
         title: 'Group',
-        path: paths.dashboard.group.root,
+        path: paths.navigation.group.root,
         icon: ICONS.user,
         children: [
-          { title: 'Four', path: paths.dashboard.group.root },
-          { title: 'Five', path: paths.dashboard.group.five },
-          { title: 'Six', path: paths.dashboard.group.six },
+          { title: 'Four', path: paths.navigation.group.root },
+          { title: 'Five', path: paths.navigation.group.five },
+          { title: 'Six', path: paths.navigation.group.six },
         ],
       },
     ],

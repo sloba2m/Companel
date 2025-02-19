@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { CONFIG } from 'src/config-global';
-import { DashboardLayout } from 'src/layouts/dashboard';
+import { NavigationLayout } from 'src/layouts/dashboard';
 
 import { LoadingScreen } from 'src/components/loading-screen';
 
@@ -20,16 +20,16 @@ const PageSix = lazy(() => import('src/pages/dashboard/six'));
 // ----------------------------------------------------------------------
 
 const layoutContent = (
-  <DashboardLayout>
+  <NavigationLayout>
     <Suspense fallback={<LoadingScreen />}>
       <Outlet />
     </Suspense>
-  </DashboardLayout>
+  </NavigationLayout>
 );
 
-export const dashboardRoutes = [
+export const navigationRoutes = [
   {
-    path: 'dashboard',
+    path: '',
     element: CONFIG.auth.skip ? <>{layoutContent}</> : <AuthGuard>{layoutContent}</AuthGuard>,
     children: [
       { element: <IndexPage />, index: true },

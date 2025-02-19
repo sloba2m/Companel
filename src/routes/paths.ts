@@ -2,7 +2,7 @@
 
 const ROOTS = {
   AUTH: '/auth',
-  DASHBOARD: '/dashboard',
+  INDEX: '',
 };
 
 // ----------------------------------------------------------------------
@@ -41,14 +41,14 @@ export const paths = {
     },
   },
   // DASHBOARD
-  dashboard: {
-    root: ROOTS.DASHBOARD,
-    two: `${ROOTS.DASHBOARD}/two`,
-    three: `${ROOTS.DASHBOARD}/three`,
+  navigation: {
+    root: ROOTS.INDEX,
+    two: `${ROOTS.INDEX}/two`,
+    three: `${ROOTS.INDEX}/three`,
     group: {
-      root: `${ROOTS.DASHBOARD}/group`,
-      five: `${ROOTS.DASHBOARD}/group/five`,
-      six: `${ROOTS.DASHBOARD}/group/six`,
+      root: `${ROOTS.INDEX}/group`,
+      five: `${ROOTS.INDEX}/group/five`,
+      six: `${ROOTS.INDEX}/group/six`,
     },
   },
 };
