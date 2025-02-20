@@ -9,6 +9,7 @@ import { useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 
 import { paths } from 'src/routes/paths';
@@ -19,10 +20,10 @@ import { useResponsive } from 'src/hooks/use-responsive';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 
-import { ToggleButton } from './styles';
 import { ChatNavItem } from './chat-nav-item';
 import { ChatNavAccount } from './chat-nav-account';
 import { ChatNavItemSkeleton } from './chat-skeleton';
+import { ToggleButton as ThemeToggleButton } from './styles';
 import { ChatNavSearchResults } from './chat-nav-search-results';
 
 import type { UseNavCollapseReturn } from './hooks/use-collapse-nav';
@@ -162,6 +163,8 @@ export function ChatNav({
     </ClickAwayListener>
   );
 
+  const selected = true;
+
   const renderContent = (
     <>
       <Stack direction="row" alignItems="center" justifyContent="center" sx={{ p: 2.5, pb: 0 }}>
@@ -187,6 +190,22 @@ export function ChatNav({
 
       <Box sx={{ p: 2.5, pt: 0 }}>{!collapseDesktop && renderSearchInput}</Box>
 
+      <ToggleButtonGroup exclusive value="facebook">
+        <ToggleButton value="all">All</ToggleButton>
+        <ToggleButton value="facebook">
+          <Iconify width={24} icon="logos:facebook" />
+        </ToggleButton>
+        <ToggleButton value="gmail">
+          <Iconify width={24} icon="logos:google-gmail" />
+        </ToggleButton>
+        <ToggleButton value="whatsapp">
+          <Iconify width={24} icon="logos:whatsapp-icon" />
+        </ToggleButton>
+        <ToggleButton value="telegram">
+          <Iconify width={24} icon="logos:telegram" />
+        </ToggleButton>
+      </ToggleButtonGroup>
+
       {loading ? (
         renderLoading
       ) : (
@@ -199,9 +218,9 @@ export function ChatNav({
 
   return (
     <>
-      <ToggleButton onClick={onOpenMobile} sx={{ display: { md: 'none' } }}>
+      <ThemeToggleButton onClick={onOpenMobile} sx={{ display: { md: 'none' } }}>
         <Iconify width={16} icon="solar:users-group-rounded-bold" />
-      </ToggleButton>
+      </ThemeToggleButton>
 
       <Stack
         sx={{

@@ -20,6 +20,8 @@ import { fToNow } from 'src/utils/format-time';
 
 import { clickConversation } from 'src/actions/chat';
 
+import { Iconify } from 'src/components/iconify';
+
 import { useMockedUser } from 'src/auth/hooks';
 
 import { useNavItem } from './hooks/use-nav-item';
@@ -85,32 +87,39 @@ export function ChatNavItem({ selected, collapse, conversation, onCloseMobile }:
       <ListItemButton
         onClick={handleClickConversation}
         sx={{
+          alignItems: 'flex-start',
           py: 1.5,
           px: 2.5,
           gap: 2,
           ...(selected && { bgcolor: 'action.selected' }),
         }}
       >
-        <Badge
+        {/* <Badge
           color="error"
           overlap="circular"
           badgeContent={collapse ? conversation.unreadCount : 0}
         >
           {group ? renderGroup : renderSingle}
-        </Badge>
+        </Badge> */}
+        <Iconify width={24} icon="logos:facebook" />
 
         {!collapse && (
           <>
             <ListItemText
-              primary={displayName}
-              primaryTypographyProps={{ noWrap: true, component: 'span', variant: 'subtitle2' }}
-              secondary={displayText}
-              secondaryTypographyProps={{
-                noWrap: true,
-                component: 'span',
-                variant: conversation.unreadCount ? 'subtitle2' : 'body2',
-                color: conversation.unreadCount ? 'text.primary' : 'text.secondary',
-              }}
+              primary="Facebook"
+              secondary={
+                <ListItemText
+                  primary={displayName}
+                  primaryTypographyProps={{ noWrap: true, component: 'span', variant: 'subtitle2' }}
+                  secondary={displayText}
+                  secondaryTypographyProps={{
+                    noWrap: true,
+                    component: 'span',
+                    variant: conversation.unreadCount ? 'subtitle2' : 'body2',
+                    color: conversation.unreadCount ? 'text.primary' : 'text.secondary',
+                  }}
+                />
+              }
             />
 
             <Stack alignItems="flex-end" sx={{ alignSelf: 'stretch' }}>
