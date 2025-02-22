@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack';
 
 type Props = StackProps & {
   slots: {
+    globalheader: React.ReactNode;
     nav: React.ReactNode;
     details: React.ReactNode;
     header: React.ReactNode;
@@ -29,7 +30,6 @@ export function Layout({ slots, sx, ...other }: Props) {
         py: 1,
         pr: 1,
         pl: 2.5,
-        height: 72,
         flexShrink: 0,
         borderBottom: (theme) => `solid 1px ${theme.vars.palette.divider}`,
       }}
@@ -43,15 +43,18 @@ export function Layout({ slots, sx, ...other }: Props) {
   const renderDetails = <Stack sx={{ minHeight: 0 }}>{slots.details}</Stack>;
 
   return (
-    <Stack direction="row" sx={sx} {...other}>
-      {renderNav}
+    <Stack direction="column" sx={sx} {...other}>
+      {slots.globalheader}
+      <Stack direction="row" sx={{ overflow: 'auto' }}>
+        {renderNav}
 
-      <Stack sx={{ flex: '1 1 auto', minWidth: 0 }}>
-        {renderHeader}
+        <Stack sx={{ flex: '1 1 auto', minWidth: 0 }}>
+          {renderHeader}
 
-        <Stack direction="row" sx={{ flex: '1 1 auto', minHeight: 0 }}>
-          {renderMain}
-          {renderDetails}
+          <Stack direction="row" sx={{ flex: '1 1 auto', minHeight: 0 }}>
+            {renderMain}
+            {renderDetails}
+          </Stack>
         </Stack>
       </Stack>
     </Stack>

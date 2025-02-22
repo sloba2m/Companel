@@ -9,7 +9,7 @@ import { useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Divider, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -28,9 +28,8 @@ import type { UseNavCollapseReturn } from './hooks/use-collapse-nav';
 
 // ----------------------------------------------------------------------
 
-const NAV_WIDTH = 420;
-
-const NAV_COLLAPSE_WIDTH = 96;
+export const NAV_WIDTH = 420;
+export const NAV_WIDTH_MOBILE = 320;
 
 type Props = {
   loading: boolean;
@@ -53,7 +52,7 @@ export function ChatNav({
 
   const mdUp = useResponsive('up', 'md');
 
-  const { openMobile, onOpenMobile, onCloseMobile, onCloseDesktop } = collapseNav;
+  const { openMobile, onOpenMobile, onCloseMobile, onCloseDesktop, collapseDesktop } = collapseNav;
 
   const [searchContacts, setSearchContacts] = useState<{
     query: string;
@@ -155,6 +154,7 @@ export function ChatNav({
   const renderContent = (
     <>
       <ToggleButtonGroup
+        sx={{ border: 'none' }}
         exclusive
         value={selectedFilter}
         onChange={(_e, value) => setSelectedFilter(value)}
@@ -164,8 +164,10 @@ export function ChatNav({
         <ToggleButton value="mine">Mine</ToggleButton>
         <ToggleButton value="closed">Closed</ToggleButton>
       </ToggleButtonGroup>
+      <Divider />
 
       <ToggleButtonGroup
+        sx={{ border: 'none' }}
         exclusive
         value={selectedSocial}
         onChange={(_e, value) => setSelectedSocial(value)}
@@ -220,7 +222,7 @@ export function ChatNav({
         open={openMobile}
         onClose={onCloseMobile}
         slotProps={{ backdrop: { invisible: true } }}
-        PaperProps={{ sx: { width: NAV_WIDTH } }}
+        PaperProps={{ sx: { width: NAV_WIDTH_MOBILE } }}
       >
         {renderContent}
       </Drawer>

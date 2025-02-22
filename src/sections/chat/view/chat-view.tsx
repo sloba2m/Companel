@@ -2,20 +2,25 @@ import type { IChatParticipant } from 'src/types/chat';
 
 import { useState, useEffect, useCallback } from 'react';
 
+import { Box, Divider, TextField, IconButton, Typography, Autocomplete } from '@mui/material';
+
 import { paths } from 'src/routes/paths';
 import { useRouter, useSearchParams } from 'src/routes/hooks';
+
+import { useResponsive } from 'src/hooks/use-responsive';
 
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { useGetContacts, useGetConversation, useGetConversations } from 'src/actions/chat';
 
+import { Iconify } from 'src/components/iconify';
 import { EmptyContent } from 'src/components/empty-content';
 
 import { useMockedUser } from 'src/auth/hooks';
 
 import { Layout } from '../layout';
-import { ChatNav } from '../chat-nav';
 import { ChatRoom } from '../chat-room';
+import { ChatNav, NAV_WIDTH } from '../chat-nav';
 import { ChatMessageList } from '../chat-message-list';
 import { ChatMessageInput } from '../chat-message-input';
 import { ChatHeaderDetail } from '../chat-header-detail';
@@ -32,6 +37,8 @@ export function ChatView() {
   const { contacts } = useGetContacts();
 
   const searchParams = useSearchParams();
+
+  const mdUp = useResponsive('up', 'md');
 
   const selectedConversationId = searchParams.get('id') || '';
 
@@ -78,6 +85,58 @@ export function ChatView() {
           boxShadow: (theme) => theme.customShadows.card,
         }}
         slots={{
+          globalheader: (
+            <Box
+              sx={(theme) => ({
+                display: 'flex',
+                alignItems: 'center',
+                borderBottom: `solid 1px ${theme.vars.palette.divider}`,
+                flexWrap: 'wrap',
+              })}
+            >
+              <Box
+                sx={(theme) => ({
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  width: mdUp ? NAV_WIDTH : '890px',
+                  px: 1,
+                  borderRight: mdUp ? `solid 1px ${theme.vars.palette.divider}` : 'none',
+                })}
+              >
+                <Typography variant="h4" sx={{ p: 1 }}>
+                  Rotmark
+                </Typography>
+                <Divider />
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <IconButton>
+                    <Iconify width={24} icon="mdi:add-bold" />
+                  </IconButton>
+                </Box>
+              </Box>
+              <Autocomplete
+                // fullWidth
+                sx={{
+                  flexGrow: 1,
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      border: 'none',
+                    },
+                  },
+                  // minWidth: '200px',
+                }}
+                options={['one', 'two']}
+                // getOptionLabel={(option) => option.title}
+                renderInput={(params) => (
+                  <TextField {...params} placeholder="Search" margin="none" />
+                )}
+                // renderOption={(props, option) => (
+                //   <li {...props} key={option.title}>
+                //     {option.title}
+                //   </li>
+                // )}
+              />
+            </Box>
+          ),
           header: selectedConversationId ? (
             <ChatHeaderDetail
               collapseNav={roomNav}

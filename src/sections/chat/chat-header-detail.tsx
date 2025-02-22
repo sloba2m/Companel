@@ -73,7 +73,12 @@ export function ChatHeaderDetail({ collapseNav, participants, loading }: Props) 
     <>
       {group ? renderGroup : renderSingle}
 
-      <Stack direction="row" flexGrow={1} justifyContent="flex-end" sx={{ gap: 2 }}>
+      <Stack
+        direction="row"
+        flexGrow={1}
+        justifyContent="flex-end"
+        sx={{ gap: 2, flexWrap: 'wrap' }}
+      >
         <Autocomplete
           sx={{ minWidth: '200px' }}
           options={['One guy', 'Other guy']}
@@ -93,10 +98,6 @@ export function ChatHeaderDetail({ collapseNav, participants, loading }: Props) 
         <Box sx={{ margin: 'auto 0' }}>
           <IconButton onClick={handleToggleNav}>
             <Iconify icon={!collapseDesktop ? 'ri:sidebar-unfold-fill' : 'ri:sidebar-fold-fill'} />
-          </IconButton>
-
-          <IconButton onClick={popover.onOpen}>
-            <Iconify icon="eva:more-vertical-fill" />
           </IconButton>
         </Box>
       </Stack>
