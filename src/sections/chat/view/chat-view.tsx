@@ -2,8 +2,6 @@ import type { IChatParticipant } from 'src/types/chat';
 
 import { useState, useEffect, useCallback } from 'react';
 
-import Typography from '@mui/material/Typography';
-
 import { paths } from 'src/routes/paths';
 import { useRouter, useSearchParams } from 'src/routes/hooks';
 
@@ -68,12 +66,8 @@ export function ChatView() {
   return (
     <DashboardContent
       maxWidth={false}
-      sx={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column' }}
+      sx={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column', p: 0 }}
     >
-      <Typography variant="h4" sx={{ mb: { xs: 3, md: 5 } }}>
-        Chat
-      </Typography>
-
       <Layout
         sx={{
           minHeight: 0,

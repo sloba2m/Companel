@@ -28,7 +28,7 @@ import type { UseNavCollapseReturn } from './hooks/use-collapse-nav';
 
 // ----------------------------------------------------------------------
 
-const NAV_WIDTH = 320;
+const NAV_WIDTH = 420;
 
 const NAV_COLLAPSE_WIDTH = 96;
 
@@ -208,6 +208,7 @@ export function ChatNav({
         sx={{
           minHeight: 0,
           flex: '1 1 auto',
+          width: NAV_WIDTH,
           display: { xs: 'none', md: 'flex' },
           borderRight: `solid 1px ${theme.vars.palette.divider}`,
           transition: theme.transitions.create(['width'], {

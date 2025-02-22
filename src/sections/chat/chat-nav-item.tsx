@@ -3,7 +3,7 @@ import type { IChatConversation } from 'src/types/chat';
 import { useCallback } from 'react';
 
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
+import { Chip } from '@mui/material';
 import Badge from '@mui/material/Badge';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
@@ -89,7 +89,7 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
           alignItems: 'flex-start',
           py: 1.5,
           px: 2.5,
-          gap: 2,
+          gap: 1,
           ...(selected && { bgcolor: 'action.selected' }),
         }}
       >
@@ -100,27 +100,78 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
         >
           {group ? renderGroup : renderSingle}
         </Badge> */}
-        <Iconify width={24} icon="logos:facebook" />
+        <Box sx={{ position: 'relative' }}>
+          <Iconify width={24} icon="logos:facebook" />
 
-        <>
+          {!!conversation.unreadCount && (
+            <Box
+              sx={{
+                // textAlign: 'center',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'absolute',
+                top: -12,
+                left: -12,
+                width: 24,
+                height: 24,
+                bgcolor: 'error.main',
+                borderRadius: '50%',
+                color: 'common.white',
+              }}
+            >
+              {conversation.unreadCount}
+            </Box>
+          )}
+        </Box>
+
+        <Box
+          sx={{
+            width: '90%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            // gap: 2,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}
+          >
+            <Typography>Facebook</Typography>
+            <Typography
+              noWrap
+              variant="body2"
+              component="span"
+              sx={{ mb: 1.5, fontSize: 12, color: 'text.disabled' }}
+            >
+              {fToNow(lastActivity)}
+            </Typography>
+          </Box>
           <ListItemText
-            primary="Facebook"
-            secondary={
-              <ListItemText
-                primary={displayName}
-                primaryTypographyProps={{ noWrap: true, component: 'span', variant: 'subtitle2' }}
-                secondary={displayText}
-                secondaryTypographyProps={{
-                  noWrap: true,
-                  component: 'span',
-                  variant: conversation.unreadCount ? 'subtitle2' : 'body2',
-                  color: conversation.unreadCount ? 'text.primary' : 'text.secondary',
-                }}
-              />
-            }
+            sx={{ width: '100%' }}
+            primary={displayName}
+            primaryTypographyProps={{ noWrap: true, component: 'span', variant: 'subtitle2' }}
+            secondary={displayText}
+            secondaryTypographyProps={{
+              noWrap: true,
+              component: 'span',
+              variant: conversation.unreadCount ? 'subtitle2' : 'body2',
+              color: conversation.unreadCount ? 'text.primary' : 'text.secondary',
+            }}
           />
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mt: 1 }}>
+            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+              <Chip variant="soft" label="tag 1" size="small" />
+              <Chip variant="soft" label="tag 2" size="small" />
+            </Box>
+            <Chip variant="outlined" label="Assigned" size="small" color="success" />
+          </Box>
 
-          <Stack alignItems="flex-end" sx={{ alignSelf: 'stretch' }}>
+          {/* <Stack alignItems="flex-end" sx={{ alignSelf: 'stretch' }}>
             <Typography
               noWrap
               variant="body2"
@@ -140,8 +191,8 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
                 }}
               />
             )}
-          </Stack>
-        </>
+          </Stack> */}
+        </Box>
       </ListItemButton>
     </Box>
   );
