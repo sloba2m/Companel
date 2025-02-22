@@ -1,4 +1,3 @@
-import { common, createLowlight } from 'lowlight';
 import LinkExtension from '@tiptap/extension-link';
 import ImageExtension from '@tiptap/extension-image';
 import StarterKitExtension from '@tiptap/starter-kit';
@@ -42,8 +41,6 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
     const handleToggleFullScreen = useCallback(() => {
       setFullScreen((prev) => !prev);
     }, []);
-
-    const lowlight = createLowlight(common);
 
     const editor = useEditor({
       content,

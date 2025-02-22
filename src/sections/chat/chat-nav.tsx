@@ -6,9 +6,6 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
 import { useTheme } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { Divider, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
@@ -52,7 +49,7 @@ export function ChatNav({
 
   const mdUp = useResponsive('up', 'md');
 
-  const { openMobile, onOpenMobile, onCloseMobile, onCloseDesktop, collapseDesktop } = collapseNav;
+  const { openMobile, onOpenMobile, onCloseMobile, onCloseDesktop } = collapseNav;
 
   const [searchContacts, setSearchContacts] = useState<{
     query: string;
@@ -64,17 +61,6 @@ export function ChatNav({
       onCloseDesktop();
     }
   }, [onCloseDesktop, mdUp]);
-
-  const handleToggleNav = useCallback(() => {
-    if (!mdUp) onCloseMobile();
-  }, [mdUp, onCloseMobile]);
-
-  const handleClickCompose = useCallback(() => {
-    if (!mdUp) {
-      onCloseMobile();
-    }
-    router.push(paths.navigation.two);
-  }, [mdUp, onCloseMobile, router]);
 
   const handleSearchContacts = useCallback(
     (inputValue: string) => {
@@ -127,25 +113,6 @@ export function ChatNav({
       results={searchContacts.results}
       onClickResult={handleClickResult}
     />
-  );
-
-  const renderSearchInput = (
-    <ClickAwayListener onClickAway={handleClickAwaySearch}>
-      <TextField
-        fullWidth
-        value={searchContacts.query}
-        onChange={(event) => handleSearchContacts(event.target.value)}
-        placeholder="Search contacts..."
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-            </InputAdornment>
-          ),
-        }}
-        sx={{ mt: 2.5 }}
-      />
-    </ClickAwayListener>
   );
 
   const [selectedSocial, setSelectedSocial] = useState('all');

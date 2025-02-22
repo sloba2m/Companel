@@ -32,8 +32,6 @@ export function ChatRoom({ collapseNav, participants, messages, loading }: Props
 
   const group = participants.length > 1;
 
-  const attachments = messages.map((msg) => msg.attachments).flat(1) || [];
-
   const renderContent = loading ? (
     <ChatRoomSkeleton />
   ) : (

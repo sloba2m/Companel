@@ -5,9 +5,7 @@ import { useCallback } from 'react';
 import Box from '@mui/material/Box';
 import { Chip } from '@mui/material';
 import Badge from '@mui/material/Badge';
-import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import AvatarGroup from '@mui/material/AvatarGroup';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 
@@ -41,12 +39,10 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
 
   const router = useRouter();
 
-  const { group, displayName, displayText, participants, lastActivity, hasOnlineInGroup } =
-    useNavItem({ conversation, currentUserId: `${user?.id}` });
-
-  const singleParticipant = participants[0];
-
-  const { name, avatarUrl, status } = singleParticipant;
+  const { displayName, displayText, lastActivity } = useNavItem({
+    conversation,
+    currentUserId: `${user?.id}`,
+  });
 
   const handleClickConversation = useCallback(async () => {
     try {
@@ -61,25 +57,6 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
       console.error(error);
     }
   }, [conversation.id, mdUp, onCloseMobile, router]);
-
-  const renderGroup = (
-    <Badge
-      variant={hasOnlineInGroup ? 'online' : 'invisible'}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-    >
-      <AvatarGroup variant="compact" sx={{ width: 48, height: 48 }}>
-        {participants.slice(0, 2).map((participant) => (
-          <Avatar key={participant.id} alt={participant.name} src={participant.avatarUrl} />
-        ))}
-      </AvatarGroup>
-    </Badge>
-  );
-
-  const renderSingle = (
-    <Badge key={status} variant={status} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-      <Avatar alt={name} src={avatarUrl} sx={{ width: 48, height: 48 }} />
-    </Badge>
-  );
 
   return (
     <Box component="li" sx={{ display: 'flex' }}>
