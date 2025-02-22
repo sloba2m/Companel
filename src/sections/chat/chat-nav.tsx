@@ -7,10 +7,9 @@ import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
 import { useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -21,7 +20,6 @@ import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 
 import { ChatNavItem } from './chat-nav-item';
-import { ChatNavAccount } from './chat-nav-account';
 import { ChatNavItemSkeleton } from './chat-skeleton';
 import { ToggleButton as ThemeToggleButton } from './styles';
 import { ChatNavSearchResults } from './chat-nav-search-results';
@@ -55,14 +53,7 @@ export function ChatNav({
 
   const mdUp = useResponsive('up', 'md');
 
-  const {
-    openMobile,
-    onOpenMobile,
-    onCloseMobile,
-    onCloseDesktop,
-    collapseDesktop,
-    onCollapseDesktop,
-  } = collapseNav;
+  const { openMobile, onOpenMobile, onCloseMobile, onCloseDesktop } = collapseNav;
 
   const [searchContacts, setSearchContacts] = useState<{
     query: string;
@@ -76,12 +67,8 @@ export function ChatNav({
   }, [onCloseDesktop, mdUp]);
 
   const handleToggleNav = useCallback(() => {
-    if (mdUp) {
-      onCollapseDesktop();
-    } else {
-      onCloseMobile();
-    }
-  }, [mdUp, onCloseMobile, onCollapseDesktop]);
+    if (!mdUp) onCloseMobile();
+  }, [mdUp, onCloseMobile]);
 
   const handleClickCompose = useCallback(() => {
     if (!mdUp) {
@@ -126,7 +113,6 @@ export function ChatNav({
         {conversations.allIds.map((conversationId) => (
           <ChatNavItem
             key={conversationId}
-            collapse={collapseDesktop}
             conversation={conversations.byId[conversationId]}
             selected={conversationId === selectedConversationId}
             onCloseMobile={onCloseMobile}
@@ -163,34 +149,30 @@ export function ChatNav({
     </ClickAwayListener>
   );
 
-  const selected = true;
+  const [selectedSocial, setSelectedSocial] = useState('all');
+  const [selectedFilter, setSelectedFilter] = useState('all');
+
+  const radios = ['all', 'mine', 'unhandled', 'closed'];
+  const radiosR = ['Rall', 'Rmine', 'Runhandled', 'Rclosed'];
 
   const renderContent = (
     <>
-      <Stack direction="row" alignItems="center" justifyContent="center" sx={{ p: 2.5, pb: 0 }}>
-        {!collapseDesktop && (
-          <>
-            <ChatNavAccount />
-            <Box sx={{ flexGrow: 1 }} />
-          </>
-        )}
+      <ToggleButtonGroup
+        exclusive
+        value={selectedFilter}
+        onChange={(_e, value) => setSelectedFilter(value)}
+      >
+        <ToggleButton value="all">All</ToggleButton>
+        <ToggleButton value="unhandled">Unhandled</ToggleButton>
+        <ToggleButton value="mine">Mine</ToggleButton>
+        <ToggleButton value="closed">Closed</ToggleButton>
+      </ToggleButtonGroup>
 
-        <IconButton onClick={handleToggleNav}>
-          <Iconify
-            icon={collapseDesktop ? 'eva:arrow-ios-forward-fill' : 'eva:arrow-ios-back-fill'}
-          />
-        </IconButton>
-
-        {!collapseDesktop && (
-          <IconButton onClick={handleClickCompose}>
-            <Iconify width={24} icon="solar:user-plus-bold" />
-          </IconButton>
-        )}
-      </Stack>
-
-      <Box sx={{ p: 2.5, pt: 0 }}>{!collapseDesktop && renderSearchInput}</Box>
-
-      <ToggleButtonGroup exclusive value="facebook">
+      <ToggleButtonGroup
+        exclusive
+        value={selectedSocial}
+        onChange={(_e, value) => setSelectedSocial(value)}
+      >
         <ToggleButton value="all">All</ToggleButton>
         <ToggleButton value="facebook">
           <Iconify width={24} icon="logos:facebook" />
@@ -226,13 +208,11 @@ export function ChatNav({
         sx={{
           minHeight: 0,
           flex: '1 1 auto',
-          width: NAV_WIDTH,
           display: { xs: 'none', md: 'flex' },
           borderRight: `solid 1px ${theme.vars.palette.divider}`,
           transition: theme.transitions.create(['width'], {
             duration: theme.transitions.duration.shorter,
           }),
-          ...(collapseDesktop && { width: NAV_COLLAPSE_WIDTH }),
         }}
       >
         {renderContent}

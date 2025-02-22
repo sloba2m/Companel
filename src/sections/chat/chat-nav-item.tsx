@@ -30,12 +30,11 @@ import { useNavItem } from './hooks/use-nav-item';
 
 type Props = {
   selected: boolean;
-  collapse: boolean;
   onCloseMobile: () => void;
   conversation: IChatConversation;
 };
 
-export function ChatNavItem({ selected, collapse, conversation, onCloseMobile }: Props) {
+export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
   const { user } = useMockedUser();
 
   const mdUp = useResponsive('up', 'md');
@@ -103,48 +102,46 @@ export function ChatNavItem({ selected, collapse, conversation, onCloseMobile }:
         </Badge> */}
         <Iconify width={24} icon="logos:facebook" />
 
-        {!collapse && (
-          <>
-            <ListItemText
-              primary="Facebook"
-              secondary={
-                <ListItemText
-                  primary={displayName}
-                  primaryTypographyProps={{ noWrap: true, component: 'span', variant: 'subtitle2' }}
-                  secondary={displayText}
-                  secondaryTypographyProps={{
-                    noWrap: true,
-                    component: 'span',
-                    variant: conversation.unreadCount ? 'subtitle2' : 'body2',
-                    color: conversation.unreadCount ? 'text.primary' : 'text.secondary',
-                  }}
-                />
-              }
-            />
+        <>
+          <ListItemText
+            primary="Facebook"
+            secondary={
+              <ListItemText
+                primary={displayName}
+                primaryTypographyProps={{ noWrap: true, component: 'span', variant: 'subtitle2' }}
+                secondary={displayText}
+                secondaryTypographyProps={{
+                  noWrap: true,
+                  component: 'span',
+                  variant: conversation.unreadCount ? 'subtitle2' : 'body2',
+                  color: conversation.unreadCount ? 'text.primary' : 'text.secondary',
+                }}
+              />
+            }
+          />
 
-            <Stack alignItems="flex-end" sx={{ alignSelf: 'stretch' }}>
-              <Typography
-                noWrap
-                variant="body2"
-                component="span"
-                sx={{ mb: 1.5, fontSize: 12, color: 'text.disabled' }}
-              >
-                {fToNow(lastActivity)}
-              </Typography>
+          <Stack alignItems="flex-end" sx={{ alignSelf: 'stretch' }}>
+            <Typography
+              noWrap
+              variant="body2"
+              component="span"
+              sx={{ mb: 1.5, fontSize: 12, color: 'text.disabled' }}
+            >
+              {fToNow(lastActivity)}
+            </Typography>
 
-              {!!conversation.unreadCount && (
-                <Box
-                  sx={{
-                    width: 8,
-                    height: 8,
-                    bgcolor: 'info.main',
-                    borderRadius: '50%',
-                  }}
-                />
-              )}
-            </Stack>
-          </>
-        )}
+            {!!conversation.unreadCount && (
+              <Box
+                sx={{
+                  width: 8,
+                  height: 8,
+                  bgcolor: 'info.main',
+                  borderRadius: '50%',
+                }}
+              />
+            )}
+          </Stack>
+        </>
       </ListItemButton>
     </Box>
   );
