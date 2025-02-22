@@ -9,7 +9,6 @@ import { Scrollbar } from 'src/components/scrollbar';
 import { ChatRoomGroup } from './chat-room-group';
 import { ChatRoomSkeleton } from './chat-skeleton';
 import { ChatRoomSingle } from './chat-room-single';
-import { ChatRoomAttachments } from './chat-room-attachments';
 
 import type { UseNavCollapseReturn } from './hooks/use-collapse-nav';
 
@@ -45,8 +44,6 @@ export function ChatRoom({ collapseNav, participants, messages, loading }: Props
         ) : (
           <ChatRoomSingle participant={participants[0]} />
         )}
-
-        <ChatRoomAttachments attachments={attachments} />
       </div>
     </Scrollbar>
   );

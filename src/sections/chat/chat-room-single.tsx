@@ -4,9 +4,19 @@ import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import {
+  Timeline,
+  TimelineDot,
+  TimelineItem,
+  TimelineContent,
+  TimelineConnector,
+  TimelineSeparator,
+  timelineItemClasses,
+} from '@mui/lab';
+import {
   Box,
   Chip,
   List,
+  Paper,
   Button,
   ListItem,
   Collapse,
@@ -18,6 +28,8 @@ import {
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import { varAlpha } from 'src/theme/styles';
+
 import { Iconify } from 'src/components/iconify';
 
 import { CollapseButton } from './styles';
@@ -27,6 +39,26 @@ import { CollapseButton } from './styles';
 type Props = {
   participant: IChatParticipant;
 };
+
+const TIMELINES = [
+  {
+    key: 1,
+    title: 'Created',
+    des: '09:30 am',
+    time: '09:30 am',
+    icon: <Iconify icon="eva:folder-add-fill" width={24} />,
+  },
+  {
+    key: 2,
+    title: 'Status updated',
+    des: '10:00 am',
+    time: '10:00 am',
+    color: 'primary',
+    icon: <Iconify icon="eva:image-2-fill" width={24} />,
+  },
+];
+
+const lastItem = TIMELINES[TIMELINES.length - 1].key;
 
 export function ChatRoomSingle({ participant }: Props) {
   const collapseTag = useBoolean(true);
@@ -118,7 +150,39 @@ export function ChatRoomSingle({ participant }: Props) {
         Event history
       </CollapseButton>
 
-      <Collapse in={collapseConv.value} />
+      <Collapse in={collapseConv.value}>
+        <Timeline
+          position="right"
+          sx={{
+            [`& .${timelineItemClasses.root}:before`]: {
+              flex: 0,
+              padding: 0,
+            },
+          }}
+        >
+          {TIMELINES.map((item) => (
+            <TimelineItem key={item.key}>
+              <TimelineSeparator>
+                <TimelineDot />
+                {lastItem === item.key ? null : <TimelineConnector />}
+              </TimelineSeparator>
+              <TimelineContent>
+                <Paper
+                  sx={{
+                    p: 1,
+                    bgcolor: (theme) => varAlpha(theme.vars.palette.grey['500Channel'], 0.12),
+                  }}
+                >
+                  <Typography variant="subtitle2">{item.title}</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    {item.des}
+                  </Typography>
+                </Paper>
+              </TimelineContent>
+            </TimelineItem>
+          ))}
+        </Timeline>
+      </Collapse>
     </>
   );
 }
