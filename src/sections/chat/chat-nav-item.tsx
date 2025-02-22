@@ -93,37 +93,14 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
           ...(selected && { bgcolor: 'action.selected' }),
         }}
       >
-        {/* <Badge
+        <Badge
           color="error"
           overlap="circular"
-          badgeContent={collapse ? conversation.unreadCount : 0}
+          badgeContent={conversation.unreadCount}
+          anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
         >
-          {group ? renderGroup : renderSingle}
-        </Badge> */}
-        <Box sx={{ position: 'relative' }}>
           <Iconify width={24} icon="logos:facebook" />
-
-          {!!conversation.unreadCount && (
-            <Box
-              sx={{
-                // textAlign: 'center',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                position: 'absolute',
-                top: -12,
-                left: -12,
-                width: 24,
-                height: 24,
-                bgcolor: 'error.main',
-                borderRadius: '50%',
-                color: 'common.white',
-              }}
-            >
-              {conversation.unreadCount}
-            </Box>
-          )}
-        </Box>
+        </Badge>
 
         <Box
           sx={{

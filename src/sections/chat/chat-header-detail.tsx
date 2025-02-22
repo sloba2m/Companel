@@ -3,18 +3,16 @@ import type { IChatParticipant } from 'src/types/chat';
 import { useCallback } from 'react';
 
 import Stack from '@mui/material/Stack';
-import Badge from '@mui/material/Badge';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
+import { Box, Button, TextField, Autocomplete } from '@mui/material';
 import AvatarGroup, { avatarGroupClasses } from '@mui/material/AvatarGroup';
 
 import { useResponsive } from 'src/hooks/use-responsive';
-
-import { fToNow } from 'src/utils/format-time';
 
 import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
@@ -61,25 +59,9 @@ export function ChatHeaderDetail({ collapseNav, participants, loading }: Props) 
 
   const renderSingle = (
     <Stack direction="row" alignItems="center" spacing={2}>
-      <Badge
-        variant={singleParticipant?.status}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      >
-        <Avatar src={singleParticipant?.avatarUrl} alt={singleParticipant?.name} />
-      </Badge>
+      <Avatar src={singleParticipant?.avatarUrl} alt={singleParticipant?.name} />
 
-      <ListItemText
-        primary={singleParticipant?.name}
-        secondary={
-          singleParticipant?.status === 'offline'
-            ? fToNow(singleParticipant?.lastActivity)
-            : singleParticipant?.status
-        }
-        secondaryTypographyProps={{
-          component: 'span',
-          ...(singleParticipant?.status !== 'offline' && { textTransform: 'capitalize' }),
-        }}
-      />
+      <ListItemText primary={singleParticipant?.name} secondary="email@email.com" />
     </Stack>
   );
 
@@ -91,22 +73,32 @@ export function ChatHeaderDetail({ collapseNav, participants, loading }: Props) 
     <>
       {group ? renderGroup : renderSingle}
 
-      <Stack direction="row" flexGrow={1} justifyContent="flex-end">
-        <IconButton>
-          <Iconify icon="solar:phone-bold" />
-        </IconButton>
+      <Stack direction="row" flexGrow={1} justifyContent="flex-end" sx={{ gap: 2 }}>
+        <Autocomplete
+          sx={{ minWidth: '200px' }}
+          options={['One guy', 'Other guy']}
+          // getOptionLabel={(option) => option.title}
+          renderInput={(params) => <TextField {...params} label="Assign" margin="none" />}
+          // renderOption={(props, option) => (
+          //   <li {...props} key={option.title}>
+          //     {option.title}
+          //   </li>
+          // )}
+        />
 
-        <IconButton>
-          <Iconify icon="solar:videocamera-record-bold" />
-        </IconButton>
+        <Button variant="soft" color="primary">
+          Resolve
+        </Button>
 
-        <IconButton onClick={handleToggleNav}>
-          <Iconify icon={!collapseDesktop ? 'ri:sidebar-unfold-fill' : 'ri:sidebar-fold-fill'} />
-        </IconButton>
+        <Box sx={{ margin: 'auto 0' }}>
+          <IconButton onClick={handleToggleNav}>
+            <Iconify icon={!collapseDesktop ? 'ri:sidebar-unfold-fill' : 'ri:sidebar-fold-fill'} />
+          </IconButton>
 
-        <IconButton onClick={popover.onOpen}>
-          <Iconify icon="eva:more-vertical-fill" />
-        </IconButton>
+          <IconButton onClick={popover.onOpen}>
+            <Iconify icon="eva:more-vertical-fill" />
+          </IconButton>
+        </Box>
       </Stack>
 
       <CustomPopover open={popover.open} anchorEl={popover.anchorEl} onClose={popover.onClose}>

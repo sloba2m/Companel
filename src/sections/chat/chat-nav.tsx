@@ -152,9 +152,6 @@ export function ChatNav({
   const [selectedSocial, setSelectedSocial] = useState('all');
   const [selectedFilter, setSelectedFilter] = useState('all');
 
-  const radios = ['all', 'mine', 'unhandled', 'closed'];
-  const radiosR = ['Rall', 'Rmine', 'Runhandled', 'Rclosed'];
-
   const renderContent = (
     <>
       <ToggleButtonGroup
