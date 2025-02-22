@@ -2,9 +2,7 @@ import type { IChatParticipant } from 'src/types/chat';
 
 import { useRef, useMemo, useState, useCallback } from 'react';
 
-import Stack from '@mui/material/Stack';
-import InputBase from '@mui/material/InputBase';
-import IconButton from '@mui/material/IconButton';
+import { Box, Stack, Button, IconButton } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -14,6 +12,7 @@ import { fSub, today } from 'src/utils/format-time';
 
 import { sendMessage, createConversation } from 'src/actions/chat';
 
+import { Editor } from 'src/components/editor';
 import { Iconify } from 'src/components/iconify';
 
 import { useMockedUser } from 'src/auth/hooks';
@@ -114,42 +113,16 @@ export function ChatMessageInput({
   );
 
   return (
-    <>
-      <InputBase
-        name="chat-message"
-        id="chat-message-input"
-        value={message}
-        onKeyUp={handleSendMessage}
-        onChange={handleChangeMessage}
-        placeholder="Type a message"
-        disabled={disabled}
-        startAdornment={
-          <IconButton>
-            <Iconify icon="eva:smiling-face-fill" />
-          </IconButton>
-        }
-        endAdornment={
-          <Stack direction="row" sx={{ flexShrink: 0 }}>
-            <IconButton onClick={handleAttach}>
-              <Iconify icon="solar:gallery-add-bold" />
-            </IconButton>
-            <IconButton onClick={handleAttach}>
-              <Iconify icon="eva:attach-2-fill" />
-            </IconButton>
-            <IconButton>
-              <Iconify icon="solar:microphone-bold" />
-            </IconButton>
-          </Stack>
-        }
-        sx={{
-          px: 1,
-          height: 56,
-          flexShrink: 0,
-          borderTop: (theme) => `solid 1px ${theme.vars.palette.divider}`,
-        }}
-      />
-
-      <input type="file" ref={fileRef} style={{ display: 'none' }} />
-    </>
+    <Box>
+      <Editor sx={{ maxHeight: 720 }} />
+      <Stack direction="row" sx={{ justifyContent: 'space-between', p: 1 }}>
+        <IconButton>
+          <Iconify icon="mdi:sticker" />
+        </IconButton>
+        <Button variant="contained" color="primary" endIcon={<Iconify icon="mdi:send" />}>
+          Send
+        </Button>
+      </Stack>
+    </Box>
   );
 }
