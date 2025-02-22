@@ -6,6 +6,8 @@ import useSWR, { mutate } from 'swr';
 import { keyBy } from 'src/utils/helper';
 import axios, { fetcher, endpoints } from 'src/utils/axios';
 
+import { CONTACTS_DATA, CONVERSATIONS_DATA } from './chat-mock';
+
 // ----------------------------------------------------------------------
 
 const enableServer = false;
@@ -25,19 +27,21 @@ type ContactsData = {
 };
 
 export function useGetContacts() {
-  const url = [CHART_ENDPOINT, { params: { endpoint: 'contacts' } }];
+  // const url = [CHART_ENDPOINT, { params: { endpoint: 'contacts' } }];
 
-  const { data, isLoading, error, isValidating } = useSWR<ContactsData>(url, fetcher, swrOptions);
+  // const { data, isLoading, error, isValidating } = useSWR<ContactsData>(url, fetcher, swrOptions);
+
+  const data = CONTACTS_DATA as ContactsData;
 
   const memoizedValue = useMemo(
     () => ({
       contacts: data?.contacts || [],
-      contactsLoading: isLoading,
-      contactsError: error,
-      contactsValidating: isValidating,
-      contactsEmpty: !isLoading && !data?.contacts.length,
+      // contactsLoading: isLoading,
+      // contactsError: error,
+      // contactsValidating: isValidating,
+      // contactsEmpty: !isLoading && !data?.contacts.length,
     }),
-    [data?.contacts, error, isLoading, isValidating]
+    [data?.contacts]
   );
 
   return memoizedValue;
@@ -50,15 +54,15 @@ type ConversationsData = {
 };
 
 export function useGetConversations() {
-  const url = [CHART_ENDPOINT, { params: { endpoint: 'conversations' } }];
+  // const url = [CHART_ENDPOINT, { params: { endpoint: 'conversations' } }];
 
-  const { data, isLoading, error, isValidating } = useSWR<ConversationsData>(
-    url,
-    fetcher,
-    swrOptions
-  );
+  // const { data, isLoading, error, isValidating } = useSWR<ConversationsData>(
+  //   url,
+  //   fetcher,
+  //   swrOptions
+  // );
 
-  console.log(data);
+  const data = CONVERSATIONS_DATA as ConversationsData;
 
   const memoizedValue = useMemo(() => {
     const byId = data?.conversations.length ? keyBy(data.conversations, 'id') : {};
@@ -66,12 +70,12 @@ export function useGetConversations() {
 
     return {
       conversations: { byId, allIds },
-      conversationsLoading: isLoading,
-      conversationsError: error,
-      conversationsValidating: isValidating,
-      conversationsEmpty: !isLoading && !allIds.length,
+      conversationsLoading: false,
+      // conversationsError: error,
+      // conversationsValidating: isValidating,
+      // conversationsEmpty: !isLoading && !allIds.length,
     };
-  }, [data?.conversations, error, isLoading, isValidating]);
+  }, [data?.conversations]);
 
   return memoizedValue;
 }
