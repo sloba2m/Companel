@@ -62,7 +62,7 @@ export function ChatView() {
 
   useEffect(() => {
     if (conversationError || !selectedConversationId) {
-      router.push(paths.navigation.two);
+      router.push(paths.navigation.inbox);
     }
   }, [conversationError, router, selectedConversationId]);
 

@@ -1,12 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 
-import { CONFIG } from 'src/config-global';
+import { ProgressBar } from 'src/components/progress-bar';
 
 import { BlankView } from 'src/sections/blank/view';
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: `Page five | Dashboard - ${CONFIG.site.name}` };
+const metadata = { title: `Dashboard` };
 
 export default function Page() {
   return (
@@ -15,7 +15,8 @@ export default function Page() {
         <title> {metadata.title}</title>
       </Helmet>
 
-      <BlankView title="Page five" />
+      <BlankView title="Page ones" />
+      <ProgressBar />
     </>
   );
 }

@@ -16,6 +16,7 @@ export function NavSectionMini({
   render,
   slotProps,
   enabledRootRedirect,
+  listSx,
   cssVars: overridesVars,
 }: NavSectionProps) {
   const theme = useTheme();
@@ -27,7 +28,7 @@ export function NavSectionMini({
 
   return (
     <Stack component="nav" className={navSectionClasses.mini.root} sx={{ ...cssVars, ...sx }}>
-      <NavUl sx={{ flex: '1 1 auto', gap: 'var(--nav-item-gap)' }}>
+      <NavUl sx={{ flex: '1 1 auto', gap: 'var(--nav-item-gap)', ...listSx }}>
         {data.map((group) => (
           <Group
             key={group.subheader ?? group.items[0].title}

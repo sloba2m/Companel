@@ -1,12 +1,10 @@
 import { Helmet } from 'react-helmet-async';
 
-import { CONFIG } from 'src/config-global';
-
-import { BlankView } from 'src/sections/blank/view';
+import { ChatView } from 'src/sections/chat/view';
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: `Page three | Dashboard - ${CONFIG.site.name}` };
+const metadata = { title: `Inbox` };
 
 export default function Page() {
   return (
@@ -15,7 +13,7 @@ export default function Page() {
         <title> {metadata.title}</title>
       </Helmet>
 
-      <BlankView title="Page three" />
+      <ChatView />
     </>
   );
 }

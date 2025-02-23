@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom';
 
 import { CONFIG } from 'src/config-global';
 import { NavigationLayout } from 'src/layouts/dashboard';
@@ -10,12 +10,11 @@ import { AuthGuard } from 'src/auth/guard';
 
 // ----------------------------------------------------------------------
 
-const IndexPage = lazy(() => import('src/pages/dashboard/one'));
-const PageTwo = lazy(() => import('src/pages/two'));
-const PageThree = lazy(() => import('src/pages/dashboard/three'));
-const PageFour = lazy(() => import('src/pages/dashboard/four'));
-const PageFive = lazy(() => import('src/pages/dashboard/five'));
-const PageSix = lazy(() => import('src/pages/dashboard/six'));
+const DashboardPage = lazy(() => import('src/pages/dashboard'));
+const InboxPage = lazy(() => import('src/pages/inbox'));
+const ContactsPage = lazy(() => import('src/pages/contacts'));
+const CustomersPage = lazy(() => import('src/pages/customers'));
+const SettingsPage = lazy(() => import('src/pages/settings'));
 
 // ----------------------------------------------------------------------
 
@@ -32,17 +31,15 @@ export const navigationRoutes = [
     path: '',
     element: CONFIG.auth.skip ? <>{layoutContent}</> : <AuthGuard>{layoutContent}</AuthGuard>,
     children: [
-      { element: <IndexPage />, index: true },
-      { path: 'two', element: <PageTwo /> },
-      { path: 'three', element: <PageThree /> },
       {
-        path: 'group',
-        children: [
-          { element: <PageFour />, index: true },
-          { path: 'five', element: <PageFive /> },
-          { path: 'six', element: <PageSix /> },
-        ],
+        index: true,
+        element: <Navigate to="dashboard" replace />,
       },
+      { path: 'dashboard', element: <DashboardPage /> },
+      { path: 'inbox', element: <InboxPage /> },
+      { path: 'contacts', element: <ContactsPage /> },
+      { path: 'customers', element: <CustomersPage /> },
+      { path: 'settings', element: <SettingsPage /> },
     ],
   },
 ];

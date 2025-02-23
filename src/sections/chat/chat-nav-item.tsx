@@ -52,7 +52,7 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
 
       await clickConversation(conversation.id);
 
-      router.push(`${paths.navigation.two}?id=${conversation.id}`);
+      router.push(`${paths.navigation.inbox}?id=${conversation.id}`);
     } catch (error) {
       console.error(error);
     }

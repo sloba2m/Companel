@@ -1,5 +1,5 @@
 import type { Breakpoint } from '@mui/material/styles';
-import type { NavSectionProps } from 'src/components/nav-section';
+import type { NavSectionProps, NavItemBaseProps } from 'src/components/nav-section';
 
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
@@ -17,7 +17,11 @@ import { NavToggleButton } from '../components/nav-toggle-button';
 export type NavVerticalProps = NavSectionProps & {
   isNavMini: boolean;
   layoutQuery: Breakpoint;
-  onToggleNav: () => void;
+  bottomData: {
+    subheader?: string;
+    items: NavItemBaseProps[];
+  }[];
+  onToggleNav?: () => void;
   slots?: {
     topArea?: React.ReactNode;
     bottomArea?: React.ReactNode;
@@ -27,6 +31,7 @@ export type NavVerticalProps = NavSectionProps & {
 export function NavVertical({
   sx,
   data,
+  bottomData,
   slots,
   isNavMini,
   layoutQuery,
@@ -67,7 +72,20 @@ export function NavVertical({
         {...other}
       />
 
-      {slots?.bottomArea}
+      {bottomData && (
+        <NavSectionMini
+          data={bottomData}
+          listSx={{ flexDirection: 'column-reverse' }}
+          sx={{
+            pb: 2,
+            px: 0.5,
+            ...hideScrollY,
+            flex: '1 1 auto',
+            overflowY: 'auto',
+          }}
+          {...other}
+        />
+      )}
     </>
   );
 
@@ -94,16 +112,18 @@ export function NavVertical({
         ...sx,
       }}
     >
-      <NavToggleButton
-        isNavMini={isNavMini}
-        onClick={onToggleNav}
-        sx={{
-          display: 'none',
-          [theme.breakpoints.up(layoutQuery)]: {
-            display: 'inline-flex',
-          },
-        }}
-      />
+      {onToggleNav && (
+        <NavToggleButton
+          isNavMini={isNavMini}
+          onClick={onToggleNav}
+          sx={{
+            display: 'none',
+            [theme.breakpoints.up(layoutQuery)]: {
+              display: 'inline-flex',
+            },
+          }}
+        />
+      )}
       {isNavMini ? renderNavMini : renderNavVertical}
     </Box>
   );

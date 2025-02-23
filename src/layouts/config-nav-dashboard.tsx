@@ -42,33 +42,20 @@ const ICONS = {
 // ----------------------------------------------------------------------
 
 export const navData = [
-  /**
-   * Overview
-   */
   {
     subheader: 'Overview 6.0.0',
     items: [
-      { title: 'One', path: paths.navigation.root, icon: ICONS.dashboard },
-      { title: 'Two', path: paths.navigation.two, icon: ICONS.ecommerce },
-      { title: 'Three', path: paths.navigation.three, icon: ICONS.analytics },
+      { title: 'Dashboard', path: paths.navigation.dashboard, icon: ICONS.dashboard },
+      { title: 'Inbox', path: paths.navigation.inbox, icon: ICONS.ecommerce },
+      { title: 'Contacts', path: paths.navigation.contacts, icon: ICONS.analytics },
+      { title: 'Customers', path: paths.navigation.customers, icon: ICONS.analytics },
     ],
   },
-  /**
-   * Management
-   */
+];
+
+export const navBottomData = [
   {
-    subheader: 'Management',
-    items: [
-      {
-        title: 'Group',
-        path: paths.navigation.group.root,
-        icon: ICONS.user,
-        children: [
-          { title: 'Four', path: paths.navigation.group.root },
-          { title: 'Five', path: paths.navigation.group.five },
-          { title: 'Six', path: paths.navigation.group.six },
-        ],
-      },
-    ],
+    subheader: 'Btd',
+    items: [{ title: 'Settings', path: paths.navigation.settings, icon: ICONS.analytics }],
   },
 ];

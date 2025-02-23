@@ -85,7 +85,7 @@ export function ChatNav({
     (result: IChatParticipant) => {
       handleClickAwaySearch();
 
-      router.push(`${paths.navigation.two}?id=${result.id}`);
+      router.push(`${paths.navigation.inbox}?id=${result.id}`);
     },
     [handleClickAwaySearch, router]
   );

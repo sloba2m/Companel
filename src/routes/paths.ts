@@ -43,12 +43,10 @@ export const paths = {
   // DASHBOARD
   navigation: {
     root: ROOTS.INDEX,
-    two: `${ROOTS.INDEX}/two`,
-    three: `${ROOTS.INDEX}/three`,
-    group: {
-      root: `${ROOTS.INDEX}/group`,
-      five: `${ROOTS.INDEX}/group/five`,
-      six: `${ROOTS.INDEX}/group/six`,
-    },
+    dashboard: `${ROOTS.INDEX}/dashboard`,
+    inbox: `${ROOTS.INDEX}/inbox`,
+    contacts: `${ROOTS.INDEX}/contacts`,
+    customers: `${ROOTS.INDEX}/customers`,
+    settings: `${ROOTS.INDEX}/settings`,
   },
 };

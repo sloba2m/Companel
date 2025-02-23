@@ -24,7 +24,7 @@ import { NavHorizontal } from './nav-horizontal';
 import { _account } from '../config-nav-account';
 import { HeaderBase } from '../core/header-base';
 import { LayoutSection } from '../core/layout-section';
-import { navData as dashboardNavData } from '../config-nav-dashboard';
+import { navBottomData, navData as dashboardNavData } from '../config-nav-dashboard';
 
 // ----------------------------------------------------------------------
 
@@ -152,15 +152,10 @@ export function NavigationLayout({ sx, children, data }: NavigationLayoutProps) 
           isNavHorizontal ? null : (
             <NavVertical
               data={navData}
-              isNavMini={isNavMini}
+              bottomData={navBottomData}
+              isNavMini
               layoutQuery={layoutQuery}
               cssVars={navColorVars.section}
-              onToggleNav={() =>
-                settings.onUpdateField(
-                  'navLayout',
-                  settings.navLayout === 'vertical' ? 'mini' : 'vertical'
-                )
-              }
             />
           )
         }
