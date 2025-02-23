@@ -12,7 +12,8 @@ interface TableWithDrawerProps<RowData extends GridValidRowModel> {
   rows: RowData[];
   drawerContent: ReactNode;
   createButtonText: string;
-  searchPlaceholder: string;
+  searchPlaceholder?: string;
+  onSearch?: () => void;
 }
 
 export const TableWithDrawer = <RowData extends GridValidRowModel>({
@@ -21,6 +22,7 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
   drawerContent,
   createButtonText,
   searchPlaceholder,
+  onSearch,
 }: TableWithDrawerProps<RowData>) => {
   const mdUp = useResponsive('up', 'md');
   const theme = useTheme();
@@ -39,12 +41,16 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
       >
         <Stack
           direction={mdUp ? 'row' : 'column'}
-          sx={{ gap: 2, p: 2, justifyContent: 'space-between' }}
+          sx={{ gap: 2, p: 2, justifyContent: onSearch ? 'space-between' : 'flex-end' }}
         >
-          <TextField placeholder={searchPlaceholder} sx={{ width: mdUp ? '400px' : '100%' }} />
-          <Button variant="soft" color="primary" onClick={onToggleDrawer}>
-            {createButtonText}
-          </Button>
+          {onSearch && (
+            <TextField placeholder={searchPlaceholder} sx={{ width: mdUp ? '400px' : '100%' }} />
+          )}
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Button variant="soft" color="primary" onClick={onToggleDrawer}>
+              {isDrawerOpen ? 'Close' : createButtonText}
+            </Button>
+          </Box>
         </Stack>
         <DataGrid
           columns={columns}

@@ -87,6 +87,7 @@ export default function Page() {
           rows={mockData}
           searchPlaceholder="Search cusomers"
           drawerContent={<CustomerDrawer />}
+          onSearch={() => console.log('test')}
         />
       </Container>
     </>

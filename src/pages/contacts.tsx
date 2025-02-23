@@ -73,6 +73,7 @@ export default function Page() {
           rows={mockContacts}
           searchPlaceholder="Search contact"
           drawerContent={<ContactDrawer />}
+          onSearch={() => console.log('test')}
         />
       </Container>
     </>
