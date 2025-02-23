@@ -16,6 +16,9 @@ interface TableWithDrawerProps<RowData extends GridValidRowModel> {
   onSearch?: () => void;
 }
 
+const DRAWER_WIDTH = '400px';
+const MOBILE_DRAWER_WIDTH = '300px';
+
 export const TableWithDrawer = <RowData extends GridValidRowModel>({
   columns,
   rows,
@@ -33,7 +36,7 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
       <Stack
         direction="column"
         sx={{
-          width: isDrawerOpen && mdUp ? 'calc(100% - 300px)' : '100%',
+          width: isDrawerOpen && mdUp ? `calc(100% - ${DRAWER_WIDTH})` : '100%',
           transition: theme.transitions.create(['width'], {
             duration: theme.transitions.duration.shorter,
           }),
@@ -65,7 +68,7 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
           sx={{
             minHeight: 0,
             flex: '1 1 auto',
-            width: '300px',
+            width: DRAWER_WIDTH,
             display: { xs: 'none', lg: 'flex' },
             borderLeft: `solid 1px ${theme.vars.palette.divider}`,
             transition: theme.transitions.create(['width'], {
@@ -82,7 +85,7 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
           open={isDrawerOpen}
           onClose={onToggleDrawer}
           slotProps={{ backdrop: { invisible: true } }}
-          PaperProps={{ sx: { width: '300px' } }}
+          PaperProps={{ sx: { width: MOBILE_DRAWER_WIDTH } }}
         >
           {drawerContent}
         </Drawer>

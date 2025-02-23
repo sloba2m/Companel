@@ -22,7 +22,7 @@ const columns: GridColDef<MockInbox>[] = [
   {
     field: 'template',
     headerName: 'Template',
-    width: 160,
+    width: 230,
     sortable: false,
   },
   {
