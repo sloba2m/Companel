@@ -3,6 +3,7 @@
 const ROOTS = {
   AUTH: '/auth',
   INDEX: '',
+  SETTINGS: '/settings',
 };
 
 // ----------------------------------------------------------------------
@@ -47,6 +48,12 @@ export const paths = {
     inbox: `${ROOTS.INDEX}/inbox`,
     contacts: `${ROOTS.INDEX}/contacts`,
     customers: `${ROOTS.INDEX}/customers`,
-    settings: `${ROOTS.INDEX}/settings`,
+    settings: {
+      root: ROOTS.SETTINGS,
+      users: `${ROOTS.SETTINGS}/users`,
+      inbox: `${ROOTS.SETTINGS}/inbox`,
+      templates: `${ROOTS.SETTINGS}/templates`,
+      tags: `${ROOTS.SETTINGS}/tags`,
+    },
   },
 };

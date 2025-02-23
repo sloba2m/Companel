@@ -14,7 +14,10 @@ const DashboardPage = lazy(() => import('src/pages/dashboard'));
 const InboxPage = lazy(() => import('src/pages/inbox'));
 const ContactsPage = lazy(() => import('src/pages/contacts'));
 const CustomersPage = lazy(() => import('src/pages/customers'));
-const SettingsPage = lazy(() => import('src/pages/settings'));
+const UsersSettingsPage = lazy(() => import('src/pages/settings/users'));
+const InboxSettingsPage = lazy(() => import('src/pages/settings/inbox'));
+const TemplatesSettingsPage = lazy(() => import('src/pages/settings/templates'));
+const TagsSettingsPage = lazy(() => import('src/pages/settings/tags'));
 
 // ----------------------------------------------------------------------
 
@@ -39,7 +42,15 @@ export const navigationRoutes = [
       { path: 'inbox', element: <InboxPage /> },
       { path: 'contacts', element: <ContactsPage /> },
       { path: 'customers', element: <CustomersPage /> },
-      { path: 'settings', element: <SettingsPage /> },
+      {
+        path: 'settings',
+        children: [
+          { path: 'users', element: <UsersSettingsPage /> },
+          { path: 'inbox', element: <InboxSettingsPage /> },
+          { path: 'templates', element: <TemplatesSettingsPage /> },
+          { path: 'tags', element: <TagsSettingsPage /> },
+        ],
+      },
     ],
   },
 ];

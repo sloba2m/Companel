@@ -2,6 +2,7 @@ import { paths } from 'src/routes/paths';
 
 import { CONFIG } from 'src/config-global';
 
+import { Iconify } from 'src/components/iconify';
 import { SvgColor } from 'src/components/svg-color';
 
 // ----------------------------------------------------------------------
@@ -46,9 +47,9 @@ export const navData = [
     subheader: 'Overview 6.0.0',
     items: [
       { title: 'Dashboard', path: paths.navigation.dashboard, icon: ICONS.dashboard },
-      { title: 'Inbox', path: paths.navigation.inbox, icon: ICONS.ecommerce },
-      { title: 'Contacts', path: paths.navigation.contacts, icon: ICONS.analytics },
-      { title: 'Customers', path: paths.navigation.customers, icon: ICONS.analytics },
+      { title: 'Inbox', path: paths.navigation.inbox, icon: ICONS.chat },
+      { title: 'Contacts', path: paths.navigation.contacts, icon: ICONS.user },
+      { title: 'Customers', path: paths.navigation.customers, icon: ICONS.job },
     ],
   },
 ];
@@ -56,6 +57,18 @@ export const navData = [
 export const navBottomData = [
   {
     subheader: 'Btd',
-    items: [{ title: 'Settings', path: paths.navigation.settings, icon: ICONS.analytics }],
+    items: [
+      {
+        title: 'Settings',
+        path: paths.navigation.settings.root,
+        icon: <Iconify icon="solar:settings-bold-duotone" />,
+        children: [
+          { title: 'Users', path: paths.navigation.settings.users },
+          { title: 'Inbox', path: paths.navigation.settings.inbox },
+          { title: 'Templates', path: paths.navigation.settings.templates },
+          { title: 'Tags', path: paths.navigation.settings.tags },
+        ],
+      },
+    ],
   },
 ];
