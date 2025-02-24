@@ -57,9 +57,13 @@ export function ChatHeaderDetail({ collapseNav, participants, loading }: Props) 
     </AvatarGroup>
   );
 
+  const initials = singleParticipant?.name
+    .split(' ')
+    .map((word) => word[0])
+    .join('');
   const renderSingle = (
     <Stack direction="row" alignItems="center" spacing={2}>
-      <Avatar src={singleParticipant?.avatarUrl} alt={singleParticipant?.name} />
+      <Avatar alt={singleParticipant?.name}>{initials}</Avatar>
 
       <ListItemText primary={singleParticipant?.name} secondary="email@email.com" />
     </Stack>
@@ -82,6 +86,7 @@ export function ChatHeaderDetail({ collapseNav, participants, loading }: Props) 
         <Autocomplete
           sx={{ minWidth: '200px' }}
           options={['One guy', 'Other guy']}
+          size="small"
           // getOptionLabel={(option) => option.title}
           renderInput={(params) => <TextField {...params} label="Assign" margin="none" />}
           // renderOption={(props, option) => (
@@ -91,7 +96,7 @@ export function ChatHeaderDetail({ collapseNav, participants, loading }: Props) 
           // )}
         />
 
-        <Button variant="soft" color="primary">
+        <Button variant="soft" color="primary" size="medium">
           Resolve
         </Button>
 
