@@ -1,3 +1,4 @@
+export * from './tags-drawer';
 export * from './inbox-drawer';
 export * from './users-drawer';
 export * from './contact-drawer';
