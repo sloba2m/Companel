@@ -26,6 +26,7 @@ import {
   IconButton,
   ListItemIcon,
   ListItemText,
+  Autocomplete,
   ListItemButton,
 } from '@mui/material';
 
@@ -130,26 +131,21 @@ export function ChatRoomSingle({ participant }: Props) {
       </CollapseButton>
 
       <Collapse in={collapseTag.value}>
-        <Stack spacing={2} sx={{ px: 2, py: 2.5 }}>
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            <Chip
-              variant="soft"
-              label="tag 1"
-              size="small"
-              onDelete={() => console.log('delete')}
-            />
-            <Chip
-              variant="soft"
-              label="tag 2"
-              size="small"
-              onDelete={() => console.log('delete')}
-            />
-          </Box>
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <TextField fullWidth label="New tag" size="small" />
-            <Button variant="soft">Add</Button>
-          </Box>
-        </Stack>
+        <Autocomplete
+          multiple
+          options={['tag1', 'tag2']}
+          defaultValue={['tag2']}
+          freeSolo
+          disableClearable
+          sx={{ m: 2 }}
+          renderTags={(value: readonly string[], getTagProps) =>
+            value.map((option: string, index: number) => {
+              const { key, ...tagProps } = getTagProps({ index });
+              return <Chip variant="outlined" label={option} key={key} {...tagProps} />;
+            })
+          }
+          renderInput={(params) => <TextField {...params} placeholder="Add Tags" />}
+        />
       </Collapse>
 
       <CollapseButton selected={collapseConv.value} onClick={collapseConv.onToggle}>
