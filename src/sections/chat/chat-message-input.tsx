@@ -2,6 +2,7 @@ import type { IChatParticipant } from 'src/types/chat';
 
 import { useRef, useMemo, useState, useCallback } from 'react';
 
+import NoteIcon from '@mui/icons-material/Note';
 import { Box, Stack, Button, IconButton } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
@@ -117,7 +118,7 @@ export function ChatMessageInput({
       <Editor sx={{ maxHeight: 720 }} />
       <Stack direction="row" sx={{ justifyContent: 'space-between', p: 1 }}>
         <IconButton>
-          <Iconify icon="mdi:sticker" />
+          <NoteIcon />
         </IconButton>
         <Button variant="contained" color="primary" endIcon={<Iconify icon="mdi:send" />}>
           Send
