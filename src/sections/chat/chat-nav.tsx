@@ -5,8 +5,8 @@ import { useState, useEffect, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
+import { Tab, Divider } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Divider, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -15,6 +15,7 @@ import { useResponsive } from 'src/hooks/use-responsive';
 
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
+import { CustomTabs } from 'src/components/custom-tabs';
 
 import { ChatNavItem } from './chat-nav-item';
 import { ChatNavItemSkeleton } from './chat-skeleton';
@@ -120,39 +121,34 @@ export function ChatNav({
 
   const renderContent = (
     <>
-      <ToggleButtonGroup
-        sx={{ border: 'none' }}
-        exclusive
+      <CustomTabs
         value={selectedFilter}
         onChange={(_e, value) => setSelectedFilter(value)}
+        variant="fullWidth"
       >
-        <ToggleButton value="all">All</ToggleButton>
-        <ToggleButton value="unhandled">Unhandled</ToggleButton>
-        <ToggleButton value="mine">Mine</ToggleButton>
-        <ToggleButton value="closed">Closed</ToggleButton>
-      </ToggleButtonGroup>
+        <Tab key="all" value="all" label="All" />
+        <Tab key="unhandled" value="unhandled" label="Unhandled" />
+        <Tab key="mine" value="mine" label="Mine" />
+        <Tab key="closed" value="closed" label="Closed" />
+      </CustomTabs>
       <Divider />
 
-      <ToggleButtonGroup
-        sx={{ border: 'none' }}
-        exclusive
+      <CustomTabs
         value={selectedSocial}
         onChange={(_e, value) => setSelectedSocial(value)}
+        variant="fullWidth"
       >
-        <ToggleButton value="all">All</ToggleButton>
-        <ToggleButton value="facebook">
-          <Iconify width={24} icon="logos:facebook" />
-        </ToggleButton>
-        <ToggleButton value="gmail">
-          <Iconify width={24} icon="logos:google-gmail" />
-        </ToggleButton>
-        <ToggleButton value="whatsapp">
-          <Iconify width={24} icon="logos:whatsapp-icon" />
-        </ToggleButton>
-        <ToggleButton value="telegram">
-          <Iconify width={24} icon="logos:telegram" />
-        </ToggleButton>
-      </ToggleButtonGroup>
+        <Tab key="all" value="all" label="All" />
+        <Tab key="facebook" value="facebook" icon={<Iconify width={24} icon="logos:facebook" />} />
+        <Tab key="gmail" value="gmail" icon={<Iconify width={24} icon="logos:google-gmail" />} />
+        <Tab
+          key="whatsapp"
+          value="whatsapp"
+          icon={<Iconify width={24} icon="logos:whatsapp-icon" />}
+        />
+        <Tab key="telegram" value="telegram" icon={<Iconify width={24} icon="logos:telegram" />} />
+      </CustomTabs>
+      <Divider />
 
       {loading ? (
         renderLoading

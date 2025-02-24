@@ -14,7 +14,7 @@ import { useRouter } from 'src/routes/hooks';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import { fToNow } from 'src/utils/format-time';
+import { fDate } from 'src/utils/format-time';
 
 import { clickConversation } from 'src/actions/chat';
 
@@ -85,7 +85,6 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
-            // gap: 2,
           }}
         >
           <Box
@@ -100,9 +99,9 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
               noWrap
               variant="body2"
               component="span"
-              sx={{ mb: 1.5, fontSize: 12, color: 'text.disabled' }}
+              sx={{ fontSize: 12, color: 'text.disabled' }}
             >
-              {fToNow(lastActivity)}
+              {fDate(lastActivity)}
             </Typography>
           </Box>
           <ListItemText
