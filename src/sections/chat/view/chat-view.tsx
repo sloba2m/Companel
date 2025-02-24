@@ -2,7 +2,17 @@ import type { IChatParticipant } from 'src/types/chat';
 
 import { useState, useEffect, useCallback } from 'react';
 
-import { Box, Divider, TextField, IconButton, Typography, Autocomplete } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import SettingsIcon from '@mui/icons-material/Settings';
+import {
+  Box,
+  Divider,
+  TextField,
+  IconButton,
+  Typography,
+  Autocomplete,
+  InputAdornment,
+} from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter, useSearchParams } from 'src/routes/hooks';
@@ -113,28 +123,43 @@ export function ChatView() {
                   </IconButton>
                 </Box>
               </Box>
-              <Autocomplete
-                // fullWidth
-                sx={{
-                  flexGrow: 1,
-                  '& .MuiOutlinedInput-root': {
-                    '& fieldset': {
-                      border: 'none',
-                    },
-                  },
-                  // minWidth: '200px',
-                }}
-                options={['one', 'two']}
-                // getOptionLabel={(option) => option.title}
-                renderInput={(params) => (
-                  <TextField {...params} placeholder="Search" margin="none" />
-                )}
-                // renderOption={(props, option) => (
-                //   <li {...props} key={option.title}>
-                //     {option.title}
-                //   </li>
-                // )}
-              />
+              <Box
+                sx={{ display: 'flex', justifyContent: 'space-between', flexGrow: 1, p: 2, gap: 2 }}
+              >
+                <Autocomplete
+                  // fullWidth
+                  sx={{
+                    flexGrow: 1,
+                    // minWidth: '200px',
+                  }}
+                  options={['one', 'two']}
+                  // getOptionLabel={(option) => option.title}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="Search"
+                      margin="none"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <SearchIcon />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  )}
+                  // renderOption={(props, option) => (
+                  //   <li {...props} key={option.title}>
+                  //     {option.title}
+                  //   </li>
+                  // )}
+                />
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <IconButton>
+                    <SettingsIcon />
+                  </IconButton>
+                </Box>
+              </Box>
             </Box>
           ),
           header: selectedConversationId ? (
