@@ -7,7 +7,7 @@ import { UploadBox } from '../upload-box';
 export const TemplatesDrawer = () => (
   <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
     <Typography variant="subtitle1">Create template</Typography>
-    <TextField label="Name" />
+    <TextField label="Name" size="small" />
     <Editor sx={{ minHeight: 400 }} />
     <Stack direction="row" spacing={2}>
       <UploadBox
@@ -20,7 +20,7 @@ export const TemplatesDrawer = () => (
         sx={{ py: 1, flexGrow: 1, height: 'auto' }}
       />
     </Stack>
-    <Button variant="soft" color="primary">
+    <Button variant="soft" color="primary" size="small">
       Save
     </Button>
   </Box>

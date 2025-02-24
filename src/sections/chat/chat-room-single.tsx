@@ -94,14 +94,21 @@ export function ChatRoomSingle({ participant }: Props) {
       </Box>
       {isEdit ? (
         <>
-          <TextField fullWidth label="Address" defaultValue={participant?.address} />
+          <TextField fullWidth label="Address" size="small" defaultValue={participant?.address} />
           <TextField
+            size="small"
             fullWidth
             label="Phone number"
             defaultValue={participant?.phoneNumber}
             type="tel"
           />
-          <TextField fullWidth label="Email" defaultValue={participant?.email} type="email" />
+          <TextField
+            fullWidth
+            size="small"
+            label="Email"
+            defaultValue={participant?.email}
+            type="email"
+          />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
             <Button size="small" onClick={onEditFalse}>
               Cancel

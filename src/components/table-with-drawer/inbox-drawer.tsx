@@ -6,29 +6,31 @@ export const InboxDrawer = () => (
     <Autocomplete
       options={['One ', 'two']}
       // getOptionLabel={(option) => option.title}
-      renderInput={(params) => <TextField {...params} label="Type" margin="none" />}
+      renderInput={(params) => <TextField {...params} label="Type" margin="none" size="small" />}
       // renderOption={(props, option) => (
       //   <li {...props} key={option.title}>
       //     {option.title}
       //   </li>
       // )}
     />
-    <TextField label="Name" />
-    <TextField label="Email" />
+    <TextField label="Name" size="small" />
+    <TextField label="Email" size="small" />
     <Autocomplete
       options={['One ', 'two']}
       // getOptionLabel={(option) => option.title}
-      renderInput={(params) => <TextField {...params} label="Template" margin="none" />}
+      renderInput={(params) => (
+        <TextField {...params} label="Template" margin="none" size="small" />
+      )}
       // renderOption={(props, option) => (
       //   <li {...props} key={option.title}>
       //     {option.title}
       //   </li>
       // )}
     />
-    <TextField label="Tenant ID" />
-    <TextField label="Client ID" />
-    <TextField label="Client secret" />
-    <Button variant="soft" color="primary">
+    <TextField label="Tenant ID" size="small" />
+    <TextField label="Client ID" size="small" />
+    <TextField label="Client secret" size="small" />
+    <Button variant="soft" color="primary" size="small">
       Save
     </Button>
   </Box>
