@@ -1,10 +1,9 @@
 import type { BoxProps } from '@mui/material/Box';
 
-import { useId, forwardRef } from 'react';
+import { forwardRef } from 'react';
 
 import Box from '@mui/material/Box';
 import NoSsr from '@mui/material/NoSsr';
-import { useTheme } from '@mui/material/styles';
 
 import { RouterLink } from 'src/routes/components';
 
@@ -19,54 +18,52 @@ export type LogoProps = BoxProps & {
 
 export const Logo = forwardRef<HTMLDivElement, LogoProps>(
   ({ width = 40, height = 40, disableLink = false, className, href = '/', sx, ...other }, ref) => {
-    const theme = useTheme();
-
-    const gradientId = useId();
-
-    const PRIMARY_LIGHT = theme.vars.palette.primary.light;
-
-    const PRIMARY_MAIN = theme.vars.palette.primary.main;
-
-    const PRIMARY_DARK = theme.vars.palette.primary.dark;
-
     /*
      * OR using local (public folder)
      * const logo = ( <Box alt="logo" component="img" src={`${CONFIG.site.basePath}/logo/logo-single.svg`} width={width} height={height} /> );
      */
 
     const logo = (
-      <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 512 512">
-        <defs>
-          <linearGradient id={`${gradientId}-1`} x1="100%" x2="50%" y1="9.946%" y2="50%">
-            <stop offset="0%" stopColor={PRIMARY_DARK} />
-            <stop offset="100%" stopColor={PRIMARY_MAIN} />
-          </linearGradient>
-
-          <linearGradient id={`${gradientId}-2`} x1="50%" x2="50%" y1="0%" y2="100%">
-            <stop offset="0%" stopColor={PRIMARY_LIGHT} />
-            <stop offset="100%" stopColor={PRIMARY_MAIN} />
-          </linearGradient>
-
-          <linearGradient id={`${gradientId}-3`} x1="50%" x2="50%" y1="0%" y2="100%">
-            <stop offset="0%" stopColor={PRIMARY_LIGHT} />
-            <stop offset="100%" stopColor={PRIMARY_MAIN} />
-          </linearGradient>
-        </defs>
-
-        <g fill={PRIMARY_MAIN} fillRule="evenodd" stroke="none" strokeWidth="1">
-          <path
-            fill={`url(#${`${gradientId}-1`})`}
-            d="M183.168 285.573l-2.918 5.298-2.973 5.363-2.846 5.095-2.274 4.043-2.186 3.857-2.506 4.383-1.6 2.774-2.294 3.939-1.099 1.869-1.416 2.388-1.025 1.713-1.317 2.18-.95 1.558-1.514 2.447-.866 1.38-.833 1.312-.802 1.246-.77 1.18-.739 1.111-.935 1.38-.664.956-.425.6-.41.572-.59.8-.376.497-.537.69-.171.214c-10.76 13.37-22.496 23.493-36.93 29.334-30.346 14.262-68.07 14.929-97.202-2.704l72.347-124.682 2.8-1.72c49.257-29.326 73.08 1.117 94.02 40.927z"
-          />
-          <path
-            fill={`url(#${`${gradientId}-2`})`}
-            d="M444.31 229.726c-46.27-80.956-94.1-157.228-149.043-45.344-7.516 14.384-12.995 42.337-25.267 42.337v-.142c-12.272 0-17.75-27.953-25.265-42.337C189.79 72.356 141.96 148.628 95.69 229.584c-3.483 6.106-6.828 11.932-9.69 16.996 106.038-67.127 97.11 135.667 184 137.278V384c86.891-1.611 77.962-204.405 184-137.28-2.86-5.062-6.206-10.888-9.69-16.994"
-          />
-          <path
-            fill={`url(#${`${gradientId}-3`})`}
-            d="M450 384c26.509 0 48-21.491 48-48s-21.491-48-48-48-48 21.491-48 48 21.491 48 48 48"
-          />
-        </g>
+      <svg
+        width="24"
+        height="31"
+        viewBox="0 0 24 31"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect
+          width="21.438"
+          height="21.438"
+          rx="3.29815"
+          transform="matrix(-0.970296 -0.241922 0 1 20.8008 8.48438)"
+          fill="white"
+        />
+        <rect
+          width="21.438"
+          height="21.438"
+          rx="3.29815"
+          transform="matrix(-0.970296 -0.241922 0 1 24 5.98438)"
+          fill="white"
+        />
+        <rect
+          width="16.4907"
+          height="16.4907"
+          rx="3.29815"
+          transform="matrix(-0.970296 -0.241922 0 1 18.7305 10.0303)"
+          fill="#3B82F6"
+        />
+        <path d="M20.0434 28.5752L23.0117 26.2665L20.2083 24.9473L20.0434 28.5752Z" fill="white" />
+        <path d="M1.16015 4.33452L4.21094 1.94336L4.04603 4.49943L1.16015 4.33452Z" fill="white" />
+        <path
+          d="M0.00684166 24.4826V26.6049C0.00684166 27.1164 0.257803 27.5954 0.678377 27.8866C0.939075 28.0671 1.24861 28.1638 1.56569 28.1638H1.90693C2.23115 28.1638 2.5522 28.1 2.85183 27.9762L4.31865 27.3699C6.14286 26.6159 6.39248 24.134 4.75497 23.0318L3.86166 22.4305C2.21856 21.3246 0.00684166 22.502 0.00684166 24.4826Z"
+          fill="white"
+        />
+        <path d="M0.00653791 25.2779V19.8359L3.30469 23.299L0.00653791 25.2779Z" fill="white" />
+        <path d="M9.32198 26.6792L2.47834 28.0809L5.52994 24.2899L9.32198 26.6792Z" fill="white" />
+        <path
+          d="M3.88077 14.0174C3.88077 15.7317 4.58443 17.5513 5.83693 19.0758C7.08944 20.6003 8.78821 21.7049 10.5595 22.1465C12.3308 22.5882 14.0296 22.3307 15.2821 21.4308C16.5346 20.5308 17.2383 19.0621 17.2383 17.3478L14.1466 16.5769C14.1466 17.4977 13.7687 18.2865 13.096 18.7698C12.4233 19.2532 11.5109 19.3915 10.5595 19.1543C9.60818 18.9171 8.69579 18.3238 8.02308 17.505C7.35038 16.6862 6.97246 15.709 6.97246 14.7882L3.88077 14.0174Z"
+          fill="white"
+        />
       </svg>
     );
 
