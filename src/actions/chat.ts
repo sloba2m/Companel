@@ -1,10 +1,10 @@
 import type { IChatMessage, IChatParticipant, IChatConversation } from 'src/types/chat';
 
+import { mutate } from 'swr';
 import { useMemo } from 'react';
-import useSWR, { mutate } from 'swr';
 
 import { keyBy } from 'src/utils/helper';
-import axios, { fetcher, endpoints } from 'src/utils/axios';
+import axios, { endpoints } from 'src/utils/axios';
 
 import { CONTACTS_DATA, CONVERSATIONS_DATA } from './chat-mock';
 
@@ -82,29 +82,33 @@ export function useGetConversations() {
 
 // ----------------------------------------------------------------------
 
-type ConversationData = {
-  conversation: IChatConversation;
-};
+// type ConversationData = {
+//   conversation: IChatConversation;
+// };
 
 export function useGetConversation(conversationId: string) {
-  const url = conversationId
-    ? [CHART_ENDPOINT, { params: { conversationId, endpoint: 'conversation' } }]
-    : '';
+  // const url = conversationId
+  //   ? [CHART_ENDPOINT, { params: { conversationId, endpoint: 'conversation' } }]
+  //   : '';
 
-  const { data, isLoading, error, isValidating } = useSWR<ConversationData>(
-    url,
-    fetcher,
-    swrOptions
-  );
+  // const { data, isLoading, error, isValidating } = useSWR<ConversationData>(
+  //   url,
+  //   fetcher,
+  //   swrOptions
+  // );
+
+  const conversation = CONVERSATIONS_DATA.conversations.find(
+    (conv) => conv.id === conversationId
+  ) as IChatConversation;
 
   const memoizedValue = useMemo(
     () => ({
-      conversation: data?.conversation,
-      conversationLoading: isLoading,
-      conversationError: error,
-      conversationValidating: isValidating,
+      conversation,
+      conversationLoading: false,
+      conversationError: false,
+      // conversationValidating: ,
     }),
-    [data?.conversation, error, isLoading, isValidating]
+    [conversation]
   );
 
   return memoizedValue;
