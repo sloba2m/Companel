@@ -2,6 +2,7 @@ import type { IChatParticipant } from 'src/types/chat';
 
 import { useState, useEffect, useCallback } from 'react';
 
+import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
 import {
@@ -23,7 +24,6 @@ import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { useGetContacts, useGetConversation, useGetConversations } from 'src/actions/chat';
 
-import { Iconify } from 'src/components/iconify';
 import { EmptyContent } from 'src/components/empty-content';
 
 import { useMockedUser } from 'src/auth/hooks';
@@ -119,7 +119,7 @@ export function ChatView() {
                 <Divider />
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <IconButton>
-                    <Iconify width={24} icon="mdi:add-bold" />
+                    <AddIcon />
                   </IconButton>
                 </Box>
               </Box>

@@ -3,6 +3,7 @@ import type { IChatParticipant } from 'src/types/chat';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import EditIcon from '@mui/icons-material/Edit';
+import ChatIcon from '@mui/icons-material/Chat';
 import Typography from '@mui/material/Typography';
 import {
   Timeline,
@@ -85,8 +86,8 @@ export function ChatRoomSingle({ participant }: Props) {
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography>Contact information</Typography>
         {!isEdit && (
-          <IconButton size="small" onClick={onEditTrue}>
-            <EditIcon />
+          <IconButton onClick={onEditTrue}>
+            <EditIcon fontSize="small" />
           </IconButton>
         )}
       </Box>
@@ -162,7 +163,7 @@ export function ChatRoomSingle({ participant }: Props) {
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
-                    <Iconify icon="mdi:message-arrow-left-outline" width={16} />
+                    <ChatIcon sx={{ width: '16px' }} />
                   </ListItemIcon>
                   <ListItemText primary="Conversation 1" />
                 </ListItemButton>
@@ -170,7 +171,7 @@ export function ChatRoomSingle({ participant }: Props) {
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
-                    <Iconify icon="mdi:message-arrow-left-outline" width={16} />
+                    <ChatIcon sx={{ width: '16px' }} />
                   </ListItemIcon>
                   <ListItemText primary="Conversation 2" />
                 </ListItemButton>
