@@ -2,6 +2,7 @@ import type { IChatParticipant } from 'src/types/chat';
 
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
+import EditIcon from '@mui/icons-material/Edit';
 import Typography from '@mui/material/Typography';
 import {
   Timeline,
@@ -21,6 +22,7 @@ import {
   ListItem,
   Collapse,
   TextField,
+  IconButton,
   ListItemIcon,
   ListItemText,
   ListItemButton,
@@ -33,7 +35,6 @@ import { varAlpha } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 
 import { CollapseButton } from './styles';
-
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -63,25 +64,58 @@ const lastItem = TIMELINES[TIMELINES.length - 1].key;
 export function ChatRoomSingle({ participant }: Props) {
   const collapseTag = useBoolean(true);
   const collapseConv = useBoolean(true);
+  const { value: isEdit, onTrue: onEditTrue, onFalse: onEditFalse } = useBoolean(false);
+  const initials = participant?.name
+    .split(' ')
+    .map((word) => word[0])
+    .join('');
 
   const renderInfo = (
     <Stack alignItems="center" direction="row" justifyContent="center" sx={{ p: 3, gap: 2 }}>
-      <Avatar alt={participant?.name} src={participant?.avatarUrl} sx={{ width: 48, height: 48 }} />
+      <Avatar alt={participant?.name} sx={{ width: 48, height: 48 }}>
+        {initials}
+      </Avatar>
       <Typography variant="subtitle1">{participant?.name}</Typography>
     </Stack>
   );
 
+  console.log(isEdit);
   const renderContact = (
     <Stack spacing={2} sx={{ px: 2, py: 2.5 }}>
-      <Typography>Contact information</Typography>
-      <TextField fullWidth label="Address" defaultValue={participant?.address} />
-      <TextField
-        fullWidth
-        label="Phone number"
-        defaultValue={participant?.phoneNumber}
-        type="tel"
-      />
-      <TextField fullWidth label="Email" defaultValue={participant?.email} type="email" />
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography>Contact information</Typography>
+        {!isEdit && (
+          <IconButton size="small" onClick={onEditTrue}>
+            <EditIcon />
+          </IconButton>
+        )}
+      </Box>
+      {isEdit ? (
+        <>
+          <TextField fullWidth label="Address" defaultValue={participant?.address} />
+          <TextField
+            fullWidth
+            label="Phone number"
+            defaultValue={participant?.phoneNumber}
+            type="tel"
+          />
+          <TextField fullWidth label="Email" defaultValue={participant?.email} type="email" />
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+            <Button size="small" onClick={onEditFalse}>
+              Cancel
+            </Button>
+            <Button size="small" variant="soft" color="success">
+              Save
+            </Button>
+          </Box>
+        </>
+      ) : (
+        <>
+          <ListItemText primary="Address" secondary={participant?.address} />
+          <ListItemText primary="Phone number" secondary={participant?.phoneNumber} />
+          <ListItemText primary="Email" secondary={participant?.email} />
+        </>
+      )}
     </Stack>
   );
 
