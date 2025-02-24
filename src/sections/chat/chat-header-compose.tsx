@@ -52,7 +52,7 @@ export function ChatHeaderCompose({ contacts, onAddRecipients }: Props) {
         options={contacts}
         getOptionLabel={(recipient) => recipient.name}
         isOptionEqualToValue={(option, value) => option.id === value.id}
-        renderInput={(params) => <TextField {...params} placeholder="+ Recipients" />}
+        renderInput={(params) => <TextField {...params} placeholder="+ Recipients" size="small" />}
         renderOption={(props, recipient, { selected }) => (
           <li {...props} key={recipient.id}>
             <Box
