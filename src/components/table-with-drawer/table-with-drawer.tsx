@@ -32,7 +32,7 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
   const { value: isDrawerOpen, onToggle: onToggleDrawer } = useBoolean(false);
 
   return (
-    <Card sx={{ display: 'flex', flexGrow: 1, mb: 4 }}>
+    <Card sx={{ display: 'flex', flexGrow: 1, my: 4 }}>
       <Stack
         direction="column"
         sx={{

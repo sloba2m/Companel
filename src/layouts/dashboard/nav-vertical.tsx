@@ -10,7 +10,11 @@ import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { NavSectionMini, NavSectionVertical } from 'src/components/nav-section';
 
+import { LanguagePopover } from '../components/language-popover';
 import { NavToggleButton } from '../components/nav-toggle-button';
+import { NotificationsDrawer } from '../components/notifications-drawer';
+
+import type { LanguagePopoverProps } from '../components/language-popover';
 
 // ----------------------------------------------------------------------
 
@@ -26,6 +30,7 @@ export type NavVerticalProps = NavSectionProps & {
     topArea?: React.ReactNode;
     bottomArea?: React.ReactNode;
   };
+  langs?: LanguagePopoverProps['data'];
 };
 
 export function NavVertical({
@@ -36,6 +41,7 @@ export function NavVertical({
   isNavMini,
   layoutQuery,
   onToggleNav,
+  langs,
   ...other
 }: NavVerticalProps) {
   const theme = useTheme();
@@ -72,6 +78,12 @@ export function NavVertical({
         {...other}
       />
 
+      <Box sx={{ display: 'flex', justifyContent: 'center', mb: '8px' }}>
+        <NotificationsDrawer data-slot="notifications" />
+      </Box>
+
+      <LanguagePopover data-slot="localization" data={langs} sx={{ margin: '0 auto 18px' }} />
+
       {bottomData && (
         <NavSectionMini
           data={bottomData}
@@ -80,7 +92,6 @@ export function NavVertical({
             pb: 2,
             px: 0.5,
             ...hideScrollY,
-            flex: '1 1 auto',
             overflowY: 'auto',
           }}
           {...other}

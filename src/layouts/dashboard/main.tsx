@@ -68,6 +68,7 @@ export function DashboardContent({
         pb: 'var(--layout-dashboard-content-pb)',
         [theme.breakpoints.up(layoutQuery)]: {
           px: 'var(--layout-dashboard-content-px)',
+          py: 4,
         },
         ...(disablePadding && {
           p: {
