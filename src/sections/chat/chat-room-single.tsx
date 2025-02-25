@@ -81,7 +81,6 @@ export function ChatRoomSingle({ participant }: Props) {
     </Stack>
   );
 
-  console.log(isEdit);
   const renderContact = (
     <Stack spacing={2} sx={{ px: 2, py: 2.5 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

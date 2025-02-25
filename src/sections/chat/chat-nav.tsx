@@ -5,8 +5,9 @@ import { useState, useEffect, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
-import { Tab, Divider } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import { Tab, Menu, Divider, MenuItem, IconButton } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -118,19 +119,49 @@ export function ChatNav({
 
   const [selectedSocial, setSelectedSocial] = useState('all');
   const [selectedFilter, setSelectedFilter] = useState('all');
+  const [isOpen, setOpen] = useState<null | HTMLElement>(null);
+
+  const handleOpen = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    setOpen(event.currentTarget);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setOpen(null);
+  }, []);
 
   const renderContent = (
     <>
-      <CustomTabs
-        value={selectedFilter}
-        onChange={(_e, value) => setSelectedFilter(value)}
-        variant="fullWidth"
-      >
-        <Tab key="all" value="all" label="All" />
-        <Tab key="unhandled" value="unhandled" label="Unhandled" />
-        <Tab key="mine" value="mine" label="Mine" />
-        <Tab key="closed" value="closed" label="Closed" />
-      </CustomTabs>
+      <Box sx={{ display: 'flex' }}>
+        <CustomTabs
+          value={selectedFilter}
+          onChange={(_e, value) => setSelectedFilter(value)}
+          variant="fullWidth"
+          sx={{ flexGrow: 1 }}
+        >
+          <Tab key="all" value="all" label="All" />
+          <Tab key="unhandled" value="unhandled" label="Unhandled" />
+          <Tab key="mine" value="mine" label="Mine" />
+          <Tab key="closed" value="closed" label="Closed" />
+        </CustomTabs>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: 'var(--palette-background-neutral)',
+          }}
+        >
+          <IconButton onClick={handleOpen}>
+            <FilterListIcon />
+          </IconButton>
+        </Box>
+        <Menu id="simple-menu" anchorEl={isOpen} onClose={handleClose} open={!!isOpen}>
+          {['Tag 1', 'Tag 2', 'Tag 3'].map((option) => (
+            <MenuItem key={option} selected={option === 'Profile'} onClick={handleClose}>
+              {option}
+            </MenuItem>
+          ))}
+        </Menu>
+      </Box>
       <Divider />
 
       <CustomTabs
