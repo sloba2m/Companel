@@ -18,7 +18,7 @@ import { NavMobile } from './nav-mobile';
 import { layoutClasses } from '../classes';
 import { NavVertical } from './nav-vertical';
 import { LayoutSection } from '../core/layout-section';
-import { navBottomData, navData as dashboardNavData } from '../config-nav-dashboard';
+import { navData as dashboardNavData } from '../config-nav-dashboard';
 
 // ----------------------------------------------------------------------
 
@@ -47,8 +47,6 @@ export function NavigationLayout({ sx, children, data }: NavigationLayoutProps) 
 
   const isNavHorizontal = settings.navLayout === 'horizontal';
 
-  const isNavVertical = isNavMini || settings.navLayout === 'vertical';
-
   return (
     <>
       <NavMobile
@@ -66,7 +64,6 @@ export function NavigationLayout({ sx, children, data }: NavigationLayoutProps) 
           isNavHorizontal ? null : (
             <NavVertical
               data={navData}
-              bottomData={navBottomData}
               isNavMini
               layoutQuery={layoutQuery}
               cssVars={navColorVars.section}

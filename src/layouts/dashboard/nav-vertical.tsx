@@ -1,5 +1,5 @@
 import type { Breakpoint } from '@mui/material/styles';
-import type { NavSectionProps, NavItemBaseProps } from 'src/components/nav-section';
+import type { NavSectionProps } from 'src/components/nav-section';
 
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
@@ -11,6 +11,7 @@ import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { NavSectionMini, NavSectionVertical } from 'src/components/nav-section';
 
+import { SettingsButton } from '../components/settings-button';
 import { LanguagePopover } from '../components/language-popover';
 import { NavToggleButton } from '../components/nav-toggle-button';
 import { NotificationsDrawer } from '../components/notifications-drawer';
@@ -22,10 +23,6 @@ import type { LanguagePopoverProps } from '../components/language-popover';
 export type NavVerticalProps = NavSectionProps & {
   isNavMini: boolean;
   layoutQuery: Breakpoint;
-  bottomData: {
-    subheader?: string;
-    items: NavItemBaseProps[];
-  }[];
   onToggleNav?: () => void;
   slots?: {
     topArea?: React.ReactNode;
@@ -37,7 +34,6 @@ export type NavVerticalProps = NavSectionProps & {
 export function NavVertical({
   sx,
   data,
-  bottomData,
   slots,
   isNavMini,
   layoutQuery,
@@ -79,25 +75,24 @@ export function NavVertical({
         {...other}
       />
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', mb: '8px' }}>
-        <NotificationsDrawer data-slot="notifications" />
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          mb: '8px',
+          alignItems: 'center',
+          gap: 1,
+        }}
+      >
+        <Box>
+          <NotificationsDrawer data-slot="notifications" />
+        </Box>
+
+        <LanguagePopover data-slot="localization" data={langs} sx={{ margin: '0 auto' }} />
+
+        <SettingsButton data-slot="settings" sx={{ margin: '0 auto 18px' }} />
       </Box>
-
-      <LanguagePopover data-slot="localization" data={langs} sx={{ margin: '0 auto 18px' }} />
-
-      {bottomData && (
-        <NavSectionMini
-          data={bottomData}
-          listSx={{ flexDirection: 'column-reverse' }}
-          sx={{
-            pb: 2,
-            px: 0.5,
-            ...hideScrollY,
-            overflowY: 'auto',
-          }}
-          {...other}
-        />
-      )}
     </>
   );
 

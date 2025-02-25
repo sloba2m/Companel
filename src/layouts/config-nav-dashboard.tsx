@@ -50,14 +50,6 @@ export const navData = [
       { title: 'Inbox', path: paths.navigation.inbox, icon: ICONS.chat },
       { title: 'Contacts', path: paths.navigation.contacts, icon: ICONS.user },
       { title: 'Customers', path: paths.navigation.customers, icon: ICONS.job },
-    ],
-  },
-];
-
-export const navBottomData = [
-  {
-    subheader: 'Btd',
-    items: [
       {
         title: 'Settings',
         path: paths.navigation.settings.root,

@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Badge from '@mui/material/Badge';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -19,7 +18,6 @@ import { Scrollbar } from '../../scrollbar';
 import { FontOptions } from './font-options';
 import { useSettingsContext } from '../context';
 import { PresetsOptions } from './presets-options';
-import { defaultSettings } from '../config-settings';
 import { FullScreenButton } from './fullscreen-button';
 
 import type { SettingsDrawerProps } from '../types';
@@ -50,19 +48,6 @@ export function SettingsDrawer({
       </Typography>
 
       <FullScreenButton />
-
-      <Tooltip title="Reset">
-        <IconButton
-          onClick={() => {
-            settings.onReset();
-            setMode(defaultSettings.colorScheme);
-          }}
-        >
-          <Badge color="error" variant="dot" invisible={!settings.canReset}>
-            <Iconify icon="solar:restart-bold" />
-          </Badge>
-        </IconButton>
-      </Tooltip>
 
       <Tooltip title="Close">
         <IconButton onClick={settings.onCloseDrawer}>

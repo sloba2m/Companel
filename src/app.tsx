@@ -25,7 +25,15 @@ export default function App() {
         <ThemeProvider>
           <MotionLazy>
             <ProgressBar />
-            <SettingsDrawer />
+            <SettingsDrawer
+              hideCompact
+              hideContrast
+              hideDirection
+              hideFont
+              hideNavColor
+              hideNavLayout
+              hidePresets
+            />
             <Router />
           </MotionLazy>
         </ThemeProvider>
