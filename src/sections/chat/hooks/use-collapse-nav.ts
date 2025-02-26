@@ -14,7 +14,7 @@ export type UseNavCollapseReturn = {
 export function useCollapseNav(): UseNavCollapseReturn {
   const [openMobile, setOpenMobile] = useState(false);
 
-  const [collapseDesktop, setCollapseDesktop] = useState(false);
+  const [collapseDesktop, setCollapseDesktop] = useState(true);
 
   const onCollapseDesktop = useCallback(() => {
     setCollapseDesktop((prev) => !prev);
