@@ -41,7 +41,7 @@ export default function Page() {
       <Container maxWidth="xl" sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
         <TableWithDrawer
           columns={columns}
-          createButtonText="Create user"
+          createButtonText="Create Tag"
           rows={tags}
           searchPlaceholder="Search contact"
           drawerContent={<TagsDrawer />}

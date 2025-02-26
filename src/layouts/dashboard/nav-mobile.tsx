@@ -11,6 +11,8 @@ import { Logo } from 'src/components/logo';
 import { Scrollbar } from 'src/components/scrollbar';
 import { NavSectionVertical } from 'src/components/nav-section';
 
+import type { LanguagePopoverProps } from '../components/language-popover';
+
 // ----------------------------------------------------------------------
 
 type NavMobileProps = NavSectionProps & {
@@ -20,9 +22,10 @@ type NavMobileProps = NavSectionProps & {
     topArea?: React.ReactNode;
     bottomArea?: React.ReactNode;
   };
+  langs?: LanguagePopoverProps['data'];
 };
 
-export function NavMobile({ data, open, onClose, slots, sx, ...other }: NavMobileProps) {
+export function NavMobile({ data, open, onClose, slots, sx, langs, ...other }: NavMobileProps) {
   const pathname = usePathname();
 
   useEffect(() => {
@@ -52,7 +55,7 @@ export function NavMobile({ data, open, onClose, slots, sx, ...other }: NavMobil
       )}
 
       <Scrollbar fillContent>
-        <NavSectionVertical data={data} sx={{ px: 2, flex: '1 1 auto' }} {...other} />
+        <NavSectionVertical data={data} sx={{ px: 2, flex: '1 1 auto' }} langs={langs} {...other} />
       </Scrollbar>
 
       {slots?.bottomArea}

@@ -131,7 +131,7 @@ export function ChatNav({
 
   const renderContent = (
     <>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap-reverse' }}>
         <CustomTabs
           value={selectedFilter}
           onChange={(_e, value) => setSelectedFilter(value)}
@@ -147,7 +147,9 @@ export function ChatNav({
           sx={{
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
             backgroundColor: 'var(--palette-background-neutral)',
+            width: mdUp ? 'auto' : '100%',
           }}
         >
           <IconButton onClick={handleOpen}>

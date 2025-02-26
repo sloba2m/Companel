@@ -4,6 +4,10 @@ import Stack from '@mui/material/Stack';
 import Collapse from '@mui/material/Collapse';
 import { useTheme } from '@mui/material/styles';
 
+import { SettingsButton } from 'src/layouts/components/settings-button';
+import { LanguagePopover } from 'src/layouts/components/language-popover';
+import { NotificationsDrawer } from 'src/layouts/components/notifications-drawer';
+
 import { NavList } from './nav-list';
 import { navSectionClasses } from '../classes';
 import { navSectionCssVars } from '../css-vars';
@@ -20,6 +24,7 @@ export function NavSectionVertical({
   slotProps,
   enabledRootRedirect,
   cssVars: overridesVars,
+  langs,
 }: NavSectionProps) {
   const theme = useTheme();
 
@@ -42,6 +47,11 @@ export function NavSectionVertical({
           />
         ))}
       </NavUl>
+      <Stack direction="row-reverse" sx={{ mb: 2 }}>
+        <SettingsButton data-slot="settings" />
+        <LanguagePopover data-slot="localization" data={langs} />
+        <NotificationsDrawer data-slot="notifications" />
+      </Stack>
     </Stack>
   );
 }

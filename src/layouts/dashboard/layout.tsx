@@ -58,6 +58,13 @@ export function NavigationLayout({ sx, children, data }: NavigationLayoutProps) 
         open={mobileNavOpen.value}
         onClose={mobileNavOpen.onFalse}
         cssVars={navColorVars.section}
+        langs={[
+          { value: 'en', label: 'English', countryCode: 'GB' },
+          { value: 'fr', label: 'French', countryCode: 'FR' },
+          { value: 'vi', label: 'Vietnamese', countryCode: 'VN' },
+          { value: 'cn', label: 'Chinese', countryCode: 'CN' },
+          { value: 'ar', label: 'Arabic', countryCode: 'SA' },
+        ]}
       />
 
       <LayoutSection
@@ -65,7 +72,22 @@ export function NavigationLayout({ sx, children, data }: NavigationLayoutProps) 
          * Sidebar
          *************************************** */
         headerSection={
-          lgDown ? <HeaderBase layoutQuery={layoutQuery} onOpenNav={mobileNavOpen.onTrue} /> : null
+          lgDown ? (
+            <HeaderBase
+              layoutQuery={layoutQuery}
+              onOpenNav={mobileNavOpen.onTrue}
+              data={{
+                nav: navData,
+                langs: [
+                  { value: 'en', label: 'English', countryCode: 'GB' },
+                  { value: 'fr', label: 'French', countryCode: 'FR' },
+                  { value: 'vi', label: 'Vietnamese', countryCode: 'VN' },
+                  { value: 'cn', label: 'Chinese', countryCode: 'CN' },
+                  { value: 'ar', label: 'Arabic', countryCode: 'SA' },
+                ],
+              }}
+            />
+          ) : null
         }
         sidebarSection={
           isNavHorizontal ? null : (

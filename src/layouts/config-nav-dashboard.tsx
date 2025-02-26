@@ -13,7 +13,6 @@ import { paths } from 'src/routes/paths';
 
 export const navData = [
   {
-    subheader: 'Overview 6.0.0',
     items: [
       { title: 'Dashboard', path: paths.navigation.dashboard, icon: <DashboardTwoToneIcon /> },
       { title: 'Inbox', path: paths.navigation.inbox, icon: <InboxTwoToneIcon /> },

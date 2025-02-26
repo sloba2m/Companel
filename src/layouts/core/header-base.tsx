@@ -13,11 +13,11 @@ import { MenuButton } from '../components/menu-button';
 import { SignInButton } from '../components/sign-in-button';
 import { SettingsButton } from '../components/settings-button';
 import { NotificationsDrawer } from '../components/notifications-drawer';
+import { LanguagePopover, type LanguagePopoverProps } from '../components/language-popover';
 
 import type { HeaderSectionProps } from './header-section';
 import type { AccountDrawerProps } from '../components/account-drawer';
 import type { ContactsPopoverProps } from '../components/contacts-popover';
-import type { LanguagePopoverProps } from '../components/language-popover';
 import type { WorkspacesPopoverProps } from '../components/workspaces-popover';
 import type { NotificationsDrawerProps } from '../components/notifications-drawer';
 
@@ -98,7 +98,7 @@ export function HeaderBase({
     searchbar = true,
     workspaces = true,
     menuButton = true,
-    localization = true,
+    localization = false,
     notifications = false,
   } = {},
   ...other
@@ -157,7 +157,7 @@ export function HeaderBase({
               )}
 
               {/* -- Language popover -- */}
-              {/* {localization && <LanguagePopover data-slot="localization" data={data?.langs} />} */}
+              {localization && <LanguagePopover data-slot="localization" data={data?.langs} />}
 
               {/* -- Notifications popover -- */}
               {notifications && (

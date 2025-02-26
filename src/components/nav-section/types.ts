@@ -1,5 +1,6 @@
 import type { ButtonBaseProps } from '@mui/material/ButtonBase';
 import type { Theme, SxProps, CSSObject } from '@mui/material/styles';
+import type { LanguagePopoverProps } from 'src/layouts/components/language-popover';
 
 // ----------------------------------------------------------------------
 
@@ -75,4 +76,5 @@ export type NavSectionProps = Omit<NavListProps, 'data' | 'depth'> & {
     subheader?: string;
     items: NavItemBaseProps[];
   }[];
+  langs?: LanguagePopoverProps['data'];
 };

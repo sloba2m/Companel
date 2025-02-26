@@ -34,6 +34,7 @@ export function ChatHeaderDetail({ collapseNav, participants, loading }: Props) 
   const popover = usePopover();
 
   const lgUp = useResponsive('up', 'lg');
+  const smUp = useResponsive('up', 'sm');
 
   const group = participants.length > 1;
 
@@ -64,7 +65,7 @@ export function ChatHeaderDetail({ collapseNav, participants, loading }: Props) 
     .join('');
   const renderSingle = (
     <Stack direction="row" alignItems="center" spacing={2}>
-      <Avatar alt={singleParticipant?.name}>{initials}</Avatar>
+      {smUp && <Avatar alt={singleParticipant?.name}>{initials}</Avatar>}
 
       <ListItemText primary={singleParticipant?.name} secondary="email@email.com" />
     </Stack>
@@ -82,7 +83,7 @@ export function ChatHeaderDetail({ collapseNav, participants, loading }: Props) 
         direction="row"
         flexGrow={1}
         justifyContent="flex-end"
-        sx={{ gap: 2, flexWrap: 'wrap' }}
+        sx={{ gap: 2, flexWrap: 'wrap-reverse' }}
       >
         <Autocomplete
           sx={{ minWidth: '200px' }}
