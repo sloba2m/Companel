@@ -14,11 +14,11 @@ const enableServer = false;
 
 const CHART_ENDPOINT = endpoints.chat;
 
-const swrOptions = {
-  revalidateIfStale: enableServer,
-  revalidateOnFocus: enableServer,
-  revalidateOnReconnect: enableServer,
-};
+// const swrOptions = {
+//   revalidateIfStale: enableServer,
+//   revalidateOnFocus: enableServer,
+//   revalidateOnReconnect: enableServer,
+// };
 
 // ----------------------------------------------------------------------
 

@@ -64,20 +64,20 @@ export function ChatNav({
     }
   }, [onCloseDesktop, mdUp]);
 
-  const handleSearchContacts = useCallback(
-    (inputValue: string) => {
-      setSearchContacts((prevState) => ({ ...prevState, query: inputValue }));
+  // const handleSearchContacts = useCallback(
+  //   (inputValue: string) => {
+  //     setSearchContacts((prevState) => ({ ...prevState, query: inputValue }));
 
-      if (inputValue) {
-        const results = contacts.filter((contact) =>
-          contact.name.toLowerCase().includes(inputValue)
-        );
+  //     if (inputValue) {
+  //       const results = contacts.filter((contact) =>
+  //         contact.name.toLowerCase().includes(inputValue)
+  //       );
 
-        setSearchContacts((prevState) => ({ ...prevState, results }));
-      }
-    },
-    [contacts]
-  );
+  //       setSearchContacts((prevState) => ({ ...prevState, results }));
+  //     }
+  //   },
+  //   [contacts]
+  // );
 
   const handleClickAwaySearch = useCallback(() => {
     setSearchContacts({ query: '', results: [] });

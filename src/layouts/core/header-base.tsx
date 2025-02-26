@@ -8,13 +8,10 @@ import { styled, useTheme } from '@mui/material/styles';
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 
-import { Logo } from 'src/components/logo';
-
 import { HeaderSection } from './header-section';
 import { MenuButton } from '../components/menu-button';
 import { SignInButton } from '../components/sign-in-button';
 import { SettingsButton } from '../components/settings-button';
-import { LanguagePopover } from '../components/language-popover';
 import { NotificationsDrawer } from '../components/notifications-drawer';
 
 import type { HeaderSectionProps } from './header-section';
@@ -92,17 +89,17 @@ export function HeaderBase({
   onOpenNav,
   layoutQuery,
   slotsDisplay: {
-    signIn = true,
+    signIn = false,
     account = true,
-    helpLink = true,
-    settings = true,
-    purchase = true,
+    helpLink = false,
+    settings = false,
+    purchase = false,
     contacts = true,
     searchbar = true,
     workspaces = true,
     menuButton = true,
     localization = true,
-    notifications = true,
+    notifications = false,
   } = {},
   ...other
 }: HeaderBaseProps) {
@@ -127,9 +124,6 @@ export function HeaderBase({
                 sx={{ mr: 1, ml: -1, [theme.breakpoints.up(layoutQuery)]: { display: 'none' } }}
               />
             )}
-
-            {/* -- Logo -- */}
-            <Logo data-slot="logo" />
 
             {/* -- Divider -- */}
             <StyledDivider data-slot="divider" />
@@ -163,7 +157,7 @@ export function HeaderBase({
               )}
 
               {/* -- Language popover -- */}
-              {localization && <LanguagePopover data-slot="localization" data={data?.langs} />}
+              {/* {localization && <LanguagePopover data-slot="localization" data={data?.langs} />} */}
 
               {/* -- Notifications popover -- */}
               {notifications && (

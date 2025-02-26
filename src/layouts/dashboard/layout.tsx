@@ -7,6 +7,7 @@ import { useMemo } from 'react';
 import { useTheme } from '@mui/material/styles';
 
 import { useBoolean } from 'src/hooks/use-boolean';
+import { useResponsive } from 'src/hooks/use-responsive';
 
 import { varAlpha, stylesMode } from 'src/theme/styles';
 
@@ -17,6 +18,7 @@ import { Main } from './main';
 import { NavMobile } from './nav-mobile';
 import { layoutClasses } from '../classes';
 import { NavVertical } from './nav-vertical';
+import { HeaderBase } from '../core/header-base';
 import { LayoutSection } from '../core/layout-section';
 import { navData as dashboardNavData } from '../config-nav-dashboard';
 
@@ -41,6 +43,8 @@ export function NavigationLayout({ sx, children, data }: NavigationLayoutProps) 
 
   const layoutQuery: Breakpoint = 'lg';
 
+  const lgDown = useResponsive('down', layoutQuery);
+
   const navData = data?.nav ?? dashboardNavData;
 
   const isNavMini = settings.navLayout === 'mini';
@@ -60,6 +64,9 @@ export function NavigationLayout({ sx, children, data }: NavigationLayoutProps) 
         /** **************************************
          * Sidebar
          *************************************** */
+        headerSection={
+          lgDown ? <HeaderBase layoutQuery={layoutQuery} onOpenNav={mobileNavOpen.onTrue} /> : null
+        }
         sidebarSection={
           isNavHorizontal ? null : (
             <NavVertical
