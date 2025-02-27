@@ -31,7 +31,7 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
       editable = true,
       fullItem = false,
       value: content = '',
-      placeholder = 'Write something awesome...',
+      placeholder = 'Write a message...',
       ...other
     },
     ref
@@ -103,7 +103,12 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
       <Portal disablePortal={!fullScreen}>
         {fullScreen && <Backdrop open sx={{ zIndex: (theme) => theme.zIndex.modal - 1 }} />}
 
-        <Stack sx={{ ...(!editable && { cursor: 'not-allowed' }), ...slotProps?.wrap }}>
+        <Stack
+          sx={{
+            ...(!editable && { cursor: 'not-allowed' }),
+            ...slotProps?.wrap,
+          }}
+        >
           <StyledRoot
             error={!!error}
             disabled={!editable}

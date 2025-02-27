@@ -2,10 +2,13 @@ import type { IChatParticipant } from 'src/types/chat';
 
 // import { useMemo, useState } from 'react';
 
-import NoteIcon from '@mui/icons-material/Note';
-import { Box, Stack, Button, IconButton } from '@mui/material';
+import { Tab, Tabs, Card, Stack, Button, Divider, IconButton } from '@mui/material';
 
 // import { today } from 'src/utils/format-time';
+
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+
+import { useTabs } from 'src/routes/hooks/use-tabs';
 
 import { Editor } from 'src/components/editor';
 import { Iconify } from 'src/components/iconify';
@@ -27,6 +30,8 @@ export function ChatMessageInput({
   onAddRecipients,
   selectedConversationId,
 }: Props) {
+  const basicTabs = useTabs('Message');
+
   // const router = useRouter();
 
   // const { user } = useMockedUser();
@@ -108,16 +113,27 @@ export function ChatMessageInput({
   // );
 
   return (
-    <Box>
-      <Editor sx={{ maxHeight: 720 }} />
+    <Card sx={{ flexShrink: 0, borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
+      <Tabs value={basicTabs.value} onChange={basicTabs.onChange} sx={{ mx: 2 }}>
+        <Tab key="Message" value="Message" label="Message" />
+        <Tab key="Note" value="Note" label="Note" />
+      </Tabs>
+      <Divider />
+      {basicTabs.value === 'Message' && <Editor sx={{ maxHeight: 720, borderTop: 'none' }} />}
+      {basicTabs.value === 'Note' && <Editor sx={{ maxHeight: 720, borderTop: 'none' }} />}
       <Stack direction="row" sx={{ justifyContent: 'space-between', p: 1 }}>
-        <IconButton>
-          <NoteIcon />
+        <IconButton size="small">
+          <AttachFileIcon fontSize="small" />
         </IconButton>
-        <Button variant="contained" color="primary" endIcon={<Iconify icon="mdi:send" />}>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          endIcon={<Iconify icon="mdi:send" />}
+        >
           Send
         </Button>
       </Stack>
-    </Box>
+    </Card>
   );
 }

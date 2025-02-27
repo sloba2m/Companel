@@ -33,8 +33,6 @@ export function Toolbar({ editor, fullItem, fullScreen, onToggleFullScreen }: Ed
       sx={{
         p: 1.25,
         bgcolor: 'background.paper',
-        borderTopRightRadius: 'inherit',
-        borderTopLeftRadius: 'inherit',
         borderBottom: (theme) =>
           `solid 1px ${varAlpha(theme.vars.palette.grey['500Channel'], 0.2)}`,
       }}
