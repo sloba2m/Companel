@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import type { GridColDef, GridValidRowModel } from '@mui/x-data-grid';
 
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Card, Stack, Button, Drawer, useTheme, TextField } from '@mui/material';
+import { Box, Card, Stack, Button, Drawer, TextField } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useResponsive } from 'src/hooks/use-responsive';
@@ -28,20 +28,11 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
   onSearch,
 }: TableWithDrawerProps<RowData>) => {
   const mdUp = useResponsive('up', 'md');
-  const theme = useTheme();
   const { value: isDrawerOpen, onToggle: onToggleDrawer } = useBoolean(false);
 
   return (
     <Card sx={{ display: 'flex', flexGrow: 1, my: 4 }}>
-      <Stack
-        direction="column"
-        sx={{
-          width: isDrawerOpen && mdUp ? `calc(100% - ${DRAWER_WIDTH})` : '100%',
-          transition: theme.transitions.create(['width'], {
-            duration: theme.transitions.duration.shorter,
-          }),
-        }}
-      >
+      <Stack direction="column" sx={{ width: '100%' }}>
         <Stack
           direction={mdUp ? 'row' : 'column'}
           sx={{ gap: 2, p: 2, justifyContent: onSearch ? 'space-between' : 'flex-end' }}
@@ -51,7 +42,7 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
           )}
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Button variant="soft" color="primary" onClick={onToggleDrawer}>
-              {isDrawerOpen ? 'Close' : createButtonText}
+              {createButtonText}
             </Button>
           </Box>
         </Stack>
@@ -63,33 +54,16 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
           disableColumnResize
         />
       </Stack>
-      {mdUp ? (
-        <Box
-          sx={{
-            minHeight: 0,
-            flex: '1 1 auto',
-            width: DRAWER_WIDTH,
-            display: { xs: 'none', lg: 'flex' },
-            borderLeft: `solid 1px ${theme.vars.palette.divider}`,
-            transition: theme.transitions.create(['width'], {
-              duration: theme.transitions.duration.shorter,
-            }),
-            ...(!isDrawerOpen && { width: '0px' }),
-          }}
-        >
-          {isDrawerOpen && drawerContent}
-        </Box>
-      ) : (
-        <Drawer
-          anchor="right"
-          open={isDrawerOpen}
-          onClose={onToggleDrawer}
-          slotProps={{ backdrop: { invisible: true } }}
-          PaperProps={{ sx: { width: MOBILE_DRAWER_WIDTH } }}
-        >
-          {drawerContent}
-        </Drawer>
-      )}
+
+      <Drawer
+        anchor="right"
+        open={isDrawerOpen}
+        onClose={onToggleDrawer}
+        slotProps={{ backdrop: { invisible: true } }}
+        PaperProps={{ sx: { width: mdUp ? DRAWER_WIDTH : MOBILE_DRAWER_WIDTH } }}
+      >
+        {drawerContent}
+      </Drawer>
     </Card>
   );
 };
