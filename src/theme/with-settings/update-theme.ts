@@ -109,5 +109,5 @@ function getPalettePrimary(primaryColorName: SettingsState['primaryColor']) {
 
 function getBackgroundDefault(contrast: SettingsState['contrast']) {
   /** [2] */
-  return contrast === 'default' ? '#FFFFFF' : coreGreyPalette[200];
+  return contrast === 'default' ? '#F4F6F8' : coreGreyPalette[200];
 }

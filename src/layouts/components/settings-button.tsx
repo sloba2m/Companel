@@ -2,6 +2,7 @@ import type { IconButtonProps } from '@mui/material/IconButton';
 
 import { m } from 'framer-motion';
 
+import { useTheme } from '@mui/material';
 import SvgIcon from '@mui/material/SvgIcon';
 import IconButton from '@mui/material/IconButton';
 
@@ -12,6 +13,7 @@ import { useSettingsContext } from 'src/components/settings/context';
 export type SettingsButtonProps = IconButtonProps;
 
 export function SettingsButton({ sx, ...other }: SettingsButtonProps) {
+  const theme = useTheme();
   const settings = useSettingsContext();
 
   return (
@@ -25,6 +27,7 @@ export function SettingsButton({ sx, ...other }: SettingsButtonProps) {
         component={m.svg}
         animate={{ rotate: 360 }}
         transition={{ duration: 8, ease: 'linear', repeat: Infinity }}
+        htmlColor={theme.palette.mode === 'light' ? '#FFF' : ''}
       >
         {/* https://icon-sets.iconify.design/solar/settings-bold-duotone/ */}
         <path

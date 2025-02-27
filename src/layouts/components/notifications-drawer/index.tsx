@@ -7,6 +7,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Badge from '@mui/material/Badge';
+import { useTheme } from '@mui/material';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import SvgIcon from '@mui/material/SvgIcon';
@@ -42,6 +43,7 @@ export type NotificationsDrawerProps = IconButtonProps & {
 
 export function NotificationsDrawer({ data = [], sx, ...other }: NotificationsDrawerProps) {
   const drawer = useBoolean();
+  const theme = useTheme();
 
   const [currentTab, setCurrentTab] = useState('all');
 
@@ -130,7 +132,7 @@ export function NotificationsDrawer({ data = [], sx, ...other }: NotificationsDr
         {...other}
       >
         <Badge badgeContent={totalUnRead} color="error">
-          <SvgIcon>
+          <SvgIcon htmlColor={theme.palette.mode === 'light' ? '#FFF' : ''}>
             {/* https://icon-sets.iconify.design/solar/bell-bing-bold-duotone/ */}
             <path
               fill="currentColor"
