@@ -23,6 +23,7 @@ import {
   Button,
   ListItem,
   Collapse,
+  useTheme,
   TextField,
   IconButton,
   ListItemIcon,
@@ -66,6 +67,7 @@ const TIMELINES = [
 const lastItem = TIMELINES[TIMELINES.length - 1].key;
 
 export function ChatRoomSingle({ participant }: Props) {
+  const theme = useTheme();
   const collapseTag = useBoolean(true);
   const collapseConv = useBoolean(true);
   const { value: isEdit, onTrue: onEditTrue, onFalse: onEditFalse } = useBoolean(false);
@@ -172,7 +174,7 @@ export function ChatRoomSingle({ participant }: Props) {
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
-                    <ChatIcon sx={{ width: '16px' }} />
+                    <ChatIcon sx={{ width: '16px', color: theme.vars.palette.grey[600] }} />
                   </ListItemIcon>
                   <ListItemText primary="Conversation 1" />
                 </ListItemButton>
@@ -180,7 +182,7 @@ export function ChatRoomSingle({ participant }: Props) {
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
-                    <ChatIcon sx={{ width: '16px' }} />
+                    <ChatIcon sx={{ width: '16px', color: theme.vars.palette.grey[600] }} />
                   </ListItemIcon>
                   <ListItemText primary="Conversation 2" />
                 </ListItemButton>
@@ -214,7 +216,7 @@ export function ChatRoomSingle({ participant }: Props) {
                 <Paper
                   sx={{
                     p: 1,
-                    bgcolor: (theme) => varAlpha(theme.vars.palette.grey['500Channel'], 0.12),
+                    bgcolor: () => varAlpha(theme.vars.palette.grey['500Channel'], 0.12),
                   }}
                 >
                   <Typography variant="subtitle2">{item.title}</Typography>
