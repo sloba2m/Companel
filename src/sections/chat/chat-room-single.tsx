@@ -107,7 +107,7 @@ export function ChatRoomSingle({ participant }: Props) {
             <Button size="small" onClick={onEditFalse}>
               Cancel
             </Button>
-            <Button size="small" variant="soft" color="success">
+            <Button size="small" variant="soft" color="primary">
               Save
             </Button>
           </Box>
