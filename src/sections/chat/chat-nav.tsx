@@ -31,7 +31,6 @@ import { CustomTabs } from 'src/components/custom-tabs';
 
 import { ChatNavItem } from './chat-nav-item';
 import { ChatNavItemSkeleton } from './chat-skeleton';
-import { ToggleButton as ThemeToggleButton } from './styles';
 import { ChatNavSearchResults } from './chat-nav-search-results';
 
 import type { UseNavCollapseReturn } from './hooks/use-collapse-nav';
@@ -62,7 +61,7 @@ export function ChatNav({
 
   const mdUp = useResponsive('up', 'md');
 
-  const { openMobile, onOpenMobile, onCloseMobile, onCloseDesktop } = collapseNav;
+  const { openMobile, onCloseMobile, onCloseDesktop } = collapseNav;
 
   const [searchContacts, setSearchContacts] = useState<{
     query: string;
@@ -254,10 +253,6 @@ export function ChatNav({
 
   return (
     <>
-      <ThemeToggleButton onClick={onOpenMobile} sx={{ display: { md: 'none' } }}>
-        <Iconify width={16} icon="solar:users-group-rounded-bold" />
-      </ThemeToggleButton>
-
       <Stack
         sx={{
           minHeight: 0,

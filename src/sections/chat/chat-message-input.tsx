@@ -10,6 +10,8 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 import { useTabs } from 'src/routes/hooks/use-tabs';
 
+import { useResponsive } from 'src/hooks/use-responsive';
+
 import { Editor } from 'src/components/editor';
 import { Iconify } from 'src/components/iconify';
 
@@ -31,6 +33,7 @@ export function ChatMessageInput({
   selectedConversationId,
 }: Props) {
   const basicTabs = useTabs('Message');
+  const isTablet = useResponsive('between', 'sm', 'md');
 
   // const router = useRouter();
 
@@ -113,7 +116,7 @@ export function ChatMessageInput({
   // );
 
   return (
-    <Card sx={{ flexShrink: 0, borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
+    <Card sx={{ flexShrink: 0, borderBottomLeftRadius: isTablet ? '8px' : 0 }}>
       <Tabs value={basicTabs.value} onChange={basicTabs.onChange} sx={{ mx: 2 }}>
         <Tab key="Message" value="Message" label="Message" />
         <Tab key="Note" value="Note" label="Note" />

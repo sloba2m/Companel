@@ -5,6 +5,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { paths } from 'src/routes/paths';
 import { useRouter, useSearchParams } from 'src/routes/hooks';
 
+import { useResponsive } from 'src/hooks/use-responsive';
+
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { useGetContacts, useGetConversation, useGetConversations } from 'src/actions/chat';
@@ -43,6 +45,8 @@ export function ChatView() {
     `${selectedConversationId}`
   );
 
+  const isTablet = useResponsive('between', 'sm', 'lg');
+
   const roomNav = useCollapseNav();
 
   const conversationsNav = useCollapseNav();
@@ -66,7 +70,13 @@ export function ChatView() {
   return (
     <DashboardContent
       maxWidth={false}
-      sx={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column', p: 0 }}
+      sx={{
+        display: 'flex',
+        flex: '1 1 auto',
+        flexDirection: 'column',
+        p: 0,
+        mb: isTablet ? 3 : 0,
+      }}
     >
       <Layout
         sx={{
@@ -81,6 +91,7 @@ export function ChatView() {
           header: selectedConversationId ? (
             <ChatHeaderDetail
               collapseNav={roomNav}
+              collapseMenuNav={conversationsNav}
               participants={participants}
               loading={conversationLoading}
             />

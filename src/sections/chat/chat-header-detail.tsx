@@ -28,13 +28,15 @@ type Props = {
   loading: boolean;
   participants: IChatParticipant[];
   collapseNav: UseNavCollapseReturn;
+  collapseMenuNav: UseNavCollapseReturn;
 };
 
-export function ChatHeaderDetail({ collapseNav, participants, loading }: Props) {
+export function ChatHeaderDetail({ collapseNav, participants, loading, collapseMenuNav }: Props) {
   const popover = usePopover();
 
   const lgUp = useResponsive('up', 'lg');
   const smUp = useResponsive('up', 'sm');
+  const mdDown = useResponsive('down', 'md');
 
   const group = participants.length > 1;
 
@@ -77,6 +79,19 @@ export function ChatHeaderDetail({ collapseNav, participants, loading }: Props) 
 
   return (
     <>
+      {mdDown && (
+        <IconButton
+          onClick={collapseMenuNav.onOpenMobile}
+          sx={(theme) => ({
+            mr: 2,
+            backgroundColor: theme.vars.palette.primary.main,
+            color: theme.vars.palette.primary.contrastText,
+            '&:hover': { backgroundColor: theme.vars.palette.primary.darker },
+          })}
+        >
+          <Iconify width={16} icon="solar:users-group-rounded-bold" />
+        </IconButton>
+      )}
       {group ? renderGroup : renderSingle}
 
       <Stack
