@@ -19,7 +19,7 @@ export const navData = [
       { title: 'Contacts', path: paths.navigation.contacts, icon: <ContactsTwoToneIcon /> },
       { title: 'Customers', path: paths.navigation.customers, icon: <BusinessCenterTwoToneIcon /> },
       {
-        title: 'Users Settings',
+        title: 'Users',
         path: paths.navigation.settings.users,
         icon: <ManageAccountsTwoToneIcon />,
       },
@@ -29,13 +29,11 @@ export const navData = [
         icon: <AllInboxTwoToneIcon />,
       },
       {
-        title: 'Templates Settings',
+        title: 'Templates',
         path: paths.navigation.settings.templates,
         icon: <SummarizeTwoToneIcon />,
       },
-      { title: 'Tags Settings', path: paths.navigation.settings.tags, icon: <SellTwoToneIcon /> },
+      { title: 'Tags', path: paths.navigation.settings.tags, icon: <SellTwoToneIcon /> },
     ],
   },
 ];
-
-// icon: <Iconify icon="solar:settings-bold-duotone" />,
