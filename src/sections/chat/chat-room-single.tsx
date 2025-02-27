@@ -5,6 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import EditIcon from '@mui/icons-material/Edit';
 import ChatIcon from '@mui/icons-material/Chat';
 import Typography from '@mui/material/Typography';
+import SettingsIcon from '@mui/icons-material/Settings';
 import {
   Timeline,
   TimelineDot,
@@ -37,6 +38,7 @@ import { varAlpha } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 
 import { CollapseButton } from './styles';
+
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -78,6 +80,9 @@ export function ChatRoomSingle({ participant }: Props) {
         {initials}
       </Avatar>
       <Typography variant="subtitle1">{participant?.name}</Typography>
+      <IconButton>
+        <SettingsIcon />
+      </IconButton>
     </Stack>
   );
 
@@ -147,10 +152,12 @@ export function ChatRoomSingle({ participant }: Props) {
           renderTags={(value: readonly string[], getTagProps) =>
             value.map((option: string, index: number) => {
               const { key, ...tagProps } = getTagProps({ index });
-              return <Chip variant="outlined" label={option} key={key} {...tagProps} />;
+              return (
+                <Chip variant="outlined" size="small" label={option} key={key} {...tagProps} />
+              );
             })
           }
-          renderInput={(params) => <TextField {...params} placeholder="Add Tags" />}
+          renderInput={(params) => <TextField {...params} placeholder="Add Tags" size="small" />}
         />
       </Collapse>
 

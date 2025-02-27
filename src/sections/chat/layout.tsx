@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 
 type Props = StackProps & {
   slots: {
-    globalheader: React.ReactNode;
+    globalheader?: React.ReactNode;
     nav: React.ReactNode;
     details: React.ReactNode;
     header: React.ReactNode;
@@ -27,7 +27,7 @@ export function Layout({ slots, sx, ...other }: Props) {
       direction="row"
       alignItems="center"
       sx={{
-        py: '5px',
+        py: 1.65,
         pr: 1,
         pl: 2.5,
         flexShrink: 0,

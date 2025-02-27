@@ -5,9 +5,20 @@ import { useState, useEffect, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
+import AddIcon from '@mui/icons-material/Add';
 import { useTheme } from '@mui/material/styles';
+import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { Tab, Menu, Divider, MenuItem, IconButton } from '@mui/material';
+import {
+  Tab,
+  Menu,
+  Divider,
+  MenuItem,
+  TextField,
+  IconButton,
+  Autocomplete,
+  InputAdornment,
+} from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -131,6 +142,54 @@ export function ChatNav({
 
   const renderContent = (
     <>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          // width: mdUp ? NAV_WIDTH : '890px',
+          p: 1,
+          gap: 1,
+          // borderRight: mdUp ? `solid 1px ${theme.vars.palette.divider}` : 'none',
+        }}
+      >
+        <Autocomplete
+          // fullWidth
+          sx={{
+            flexGrow: 1,
+            // minWidth: '200px',
+          }}
+          options={['Rotmark', 'Demo Account', 'Widget']}
+          // getOptionLabel={(option) => option.title}
+          value="Rotmark"
+          disableClearable
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              placeholder="Search Inboxes"
+              margin="none"
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          )}
+          // renderOption={(props, option) => (
+          //   <li {...props} key={option.title}>
+          //     {option.title}
+          //   </li>
+          // )}
+        />
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <IconButton>
+            <AddIcon />
+          </IconButton>
+        </Box>
+      </Box>
+      <Divider />
       <Box sx={{ display: 'flex', flexWrap: 'wrap-reverse' }}>
         <CustomTabs
           value={selectedFilter}

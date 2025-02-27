@@ -2,19 +2,6 @@ import type { IChatParticipant } from 'src/types/chat';
 
 import { useState, useEffect, useCallback } from 'react';
 
-import AddIcon from '@mui/icons-material/Add';
-import SearchIcon from '@mui/icons-material/Search';
-import SettingsIcon from '@mui/icons-material/Settings';
-import {
-  Box,
-  Divider,
-  TextField,
-  IconButton,
-  Typography,
-  Autocomplete,
-  InputAdornment,
-} from '@mui/material';
-
 import { paths } from 'src/routes/paths';
 import { useRouter, useSearchParams } from 'src/routes/hooks';
 
@@ -29,8 +16,8 @@ import { EmptyContent } from 'src/components/empty-content';
 import { useMockedUser } from 'src/auth/hooks';
 
 import { Layout } from '../layout';
+import { ChatNav } from '../chat-nav';
 import { ChatRoom } from '../chat-room';
-import { ChatNav, NAV_WIDTH } from '../chat-nav';
 import { ChatMessageList } from '../chat-message-list';
 import { ChatMessageInput } from '../chat-message-input';
 import { ChatHeaderDetail } from '../chat-header-detail';
@@ -95,73 +82,6 @@ export function ChatView() {
           boxShadow: (theme) => theme.customShadows.card,
         }}
         slots={{
-          globalheader: (
-            <Box
-              sx={(theme) => ({
-                display: 'flex',
-                alignItems: 'center',
-                borderBottom: `solid 1px ${theme.vars.palette.divider}`,
-                flexWrap: 'wrap',
-              })}
-            >
-              <Box
-                sx={(theme) => ({
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  width: mdUp ? NAV_WIDTH : '890px',
-                  px: 1,
-                  borderRight: mdUp ? `solid 1px ${theme.vars.palette.divider}` : 'none',
-                })}
-              >
-                <Typography variant="h4" sx={{ p: 1 }}>
-                  Rotmark
-                </Typography>
-                <Divider />
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <IconButton>
-                    <AddIcon />
-                  </IconButton>
-                </Box>
-              </Box>
-              <Box
-                sx={{ display: 'flex', justifyContent: 'space-between', flexGrow: 1, p: 2, gap: 2 }}
-              >
-                <Autocomplete
-                  // fullWidth
-                  sx={{
-                    flexGrow: 1,
-                    // minWidth: '200px',
-                  }}
-                  options={['one', 'two']}
-                  // getOptionLabel={(option) => option.title}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      placeholder="Search"
-                      margin="none"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  )}
-                  // renderOption={(props, option) => (
-                  //   <li {...props} key={option.title}>
-                  //     {option.title}
-                  //   </li>
-                  // )}
-                />
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <IconButton>
-                    <SettingsIcon />
-                  </IconButton>
-                </Box>
-              </Box>
-            </Box>
-          ),
           header: selectedConversationId ? (
             <ChatHeaderDetail
               collapseNav={roomNav}
