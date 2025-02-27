@@ -45,7 +45,7 @@ export function Layout({ slots, sx, ...other }: Props) {
   return (
     <Stack direction="column" sx={sx} {...other}>
       {slots.globalheader}
-      <Stack direction="row" sx={{ overflow: 'auto' }}>
+      <Stack direction="row" sx={{ overflow: 'auto', flexGrow: 1 }}>
         {renderNav}
 
         <Stack sx={{ flex: '1 1 auto', minWidth: 0 }}>
