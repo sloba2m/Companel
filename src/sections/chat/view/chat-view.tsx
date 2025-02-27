@@ -5,8 +5,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { paths } from 'src/routes/paths';
 import { useRouter, useSearchParams } from 'src/routes/hooks';
 
-import { useResponsive } from 'src/hooks/use-responsive';
-
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { useGetContacts, useGetConversation, useGetConversations } from 'src/actions/chat';
@@ -34,8 +32,6 @@ export function ChatView() {
   const { contacts } = useGetContacts();
 
   const searchParams = useSearchParams();
-
-  const mdUp = useResponsive('up', 'md');
 
   const selectedConversationId = searchParams.get('id') || '';
 

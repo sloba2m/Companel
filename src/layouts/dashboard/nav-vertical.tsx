@@ -11,7 +11,7 @@ import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { NavSectionMini, NavSectionVertical } from 'src/components/nav-section';
 
-import { SettingsButton } from '../components/settings-button';
+import { AvatarMenu } from '../components/avatar-menu';
 import { LanguagePopover } from '../components/language-popover';
 import { NavToggleButton } from '../components/nav-toggle-button';
 import { NotificationsDrawer } from '../components/notifications-drawer';
@@ -88,10 +88,8 @@ export function NavVertical({
         <Box>
           <NotificationsDrawer data-slot="notifications" />
         </Box>
-
         <LanguagePopover data-slot="localization" data={langs} sx={{ margin: '0 auto' }} />
-
-        <SettingsButton data-slot="settings" sx={{ margin: '0 auto 18px' }} />
+        <AvatarMenu sx={{ mb: 2 }} />
       </Box>
     </>
   );

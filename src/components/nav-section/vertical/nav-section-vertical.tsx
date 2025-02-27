@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import Collapse from '@mui/material/Collapse';
 import { useTheme } from '@mui/material/styles';
 
-import { SettingsButton } from 'src/layouts/components/settings-button';
+import { AvatarMenu } from 'src/layouts/components/avatar-menu';
 import { LanguagePopover } from 'src/layouts/components/language-popover';
 import { NotificationsDrawer } from 'src/layouts/components/notifications-drawer';
 
@@ -47,8 +47,8 @@ export function NavSectionVertical({
           />
         ))}
       </NavUl>
-      <Stack direction="row-reverse" sx={{ mb: 2 }}>
-        <SettingsButton data-slot="settings" />
+      <Stack direction="row-reverse" sx={{ mb: 2, alignItems: 'center' }}>
+        <AvatarMenu />
         <LanguagePopover data-slot="localization" data={langs} />
         <NotificationsDrawer data-slot="notifications" />
       </Stack>

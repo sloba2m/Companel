@@ -24,8 +24,6 @@ import {
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { Iconify } from 'src/components/iconify';
-
 import { CollapseButton } from './styles';
 
 // ----------------------------------------------------------------------
@@ -33,26 +31,6 @@ import { CollapseButton } from './styles';
 type Props = {
   participant: IChatParticipant;
 };
-
-const TIMELINES = [
-  {
-    key: 1,
-    title: 'Created',
-    des: '09:30 am',
-    time: '09:30 am',
-    icon: <Iconify icon="eva:folder-add-fill" width={24} />,
-  },
-  {
-    key: 2,
-    title: 'Status updated',
-    des: '10:00 am',
-    time: '10:00 am',
-    color: 'primary',
-    icon: <Iconify icon="eva:image-2-fill" width={24} />,
-  },
-];
-
-const lastItem = TIMELINES[TIMELINES.length - 1].key;
 
 export function ChatRoomSingle({ participant }: Props) {
   const theme = useTheme();

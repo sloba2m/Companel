@@ -149,13 +149,14 @@ export function SettingsDrawer({
       open={settings.openDrawer}
       onClose={settings.onCloseDrawer}
       slotProps={{ backdrop: { invisible: true } }}
+      PaperProps={{ sx: { width: 1, maxWidth: 420 } }}
       sx={{
         [`& .${drawerClasses.paper}`]: {
           ...paper({
             theme,
             color: varAlpha(theme.vars.palette.background.defaultChannel, 0.9),
           }),
-          width: 360,
+          // width: 360,
           ...sx,
         },
       }}
