@@ -7,19 +7,9 @@ import ChatIcon from '@mui/icons-material/Chat';
 import Typography from '@mui/material/Typography';
 import SettingsIcon from '@mui/icons-material/Settings';
 import {
-  Timeline,
-  TimelineDot,
-  TimelineItem,
-  TimelineContent,
-  TimelineConnector,
-  TimelineSeparator,
-  timelineItemClasses,
-} from '@mui/lab';
-import {
   Box,
   Chip,
   List,
-  Paper,
   Button,
   ListItem,
   Collapse,
@@ -33,8 +23,6 @@ import {
 } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
-
-import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 
@@ -190,44 +178,6 @@ export function ChatRoomSingle({ participant }: Props) {
             </List>
           </nav>
         </Box>
-      </Collapse>
-
-      <CollapseButton selected={collapseConv.value} onClick={collapseConv.onToggle}>
-        Event history
-      </CollapseButton>
-
-      <Collapse in={collapseConv.value}>
-        <Timeline
-          position="right"
-          sx={{
-            [`& .${timelineItemClasses.root}:before`]: {
-              flex: 0,
-              padding: 0,
-            },
-          }}
-        >
-          {TIMELINES.map((item) => (
-            <TimelineItem key={item.key}>
-              <TimelineSeparator>
-                <TimelineDot />
-                {lastItem === item.key ? null : <TimelineConnector />}
-              </TimelineSeparator>
-              <TimelineContent>
-                <Paper
-                  sx={{
-                    p: 1,
-                    bgcolor: () => varAlpha(theme.vars.palette.grey['500Channel'], 0.12),
-                  }}
-                >
-                  <Typography variant="subtitle2">{item.title}</Typography>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    {item.des}
-                  </Typography>
-                </Paper>
-              </TimelineContent>
-            </TimelineItem>
-          ))}
-        </Timeline>
       </Collapse>
     </>
   );
