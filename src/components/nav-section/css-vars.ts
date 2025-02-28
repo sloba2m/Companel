@@ -15,7 +15,6 @@ function colorVars(theme: Theme, variant?: 'vertical' | 'mini' | 'horizontal') {
   } = theme;
 
   const isDarkMode = theme.palette.mode === 'dark';
-  console.log(palette);
 
   return {
     '--nav-item-color': isDarkMode ? palette.text.secondary : palette.common.white,
