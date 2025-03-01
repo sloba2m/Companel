@@ -1,6 +1,7 @@
 import type { IChatMessage, IChatParticipant } from 'src/types/chat';
 
 import Stack from '@mui/material/Stack';
+import { Box, Alert } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 
 import { Scrollbar } from 'src/components/scrollbar';
@@ -47,13 +48,22 @@ export function ChatMessageList({ messages = [], participants, loading }: Props)
   return (
     <>
       <Scrollbar ref={messagesEndRef} sx={{ px: 3, pt: 5, pb: 3, flex: '1 1 auto' }}>
-        {messages.map((message) => (
-          <ChatMessageItem
-            key={message.id}
-            message={message}
-            participants={participants}
-            onOpenLightbox={() => lightbox.onOpen(message.body)}
-          />
+        {messages.map((message, i) => (
+          <>
+            {i === messages.length - 1 && (
+              <Box>
+                <Alert sx={{ maxWidth: '300px', ml: 'auto', my: 2 }} severity="info">
+                  Created: 9:20
+                </Alert>
+              </Box>
+            )}
+            <ChatMessageItem
+              key={message.id}
+              message={message}
+              participants={participants}
+              onOpenLightbox={() => lightbox.onOpen(message.body)}
+            />
+          </>
         ))}
       </Scrollbar>
 
