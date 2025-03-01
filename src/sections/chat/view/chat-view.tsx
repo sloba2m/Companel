@@ -96,7 +96,11 @@ export function ChatView() {
               loading={conversationLoading}
             />
           ) : (
-            <ChatHeaderCompose contacts={contacts} onAddRecipients={handleAddRecipients} />
+            <ChatHeaderCompose
+              contacts={contacts}
+              onAddRecipients={handleAddRecipients}
+              onOpenMobile={conversationsNav.onOpenMobile}
+            />
           ),
           nav: (
             <ChatNav

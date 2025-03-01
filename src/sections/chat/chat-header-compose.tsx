@@ -6,9 +6,12 @@ import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
+import { IconButton } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
+
+import { useResponsive } from 'src/hooks/use-responsive';
 
 import { varAlpha } from 'src/theme/styles';
 
@@ -20,10 +23,12 @@ import { SearchNotFound } from 'src/components/search-not-found';
 type Props = {
   contacts: IChatParticipant[];
   onAddRecipients: (selected: IChatParticipant[]) => void;
+  onOpenMobile: () => void;
 };
 
-export function ChatHeaderCompose({ contacts, onAddRecipients }: Props) {
+export function ChatHeaderCompose({ contacts, onAddRecipients, onOpenMobile }: Props) {
   const [searchRecipients, setSearchRecipients] = useState('');
+  const mdDown = useResponsive('down', 'md');
 
   const handleAddRecipients = useCallback(
     (selected: IChatParticipant[]) => {
@@ -35,7 +40,20 @@ export function ChatHeaderCompose({ contacts, onAddRecipients }: Props) {
 
   return (
     <>
-      <Typography variant="subtitle2" sx={{ color: 'text.primary', mr: 2 }}>
+      {mdDown && (
+        <IconButton
+          onClick={onOpenMobile}
+          sx={(theme) => ({
+            mr: 2,
+            backgroundColor: theme.vars.palette.primary.main,
+            color: theme.vars.palette.primary.contrastText,
+            '&:hover': { backgroundColor: theme.vars.palette.primary.darker },
+          })}
+        >
+          <Iconify width={16} icon="solar:users-group-rounded-bold" />
+        </IconButton>
+      )}
+      <Typography variant="subtitle2" sx={{ color: 'text.primary', mr: 2, my: 1.4 }}>
         To:
       </Typography>
 
