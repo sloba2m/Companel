@@ -1,14 +1,24 @@
+import type { MockTemplate } from 'src/pages/settings/templates';
+
 import { Box, Stack, Button, TextField, Typography } from '@mui/material';
 
 import { Editor } from '../editor';
 import { Iconify } from '../iconify';
 import { UploadBox } from '../upload-box';
 
-export const TemplatesDrawer = () => (
+interface TemplatesDrawerProps {
+  editData: MockTemplate | null;
+}
+
+export const TemplatesDrawer = ({ editData }: TemplatesDrawerProps) => (
   <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
-    <Typography variant="subtitle1">Create template</Typography>
-    <TextField label="Name" size="small" />
-    <Editor sx={{ minHeight: 400 }} />
+    <Typography variant="subtitle1">{editData ? 'Edit' : 'Create'} template</Typography>
+
+    <TextField label="Name" size="small" defaultValue={editData?.name} />
+
+    {/* Editor for Template Content */}
+    <Editor sx={{ minHeight: 400 }} value={editData?.template} />
+
     <Stack direction="row" spacing={2}>
       <UploadBox
         placeholder={
@@ -20,6 +30,7 @@ export const TemplatesDrawer = () => (
         sx={{ py: 1, flexGrow: 1, height: 'auto' }}
       />
     </Stack>
+
     <Button variant="soft" color="primary" size="small">
       Save
     </Button>

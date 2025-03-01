@@ -1,44 +1,27 @@
-import type { GridColDef } from '@mui/x-data-grid';
-
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+
+import { type GridColDef } from '@mui/x-data-grid';
+
+import { useBoolean } from 'src/hooks/use-boolean';
 
 import { CONFIG } from 'src/config-global';
 
 import { TableWithDrawer, TemplatesDrawer } from 'src/components/table-with-drawer';
+import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: `templates settings - ${CONFIG.site.name}` };
+const metadata = { title: `Templates settings - ${CONFIG.site.name}` };
 
-interface MockTemplates {
+export interface MockTemplate {
   id: string;
   name: string;
   template: string;
   logo: string;
 }
 
-const columns: GridColDef<MockTemplates>[] = [
-  {
-    field: 'name',
-    headerName: 'Name',
-    width: 160,
-    sortable: false,
-  },
-  {
-    field: 'template',
-    headerName: 'Template',
-    width: 230,
-    sortable: false,
-  },
-  {
-    field: 'logo',
-    headerName: 'Logo',
-    width: 160,
-    sortable: false,
-  },
-];
-
-const mockTemplates: MockTemplates[] = [
+const mockTemplates: MockTemplate[] = [
   {
     id: '1',
     name: 'Welcome Email',
@@ -60,6 +43,42 @@ const mockTemplates: MockTemplates[] = [
 ];
 
 export default function Page() {
+  const [editData, setEditData] = useState<MockTemplate | null>(null);
+  const drawerState = useBoolean(false);
+  const { onToggle: onToggleDrawer } = drawerState;
+
+  const handleEdit = (template: MockTemplate) => {
+    onToggleDrawer();
+    setEditData(template);
+  };
+
+  const handleDelete = (template: MockTemplate) => {
+    console.log('Delete:', template);
+  };
+
+  const columns: GridColDef<MockTemplate>[] = [
+    {
+      field: 'name',
+      headerName: 'Name',
+      width: 160,
+      sortable: false,
+    },
+    {
+      field: 'template',
+      headerName: 'Template',
+      width: 230,
+      sortable: false,
+    },
+    {
+      field: 'logo',
+      headerName: 'Logo',
+      width: 160,
+      sortable: false,
+      flex: 1,
+    },
+    getActionColumn(handleEdit, handleDelete),
+  ];
+
   return (
     <>
       <Helmet>
@@ -70,8 +89,10 @@ export default function Page() {
         columns={columns}
         createButtonText="Create template"
         rows={mockTemplates}
-        searchPlaceholder="Search contact"
-        drawerContent={<TemplatesDrawer />}
+        searchPlaceholder="Search template"
+        drawerContent={<TemplatesDrawer editData={editData} />}
+        onSearch={() => console.log('test')}
+        drawerState={drawerState}
       />
     </>
   );
