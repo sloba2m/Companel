@@ -1,44 +1,53 @@
-import SellTwoToneIcon from '@mui/icons-material/SellTwoTone';
-import InboxTwoToneIcon from '@mui/icons-material/InboxTwoTone';
-import ContactsTwoToneIcon from '@mui/icons-material/ContactsTwoTone';
-import AllInboxTwoToneIcon from '@mui/icons-material/AllInboxTwoTone';
-import DashboardTwoToneIcon from '@mui/icons-material/DashboardTwoTone';
-import SummarizeTwoToneIcon from '@mui/icons-material/SummarizeTwoTone';
-import ManageAccountsTwoToneIcon from '@mui/icons-material/ManageAccountsTwoTone';
-import BusinessCenterTwoToneIcon from '@mui/icons-material/BusinessCenterTwoTone';
-
 import { paths } from 'src/routes/paths';
+
+import { Iconify } from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
 export const navData = [
   {
     items: [
-      { title: 'Dashboard', path: paths.navigation.dashboard, icon: <DashboardTwoToneIcon /> },
-      { title: 'Inbox', path: paths.navigation.inbox, icon: <InboxTwoToneIcon /> },
-      { title: 'Contacts', path: paths.navigation.contacts, icon: <ContactsTwoToneIcon /> },
-      { title: 'Customers', path: paths.navigation.customers, icon: <BusinessCenterTwoToneIcon /> },
+      {
+        title: 'Dashboard',
+        path: paths.navigation.dashboard,
+        icon: <Iconify icon="ic:twotone-dashboard" />,
+      },
+      { title: 'Inbox', path: paths.navigation.inbox, icon: <Iconify icon="ic:twotone-inbox" /> },
+      {
+        title: 'Contacts',
+        path: paths.navigation.contacts,
+        icon: <Iconify icon="ic:twotone-contacts" />,
+      },
+      {
+        title: 'Customers',
+        path: paths.navigation.customers,
+        icon: <Iconify icon="ic:twotone-business-center" />,
+      },
       {
         title: 'Settings',
         path: paths.navigation.settings.root,
-        icon: <ManageAccountsTwoToneIcon />,
+        icon: <Iconify icon="ic:twotone-settings" />,
         children: [
           {
             title: 'Users',
             path: paths.navigation.settings.users,
-            icon: <ManageAccountsTwoToneIcon />,
+            icon: <Iconify icon="ic:twotone-people-alt" />,
           },
           {
             title: 'Inbox Settings',
             path: paths.navigation.settings.inbox,
-            icon: <AllInboxTwoToneIcon />,
+            icon: <Iconify icon="ic:twotone-all-inbox" />,
           },
           {
             title: 'Templates',
             path: paths.navigation.settings.templates,
-            icon: <SummarizeTwoToneIcon />,
+            icon: <Iconify icon="ic:twotone-summarize" />,
           },
-          { title: 'Tags', path: paths.navigation.settings.tags, icon: <SellTwoToneIcon /> },
+          {
+            title: 'Tags',
+            path: paths.navigation.settings.tags,
+            icon: <Iconify icon="ic:twotone-sell" />,
+          },
         ],
       },
     ],

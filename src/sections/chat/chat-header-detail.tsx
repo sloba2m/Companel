@@ -10,7 +10,6 @@ import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import { Box, Button, TextField, Autocomplete } from '@mui/material';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import AvatarGroup, { avatarGroupClasses } from '@mui/material/AvatarGroup';
 
 import { useResponsive } from 'src/hooks/use-responsive';
@@ -119,8 +118,9 @@ export function ChatHeaderDetail({ collapseNav, participants, loading, collapseM
 
         <Box sx={{ margin: 'auto 0' }}>
           <IconButton onClick={handleToggleNav} size="small">
-            <ArrowBackIosNewIcon
-              fontSize="small"
+            <Iconify
+              width={24}
+              icon="ic:baseline-arrow-back-ios-new"
               sx={{ transform: `rotate(${!collapseDesktop ? '180deg' : '0'})` }}
             />
           </IconButton>

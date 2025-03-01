@@ -2,10 +2,7 @@ import type { IChatParticipant } from 'src/types/chat';
 
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
-import EditIcon from '@mui/icons-material/Edit';
-import ChatIcon from '@mui/icons-material/Chat';
 import Typography from '@mui/material/Typography';
-import SettingsIcon from '@mui/icons-material/Settings';
 import {
   Box,
   Chip,
@@ -23,6 +20,8 @@ import {
 } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
+
+import { Iconify } from 'src/components/iconify';
 
 import { CollapseButton } from './styles';
 
@@ -49,7 +48,7 @@ export function ChatRoomSingle({ participant }: Props) {
       </Avatar>
       <Typography variant="subtitle1">{participant?.name}</Typography>
       <IconButton>
-        <SettingsIcon />
+        <Iconify icon="ic:baseline-settings" />
       </IconButton>
     </Stack>
   );
@@ -60,7 +59,7 @@ export function ChatRoomSingle({ participant }: Props) {
         <Typography>Contact information</Typography>
         {!isEdit && (
           <IconButton onClick={onEditTrue}>
-            <EditIcon fontSize="small" />
+            <Iconify icon="ic:baseline-edit" fontSize="small" />
           </IconButton>
         )}
       </Box>
@@ -140,7 +139,11 @@ export function ChatRoomSingle({ participant }: Props) {
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
-                    <ChatIcon sx={{ width: '16px', color: theme.vars.palette.grey[600] }} />
+                    <Iconify
+                      icon="ic:baseline-chat"
+                      width={16}
+                      sx={{ color: theme.vars.palette.grey[600] }}
+                    />
                   </ListItemIcon>
                   <ListItemText primary="Conversation 1" />
                 </ListItemButton>
@@ -148,7 +151,11 @@ export function ChatRoomSingle({ participant }: Props) {
               <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
-                    <ChatIcon sx={{ width: '16px', color: theme.vars.palette.grey[600] }} />
+                    <Iconify
+                      icon="ic:baseline-chat"
+                      width={16}
+                      sx={{ color: theme.vars.palette.grey[600] }}
+                    />
                   </ListItemIcon>
                   <ListItemText primary="Conversation 2" />
                 </ListItemButton>

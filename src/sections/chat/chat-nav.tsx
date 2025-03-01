@@ -5,10 +5,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
-import AddIcon from '@mui/icons-material/Add';
 import { useTheme } from '@mui/material/styles';
-import SearchIcon from '@mui/icons-material/Search';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import {
   Tab,
   Menu,
@@ -170,7 +167,7 @@ export function ChatNav({
                 ...params.InputProps,
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon />
+                    <Iconify icon="ic:baseline-search" width={24} />
                   </InputAdornment>
                 ),
               }}
@@ -184,7 +181,7 @@ export function ChatNav({
         />
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <IconButton>
-            <AddIcon />
+            <Iconify icon="ic:baseline-add" width={24} />
           </IconButton>
         </Box>
       </Box>
@@ -211,7 +208,7 @@ export function ChatNav({
           }}
         >
           <IconButton onClick={handleOpen}>
-            <FilterListIcon />
+            <Iconify icon="ic:baseline-filter-list" width={24} />
           </IconButton>
         </Box>
         <Menu id="simple-menu" anchorEl={isOpen} onClose={handleClose} open={!!isOpen}>

@@ -6,8 +6,6 @@ import { Tab, Tabs, Card, Stack, Button, Divider, IconButton } from '@mui/materi
 
 // import { today } from 'src/utils/format-time';
 
-import AttachFileIcon from '@mui/icons-material/AttachFile';
-
 import { useTabs } from 'src/routes/hooks/use-tabs';
 
 import { useResponsive } from 'src/hooks/use-responsive';
@@ -126,7 +124,7 @@ export function ChatMessageInput({
       {basicTabs.value === 'Note' && <Editor sx={{ maxHeight: 720, borderTop: 'none' }} />}
       <Stack direction="row" sx={{ justifyContent: 'space-between', p: 1 }}>
         <IconButton size="small">
-          <AttachFileIcon fontSize="small" />
+          <Iconify icon="ic:baseline-attach-file" />
         </IconButton>
         <Button
           variant="contained"

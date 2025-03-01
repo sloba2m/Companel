@@ -1,10 +1,9 @@
 import type { SxProps } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 
-import LogoutIcon from '@mui/icons-material/Logout';
-import SettingsIcon from '@mui/icons-material/Settings';
 import { Menu, Avatar, MenuList, MenuItem, useTheme, IconButton } from '@mui/material';
 
+import { Iconify } from 'src/components/iconify';
 import { usePopover } from 'src/components/custom-popover';
 import { useSettingsContext } from 'src/components/settings';
 
@@ -36,11 +35,11 @@ export const AvatarMenu = ({ sx }: AvatarMenuProps) => {
               popover.onClose();
             }}
           >
-            <SettingsIcon sx={{ mr: 1 }} />
+            <Iconify icon="ic:baseline-settings" sx={{ mr: 1 }} />
             Settings
           </MenuItem>
           <MenuItem key="log out">
-            <LogoutIcon sx={{ mr: 1 }} />
+            <Iconify icon="ic:baseline-log-out" sx={{ mr: 1 }} />
             Log out
           </MenuItem>
         </MenuList>
