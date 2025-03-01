@@ -41,7 +41,7 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
         gap: 2,
       }}
     >
-      <Box sx={{ display: 'flex', gap: 2 }}>
+      <Box sx={{ display: 'flex', gap: 2, justifyContent: 'space-between' }}>
         <Typography variant="h4">{entity}</Typography>
         <Button variant="soft" color="primary" onClick={tableDrawer.onOpenDrawer}>
           Create
