@@ -1,47 +1,18 @@
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import { type GridColDef } from '@mui/x-data-grid';
 
+import { useBoolean } from 'src/hooks/use-boolean';
+
 import { CustomerDrawer, TableWithDrawer } from 'src/components/table-with-drawer';
+import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Customers` };
 
-const columns: GridColDef<MockCustomer>[] = [
-  {
-    field: 'name',
-    headerName: 'Name',
-    width: 160,
-    sortable: false,
-  },
-  {
-    field: 'id',
-    headerName: 'Customer ID',
-    width: 160,
-    sortable: false,
-  },
-  {
-    field: 'phone',
-    headerName: 'Phone number',
-    width: 160,
-    sortable: false,
-  },
-  {
-    field: 'email',
-    headerName: 'Email',
-    width: 230,
-    sortable: false,
-  },
-  {
-    field: 'domain',
-    headerName: 'Domain',
-    width: 230,
-    sortable: false,
-  },
-];
-
-interface MockCustomer {
+export interface MockCustomer {
   id: string;
   name: string;
   phone: string;
@@ -74,18 +45,68 @@ const mockData: MockCustomer[] = [
 ];
 
 export default function Page() {
+  const [editData, setEditData] = useState<MockCustomer | null>(null);
+  const drawerState = useBoolean(false);
+  const { onToggle: onToggleDrawer } = drawerState;
+
+  const handleEdit = (customer: MockCustomer) => {
+    onToggleDrawer();
+    setEditData(customer);
+  };
+
+  const handleDelete = (customer: MockCustomer) => {
+    console.log('Delete:', customer);
+  };
+
+  const columns: GridColDef<MockCustomer>[] = [
+    {
+      field: 'name',
+      headerName: 'Name',
+      width: 160,
+      sortable: false,
+    },
+    {
+      field: 'id',
+      headerName: 'Customer ID',
+      width: 160,
+      sortable: false,
+    },
+    {
+      field: 'phone',
+      headerName: 'Phone number',
+      width: 160,
+      sortable: false,
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      width: 230,
+      sortable: false,
+      flex: 1,
+    },
+    {
+      field: 'domain',
+      headerName: 'Domain',
+      width: 230,
+      sortable: false,
+    },
+    getActionColumn(handleEdit, handleDelete),
+  ];
+
   return (
     <>
       <Helmet>
         <title> {metadata.title}</title>
       </Helmet>
+
       <TableWithDrawer
         columns={columns}
         createButtonText="Create customer"
         rows={mockData}
-        searchPlaceholder="Search cusomers"
-        drawerContent={<CustomerDrawer />}
+        searchPlaceholder="Search customers"
+        drawerContent={<CustomerDrawer editData={editData} />}
         onSearch={() => console.log('test')}
+        drawerState={drawerState}
       />
     </>
   );
