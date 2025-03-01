@@ -101,9 +101,8 @@ export default function Page() {
 
       <TableWithDrawer
         columns={columns}
-        createButtonText="Create customer"
         rows={mockData}
-        searchPlaceholder="Search customers"
+        entity="Customers"
         drawerContent={<CustomerDrawer editData={editData} />}
         onSearch={() => console.log('test')}
         drawerState={drawerState}

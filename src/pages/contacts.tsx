@@ -85,9 +85,8 @@ export default function Page() {
 
       <TableWithDrawer
         columns={columns}
-        createButtonText="Create contact"
+        entity="Contacts"
         rows={mockContacts}
-        searchPlaceholder="Search contact"
         drawerContent={<ContactDrawer editData={editData} />}
         onSearch={() => console.log('test')}
         drawerState={drawerState}

@@ -57,9 +57,8 @@ export default function Page() {
 
       <TableWithDrawer
         columns={columns}
-        createButtonText="Create Tag"
+        entity="Tags"
         rows={mockTags}
-        searchPlaceholder="Search tag"
         drawerContent={<TagsDrawer editData={editData} />}
         onSearch={() => console.log('test')}
         drawerState={drawerState}

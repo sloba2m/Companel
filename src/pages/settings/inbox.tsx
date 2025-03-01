@@ -97,9 +97,8 @@ export default function Page() {
 
       <TableWithDrawer
         columns={columns}
-        createButtonText="Create inbox"
         rows={mockInboxes}
-        searchPlaceholder="Search inbox"
+        entity="Inbox"
         drawerContent={<InboxDrawer editData={editData} />}
         onSearch={() => console.log('test')}
         drawerState={drawerState}

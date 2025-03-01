@@ -86,10 +86,9 @@ export default function Page() {
       </Helmet>
 
       <TableWithDrawer
+        entity="Users"
         columns={columns}
-        createButtonText="Create user"
         rows={mockUsers}
-        searchPlaceholder="Search user"
         drawerContent={<UsersDrawer editData={editData} />}
         onSearch={() => console.log('test')}
         drawerState={drawerState}

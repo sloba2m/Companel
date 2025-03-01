@@ -86,10 +86,9 @@ export default function Page() {
       </Helmet>
 
       <TableWithDrawer
+        entity="Templates"
         columns={columns}
-        createButtonText="Create template"
         rows={mockTemplates}
-        searchPlaceholder="Search template"
         drawerContent={<TemplatesDrawer editData={editData} />}
         onSearch={() => console.log('test')}
         drawerState={drawerState}
