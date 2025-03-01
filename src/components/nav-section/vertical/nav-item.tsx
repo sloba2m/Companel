@@ -212,7 +212,7 @@ const StyledNavItem = styled(ButtonBase, {
       },
       // State
       ...(active && {
-        color: 'var(--nav-item-sub-active-color)',
+        color: 'var(--nav-item-color)',
         backgroundColor: 'var(--nav-item-sub-active-bg)',
       }),
       ...(open && {

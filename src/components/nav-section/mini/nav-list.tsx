@@ -1,18 +1,16 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 
-import Paper from '@mui/material/Paper';
-import Popover from '@mui/material/Popover';
+import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 import { usePathname } from 'src/routes/hooks';
 import { isExternalLink } from 'src/routes/utils';
 import { useActiveLink } from 'src/routes/hooks/use-active-link';
 
-import { paper } from 'src/theme/styles';
+import { bgBlur, varAlpha, stylesMode } from 'src/theme/styles';
 
 import { NavItem } from './nav-item';
 import { NavUl, NavLi } from '../styles';
-import { navSectionClasses } from '../classes';
 
 import type { NavListProps, NavSubListProps } from '../types';
 
@@ -25,6 +23,7 @@ export function NavList({
   cssVars,
   slotProps,
   enabledRootRedirect,
+  secondaryColor,
 }: NavListProps) {
   const theme = useTheme();
 
@@ -43,14 +42,21 @@ export function NavList({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const handleOpenMenu = useCallback(() => {
     if (data.children) {
       setOpenMenu(true);
     }
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
   }, [data.children]);
 
   const handleCloseMenu = useCallback(() => {
-    setOpenMenu(false);
+    timeoutRef.current = setTimeout(() => {
+      setOpenMenu(false);
+    }, 100);
   }, []);
 
   const renderNavItem = (
@@ -76,6 +82,7 @@ export function NavList({
       // actions
       onMouseEnter={handleOpenMenu}
       onMouseLeave={handleCloseMenu}
+      secondaryColor={secondaryColor}
     />
   );
 
@@ -92,33 +99,36 @@ export function NavList({
       <NavLi disabled={data.disabled}>
         {renderNavItem}
 
-        <Popover
-          disableScrollLock
-          open={openMenu}
-          anchorEl={navItemRef.current}
-          anchorOrigin={{ vertical: 'center', horizontal: 'right' }}
-          transformOrigin={{ vertical: 'center', horizontal: 'left' }}
-          slotProps={{
-            paper: {
-              onMouseEnter: handleOpenMenu,
-              onMouseLeave: handleCloseMenu,
-              sx: {
-                px: 0.75,
-                boxShadow: 'none',
-                overflow: 'unset',
-                backdropFilter: 'none',
-                background: 'transparent',
-                ...(depth > 1 && { mt: -1 }),
-                ...(openMenu && { pointerEvents: 'auto' }),
-              },
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: '87px',
+            height: '100%',
+            backgroundColor: theme.vars.palette.grey['200'],
+            color: 'red !important',
+            width: openMenu ? '87px' : 0,
+            // width: '87px',
+            pt: '80px',
+            px: openMenu ? 0.5 : 0,
+            borderRight: openMenu
+              ? `solid 1px ${varAlpha(theme.vars.palette.grey['500Channel'], 0.12)}`
+              : 'none',
+            [stylesMode.dark]: {
+              borderRight: `solid 1px ${varAlpha(theme.vars.palette.common.blackChannel, 0.12)}`,
+              ...bgBlur({
+                color: varAlpha(theme.vars.palette.background.paperChannel, 0.9),
+                blur: 20,
+              }),
             },
+            transition: theme.transitions.create(['width'], {
+              duration: theme.transitions.duration.shorter,
+            }),
           }}
-          sx={{ ...cssVars, pointerEvents: 'none' }}
+          onMouseEnter={handleOpenMenu}
+          onMouseLeave={handleCloseMenu}
         >
-          <Paper
-            className={navSectionClasses.paper}
-            sx={{ minWidth: 180, ...paper({ theme, dropdown: true }), ...slotProps?.paper }}
-          >
+          {openMenu && (
             <NavSubList
               data={data.children}
               depth={depth}
@@ -127,8 +137,8 @@ export function NavList({
               slotProps={slotProps}
               enabledRootRedirect={enabledRootRedirect}
             />
-          </Paper>
-        </Popover>
+          )}
+        </Box>
       </NavLi>
     );
   }
@@ -154,10 +164,11 @@ function NavSubList({
           key={list.title}
           data={list}
           render={render}
-          depth={depth + 1}
+          depth={depth}
           cssVars={cssVars}
           slotProps={slotProps}
           enabledRootRedirect={enabledRootRedirect}
+          secondaryColor
         />
       ))}
     </NavUl>

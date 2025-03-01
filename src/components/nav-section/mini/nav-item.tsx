@@ -106,7 +106,7 @@ export const NavItem = forwardRef<HTMLButtonElement, NavItemProps>(
 const StyledNavItem = styled(ButtonBase, {
   shouldForwardProp: (prop) =>
     prop !== 'active' && prop !== 'open' && prop !== 'disabled' && prop !== 'depth',
-})<NavItemStateProps>(({ active, open, disabled, depth, theme }) => {
+})<NavItemStateProps>(({ active, open, disabled, depth, theme, secondaryColor }) => {
   const rootItem = depth === 1;
 
   const subItem = !rootItem;
@@ -115,9 +115,16 @@ const StyledNavItem = styled(ButtonBase, {
     item: {
       width: '100%',
       borderRadius: 'var(--nav-item-radius)',
-      color: 'var(--nav-item-color)',
+      color: secondaryColor ? 'var(--nav-item-color-secondary)' : 'var(--nav-item-color)',
       '&:hover': {
-        backgroundColor: 'var(--nav-item-hover-bg)',
+        backgroundColor: secondaryColor
+          ? 'var(--nav-item-root-active-hover-bg)'
+          : 'var(--nav-item-hover-bg)',
+      },
+      [stylesMode.dark]: {
+        color: secondaryColor
+          ? 'var(--nav-item-root-active-color-on-dark)'
+          : 'var(--nav-item-color)',
       },
     },
     title: {},
@@ -171,17 +178,18 @@ const StyledNavItem = styled(ButtonBase, {
       [`& .${navSectionClasses.item.info}`]: { ...baseStyles.info },
       // State
       ...(active && {
-        color: 'var(--nav-item-root-active-color)',
-        backgroundColor: 'var(--nav-item-root-active-bg)',
-        '&:hover': {
-          backgroundColor: 'var(--nav-item-root-active-hover-bg)',
-        },
+        color: secondaryColor
+          ? 'var(--nav-item-color-secondary)'
+          : 'var(--nav-item-root-active-color)',
+        backgroundColor: secondaryColor
+          ? 'var(--nav-item-root-active-hover-bg)'
+          : 'var(--nav-item-root-active-bg)',
         [stylesMode.dark]: {
           color: 'var(--nav-item-root-active-color-on-dark)',
         },
       }),
       ...(open && {
-        color: 'var(--nav-item-root-open-color)',
+        color: 'var(--nav-item-color)',
         backgroundColor: 'var(--nav-item-root-open-bg)',
       }),
     }),

@@ -18,6 +18,7 @@ function colorVars(theme: Theme, variant?: 'vertical' | 'mini' | 'horizontal') {
 
   return {
     '--nav-item-color': isDarkMode ? palette.text.secondary : palette.common.white,
+    '--nav-item-color-secondary': '#13478B',
     '--nav-item-hover-bg': isDarkMode ? palette.action.hover : varAlpha('255 255 255', 0.1),
     '--nav-item-caption-color': palette.text.disabled,
     // root

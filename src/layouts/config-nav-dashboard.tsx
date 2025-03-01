@@ -19,21 +19,28 @@ export const navData = [
       { title: 'Contacts', path: paths.navigation.contacts, icon: <ContactsTwoToneIcon /> },
       { title: 'Customers', path: paths.navigation.customers, icon: <BusinessCenterTwoToneIcon /> },
       {
-        title: 'Users',
-        path: paths.navigation.settings.users,
+        title: 'Settings',
+        path: paths.navigation.settings.root,
         icon: <ManageAccountsTwoToneIcon />,
+        children: [
+          {
+            title: 'Users',
+            path: paths.navigation.settings.users,
+            icon: <ManageAccountsTwoToneIcon />,
+          },
+          {
+            title: 'Inbox Settings',
+            path: paths.navigation.settings.inbox,
+            icon: <AllInboxTwoToneIcon />,
+          },
+          {
+            title: 'Templates',
+            path: paths.navigation.settings.templates,
+            icon: <SummarizeTwoToneIcon />,
+          },
+          { title: 'Tags', path: paths.navigation.settings.tags, icon: <SellTwoToneIcon /> },
+        ],
       },
-      {
-        title: 'Inbox Settings',
-        path: paths.navigation.settings.inbox,
-        icon: <AllInboxTwoToneIcon />,
-      },
-      {
-        title: 'Templates',
-        path: paths.navigation.settings.templates,
-        icon: <SummarizeTwoToneIcon />,
-      },
-      { title: 'Tags', path: paths.navigation.settings.tags, icon: <SellTwoToneIcon /> },
     ],
   },
 ];

@@ -34,6 +34,7 @@ export type NavItemStateProps = {
   hasChild?: boolean;
   externalLink?: boolean;
   enabledRootRedirect?: boolean;
+  secondaryColor?: boolean;
 };
 
 export type NavItemBaseProps = {
@@ -58,6 +59,7 @@ export type NavListProps = {
   data: NavItemBaseProps;
   render?: NavItemBaseProps['render'];
   enabledRootRedirect?: NavItemStateProps['enabledRootRedirect'];
+  secondaryColor?: boolean;
 };
 
 export type NavSubListProps = Omit<NavListProps, 'data'> & {

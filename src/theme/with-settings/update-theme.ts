@@ -35,8 +35,8 @@ export function updateCoreWithSettings(
           /** [2] */
           background: {
             ...colorSchemes?.light?.palette?.background,
-            default: getBackgroundDefault(settings.contrast),
-            defaultChannel: hexToRgbChannel(getBackgroundDefault(settings.contrast)),
+            default: coreGreyPalette[200],
+            defaultChannel: hexToRgbChannel(coreGreyPalette[200]),
           },
         },
       },
@@ -105,9 +105,4 @@ function getPalettePrimary(primaryColorName: SettingsState['primaryColor']) {
   const updatedPrimaryPalette = createPaletteChannel(selectedPrimaryColor);
 
   return primaryColorName === 'default' ? corePrimaryPalette : updatedPrimaryPalette;
-}
-
-function getBackgroundDefault(contrast: SettingsState['contrast']) {
-  /** [2] */
-  return contrast === 'default' ? '#F4F6F8' : coreGreyPalette[200];
 }
