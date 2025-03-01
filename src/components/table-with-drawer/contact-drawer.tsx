@@ -1,11 +1,17 @@
+import type { MockContact } from 'src/pages/contacts';
+
 import { Box, Button, TextField, Typography } from '@mui/material';
 
-export const ContactDrawer = () => (
+interface ContactDrawerProps {
+  editData: MockContact | null;
+}
+
+export const ContactDrawer = ({ editData }: ContactDrawerProps) => (
   <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
-    <Typography variant="subtitle1">Create contact</Typography>
-    <TextField label="Name" size="small" />
-    <TextField label="Phone" size="small" />
-    <TextField label="Email" size="small" />
+    <Typography variant="subtitle1">{editData ? 'Edit' : 'Create'} contact</Typography>
+    <TextField label="Name" size="small" defaultValue={editData?.name} />
+    <TextField label="Phone" size="small" defaultValue={editData?.phone} />
+    <TextField label="Email" size="small" defaultValue={editData?.email} />
     <Button variant="soft" color="primary" size="small">
       Save
     </Button>

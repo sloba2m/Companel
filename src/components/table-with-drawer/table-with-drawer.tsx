@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
+import type { UseBooleanReturn } from 'src/hooks/use-boolean';
 import type { GridColDef, GridValidRowModel } from '@mui/x-data-grid';
 
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, Card, Stack, Button, Drawer, TextField, Container } from '@mui/material';
 
-import { useBoolean } from 'src/hooks/use-boolean';
 import { useResponsive } from 'src/hooks/use-responsive';
 
 interface TableWithDrawerProps<RowData extends GridValidRowModel> {
@@ -13,6 +13,7 @@ interface TableWithDrawerProps<RowData extends GridValidRowModel> {
   drawerContent: ReactNode;
   createButtonText: string;
   searchPlaceholder?: string;
+  drawerState: UseBooleanReturn;
   onSearch?: () => void;
 }
 
@@ -25,10 +26,11 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
   drawerContent,
   createButtonText,
   searchPlaceholder,
+  drawerState,
   onSearch,
 }: TableWithDrawerProps<RowData>) => {
   const mdUp = useResponsive('up', 'md');
-  const { value: isDrawerOpen, onToggle: onToggleDrawer } = useBoolean(false);
+  const { value: isDrawerOpen, onToggle: onToggleDrawer } = drawerState;
 
   return (
     <Container
