@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
 
-import { Container } from '@mui/material';
 import { type GridColDef } from '@mui/x-data-grid';
 
 import { CustomerDrawer, TableWithDrawer } from 'src/components/table-with-drawer';
@@ -80,16 +79,14 @@ export default function Page() {
       <Helmet>
         <title> {metadata.title}</title>
       </Helmet>
-      <Container maxWidth="xl" sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-        <TableWithDrawer
-          columns={columns}
-          createButtonText="Create customer"
-          rows={mockData}
-          searchPlaceholder="Search cusomers"
-          drawerContent={<CustomerDrawer />}
-          onSearch={() => console.log('test')}
-        />
-      </Container>
+      <TableWithDrawer
+        columns={columns}
+        createButtonText="Create customer"
+        rows={mockData}
+        searchPlaceholder="Search cusomers"
+        drawerContent={<CustomerDrawer />}
+        onSearch={() => console.log('test')}
+      />
     </>
   );
 }

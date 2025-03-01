@@ -2,8 +2,6 @@ import type { GridColDef } from '@mui/x-data-grid';
 
 import { Helmet } from 'react-helmet-async';
 
-import { Container } from '@mui/material';
-
 import { CONFIG } from 'src/config-global';
 
 import { TableWithDrawer, TemplatesDrawer } from 'src/components/table-with-drawer';
@@ -68,15 +66,13 @@ export default function Page() {
         <title> {metadata.title}</title>
       </Helmet>
 
-      <Container maxWidth="xl" sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-        <TableWithDrawer
-          columns={columns}
-          createButtonText="Create template"
-          rows={mockTemplates}
-          searchPlaceholder="Search contact"
-          drawerContent={<TemplatesDrawer />}
-        />
-      </Container>
+      <TableWithDrawer
+        columns={columns}
+        createButtonText="Create template"
+        rows={mockTemplates}
+        searchPlaceholder="Search contact"
+        drawerContent={<TemplatesDrawer />}
+      />
     </>
   );
 }
