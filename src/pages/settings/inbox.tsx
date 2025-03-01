@@ -1,43 +1,20 @@
-import type { GridColDef } from '@mui/x-data-grid';
-
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+
+import { type GridColDef } from '@mui/x-data-grid';
+
+import { useBoolean } from 'src/hooks/use-boolean';
 
 import { CONFIG } from 'src/config-global';
 
 import { InboxDrawer, TableWithDrawer } from 'src/components/table-with-drawer';
+import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Inbox settings - ${CONFIG.site.name}` };
 
-const columns: GridColDef<MockInbox>[] = [
-  {
-    field: 'name',
-    headerName: 'Name',
-    width: 160,
-    sortable: false,
-  },
-  {
-    field: 'template',
-    headerName: 'Template',
-    width: 230,
-    sortable: false,
-  },
-  {
-    field: 'createdAt',
-    headerName: 'Created At',
-    width: 230,
-    sortable: false,
-  },
-  {
-    field: 'updatedAt',
-    headerName: 'Updated At',
-    width: 230,
-    sortable: false,
-  },
-];
-
-interface MockInbox {
+export interface MockInbox {
   id: string;
   name: string;
   template: string;
@@ -70,6 +47,48 @@ const mockInboxes: MockInbox[] = [
 ];
 
 export default function Page() {
+  const [editData, setEditData] = useState<MockInbox | null>(null);
+  const drawerState = useBoolean(false);
+  const { onToggle: onToggleDrawer } = drawerState;
+
+  const handleEdit = (inbox: MockInbox) => {
+    onToggleDrawer();
+    setEditData(inbox);
+  };
+
+  const handleDelete = (inbox: MockInbox) => {
+    console.log('Delete:', inbox);
+  };
+
+  const columns: GridColDef<MockInbox>[] = [
+    {
+      field: 'name',
+      headerName: 'Name',
+      width: 160,
+      sortable: false,
+    },
+    {
+      field: 'template',
+      headerName: 'Template',
+      width: 230,
+      sortable: false,
+    },
+    {
+      field: 'createdAt',
+      headerName: 'Created At',
+      width: 230,
+      sortable: false,
+    },
+    {
+      field: 'updatedAt',
+      headerName: 'Updated At',
+      width: 230,
+      sortable: false,
+      flex: 1,
+    },
+    getActionColumn(handleEdit, handleDelete),
+  ];
+
   return (
     <>
       <Helmet>
@@ -80,7 +99,10 @@ export default function Page() {
         columns={columns}
         createButtonText="Create inbox"
         rows={mockInboxes}
-        drawerContent={<InboxDrawer />}
+        searchPlaceholder="Search inbox"
+        drawerContent={<InboxDrawer editData={editData} />}
+        onSearch={() => console.log('test')}
+        drawerState={drawerState}
       />
     </>
   );
