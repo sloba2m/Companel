@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import { type GridColDef } from '@mui/x-data-grid';
 
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useTableDrawer } from 'src/hooks/use-table-drawer';
 
 import { CustomerDrawer, TableWithDrawer } from 'src/components/table-with-drawer';
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
@@ -45,18 +44,8 @@ const mockData: MockCustomer[] = [
 ];
 
 export default function Page() {
-  const [editData, setEditData] = useState<MockCustomer | null>(null);
-  const drawerState = useBoolean(false);
-  const { onToggle: onToggleDrawer } = drawerState;
-
-  const handleEdit = (customer: MockCustomer) => {
-    onToggleDrawer();
-    setEditData(customer);
-  };
-
-  const handleDelete = (customer: MockCustomer) => {
-    console.log('Delete:', customer);
-  };
+  const tableDrawer = useTableDrawer<MockCustomer>();
+  const { handleEdit, handleDelete, editData } = tableDrawer;
 
   const columns: GridColDef<MockCustomer>[] = [
     {
@@ -105,7 +94,7 @@ export default function Page() {
         entity="Customers"
         drawerContent={<CustomerDrawer editData={editData} />}
         onSearch={() => console.log('test')}
-        drawerState={drawerState}
+        tableDrawer={tableDrawer}
       />
     </>
   );

@@ -1,9 +1,8 @@
 import type { GridColDef } from '@mui/x-data-grid';
 
-import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useTableDrawer } from 'src/hooks/use-table-drawer';
 
 import { ContactDrawer, TableWithDrawer } from 'src/components/table-with-drawer';
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
@@ -41,18 +40,8 @@ const mockContacts: MockContact[] = [
 ];
 
 export default function Page() {
-  const [editData, setEditData] = useState<MockContact | null>(null);
-  const drawerState = useBoolean(false);
-  const { onToggle: onToggleDrawer } = drawerState;
-
-  const handleEdit = (contact: MockContact) => {
-    onToggleDrawer();
-    setEditData(contact);
-  };
-
-  const handleDelete = (contact: MockContact) => {
-    console.log('Delete:', contact);
-  };
+  const tableDrawer = useTableDrawer<MockContact>();
+  const { handleEdit, handleDelete, editData } = tableDrawer;
 
   const columns: GridColDef<MockContact>[] = [
     {
@@ -89,7 +78,7 @@ export default function Page() {
         rows={mockContacts}
         drawerContent={<ContactDrawer editData={editData} />}
         onSearch={() => console.log('test')}
-        drawerState={drawerState}
+        tableDrawer={tableDrawer}
       />
     </>
   );

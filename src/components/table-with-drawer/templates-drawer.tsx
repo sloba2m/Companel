@@ -1,6 +1,6 @@
 import type { MockTemplate } from 'src/pages/settings/templates';
 
-import { Box, Stack, Button, TextField, Typography } from '@mui/material';
+import { Box, Stack, Alert, Button, TextField, Typography, AlertTitle } from '@mui/material';
 
 import { Editor } from '../editor';
 import { Iconify } from '../iconify';
@@ -16,8 +16,26 @@ export const TemplatesDrawer = ({ editData }: TemplatesDrawerProps) => (
 
     <TextField label="Name" size="small" defaultValue={editData?.name} />
 
+    <Alert severity="info">
+      <AlertTitle>Available directives for dynamic fields</AlertTitle>
+      <Box component="ul" sx={{ pl: 2, listStyleType: 'disc' }}>
+        <li>
+          Use <strong>[name]</strong> to substitute for the contact&apos;s name
+        </li>
+        <li>
+          Use <strong>[message]</strong> to substitute for the agent message
+        </li>
+        <li>
+          Use <strong>[me]</strong> to substitute for the agent&apos;s name
+        </li>
+        <li>
+          Use <strong>[logo]</strong> to substitute for the uploaded logo
+        </li>
+      </Box>
+    </Alert>
+
     {/* Editor for Template Content */}
-    <Editor sx={{ minHeight: 400 }} value={editData?.template} />
+    <Editor sx={{ minHeight: 400 }} value={editData?.template} placeholder="Create template..." />
 
     <Stack direction="row" spacing={2}>
       <UploadBox

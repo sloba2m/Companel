@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import type { UseBooleanReturn } from 'src/hooks/use-boolean';
 import type { GridColDef, GridValidRowModel } from '@mui/x-data-grid';
+import type { UseTableDrawerReturn } from 'src/hooks/use-table-drawer';
 
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, Card, Stack, Button, Drawer, TextField, Container, Typography } from '@mui/material';
@@ -12,7 +12,7 @@ interface TableWithDrawerProps<RowData extends GridValidRowModel> {
   rows: RowData[];
   drawerContent: ReactNode;
   entity: string;
-  drawerState: UseBooleanReturn;
+  tableDrawer: UseTableDrawerReturn<RowData>;
   onSearch?: () => void;
 }
 
@@ -24,11 +24,10 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
   rows,
   drawerContent,
   entity,
-  drawerState,
+  tableDrawer,
   onSearch,
 }: TableWithDrawerProps<RowData>) => {
   const mdUp = useResponsive('up', 'md');
-  const { value: isDrawerOpen, onToggle: onToggleDrawer } = drawerState;
 
   return (
     <Container
@@ -44,7 +43,7 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
     >
       <Box sx={{ display: 'flex', gap: 2 }}>
         <Typography variant="h4">{entity}</Typography>
-        <Button variant="soft" color="primary" onClick={onToggleDrawer}>
+        <Button variant="soft" color="primary" onClick={tableDrawer.onOpenDrawer}>
           Create
         </Button>
       </Box>
@@ -72,8 +71,8 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
 
         <Drawer
           anchor="right"
-          open={isDrawerOpen}
-          onClose={onToggleDrawer}
+          open={tableDrawer.isOpenDrawer}
+          onClose={tableDrawer.onCloseDrawer}
           slotProps={{ backdrop: { invisible: true } }}
           PaperProps={{ sx: { width: mdUp ? DRAWER_WIDTH : MOBILE_DRAWER_WIDTH } }}
         >

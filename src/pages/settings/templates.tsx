@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import { type GridColDef } from '@mui/x-data-grid';
 
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useTableDrawer } from 'src/hooks/use-table-drawer';
 
 import { CONFIG } from 'src/config-global';
 
@@ -43,18 +42,8 @@ const mockTemplates: MockTemplate[] = [
 ];
 
 export default function Page() {
-  const [editData, setEditData] = useState<MockTemplate | null>(null);
-  const drawerState = useBoolean(false);
-  const { onToggle: onToggleDrawer } = drawerState;
-
-  const handleEdit = (template: MockTemplate) => {
-    onToggleDrawer();
-    setEditData(template);
-  };
-
-  const handleDelete = (template: MockTemplate) => {
-    console.log('Delete:', template);
-  };
+  const tableDrawer = useTableDrawer<MockTemplate>();
+  const { handleEdit, handleDelete, editData } = tableDrawer;
 
   const columns: GridColDef<MockTemplate>[] = [
     {
@@ -91,7 +80,7 @@ export default function Page() {
         rows={mockTemplates}
         drawerContent={<TemplatesDrawer editData={editData} />}
         onSearch={() => console.log('test')}
-        drawerState={drawerState}
+        tableDrawer={tableDrawer}
       />
     </>
   );
