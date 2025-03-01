@@ -1,35 +1,54 @@
-import type { GridColDef } from '@mui/x-data-grid';
-
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+
+import { type GridColDef } from '@mui/x-data-grid';
+
+import { useBoolean } from 'src/hooks/use-boolean';
 
 import { CONFIG } from 'src/config-global';
 
 import { TagsDrawer, TableWithDrawer } from 'src/components/table-with-drawer';
+import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
 
 // ----------------------------------------------------------------------
 
 const metadata = { title: `Tags settings - ${CONFIG.site.name}` };
 
-interface MockTags {
+export interface MockTag {
   id: string;
   name: string;
 }
 
-const tags: MockTags[] = [
+const mockTags: MockTag[] = [
   { id: '1', name: 'Tag one' },
   { id: '2', name: 'Tag two' },
 ];
 
-const columns: GridColDef<MockTags>[] = [
-  {
-    field: 'name',
-    headerName: 'Name',
-    width: 160,
-    sortable: false,
-  },
-];
-
 export default function Page() {
+  const [editData, setEditData] = useState<MockTag | null>(null);
+  const drawerState = useBoolean(false);
+  const { onToggle: onToggleDrawer } = drawerState;
+
+  const handleEdit = (tag: MockTag) => {
+    onToggleDrawer();
+    setEditData(tag);
+  };
+
+  const handleDelete = (tag: MockTag) => {
+    console.log('Delete:', tag);
+  };
+
+  const columns: GridColDef<MockTag>[] = [
+    {
+      field: 'name',
+      headerName: 'Name',
+      width: 160,
+      sortable: false,
+      flex: 1,
+    },
+    getActionColumn(handleEdit, handleDelete),
+  ];
+
   return (
     <>
       <Helmet>
@@ -39,9 +58,11 @@ export default function Page() {
       <TableWithDrawer
         columns={columns}
         createButtonText="Create Tag"
-        rows={tags}
-        searchPlaceholder="Search contact"
-        drawerContent={<TagsDrawer />}
+        rows={mockTags}
+        searchPlaceholder="Search tag"
+        drawerContent={<TagsDrawer editData={editData} />}
+        onSearch={() => console.log('test')}
+        drawerState={drawerState}
       />
     </>
   );
