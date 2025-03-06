@@ -46,7 +46,7 @@ export function useNavItem({
     ? { href: path, target: '_blank', rel: 'noopener' }
     : { component: RouterLink, href: path };
 
-  const baseProps = hasChild && !enabledRootRedirect ? { component: 'div' } : linkProps;
+  const baseProps = linkProps;
 
   /**
    * Render @icon

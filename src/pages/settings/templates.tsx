@@ -86,6 +86,7 @@ export default function Page() {
         drawerContent={<TemplatesDrawer editData={editData} />}
         onSearch={() => console.log('test')}
         tableDrawer={tableDrawer}
+        isInSubMenu
       />
     </>
   );

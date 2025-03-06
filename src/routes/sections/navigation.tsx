@@ -45,6 +45,7 @@ export const navigationRoutes = [
       {
         path: 'settings',
         children: [
+          { index: true, element: <Navigate to="users" replace /> },
           { path: 'users', element: <UsersSettingsPage /> },
           { path: 'inbox', element: <InboxSettingsPage /> },
           { path: 'templates', element: <TemplatesSettingsPage /> },

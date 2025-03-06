@@ -1,13 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 
+import { Box } from '@mui/material';
 import { type GridColDef } from '@mui/x-data-grid';
 
 import { useTableDrawer } from 'src/hooks/use-table-drawer';
 
 import { CONFIG } from 'src/config-global';
 
+import { UsersDrawer, TableWithDrawer } from 'src/components/table-with-drawer';
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
-import { UsersDrawer, TableWithDrawer, firstColumnMargin } from 'src/components/table-with-drawer';
 
 // ----------------------------------------------------------------------
 
@@ -51,7 +52,8 @@ export default function Page() {
       headerName: 'First Name',
       width: 160,
       sortable: false,
-      ...firstColumnMargin,
+      renderHeader: (param) => <Box sx={{ ml: 1 }}>{param.colDef.headerName}</Box>,
+      renderCell: (param) => <Box sx={{ ml: 1 }}>{param.row.firstName}</Box>,
     },
     {
       field: 'lastName',
@@ -82,6 +84,7 @@ export default function Page() {
         drawerContent={<UsersDrawer editData={editData} />}
         onSearch={() => console.log('test')}
         tableDrawer={tableDrawer}
+        isInSubMenu
       />
     </>
   );

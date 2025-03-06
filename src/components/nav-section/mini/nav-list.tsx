@@ -1,9 +1,8 @@
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-import { usePathname } from 'src/routes/hooks';
 import { isExternalLink } from 'src/routes/utils';
 import { useActiveLink } from 'src/routes/hooks/use-active-link';
 
@@ -27,37 +26,15 @@ export function NavList({
 }: NavListProps) {
   const theme = useTheme();
 
-  const pathname = usePathname();
-
   const navItemRef = useRef<HTMLButtonElement | null>(null);
 
   const active = useActiveLink(data.path, !!data.children);
-
   const [openMenu, setOpenMenu] = useState(false);
 
   useEffect(() => {
-    if (openMenu) {
-      handleCloseMenu();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
-
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const handleOpenMenu = useCallback(() => {
-    if (data.children) {
-      setOpenMenu(true);
-    }
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-  }, [data.children]);
-
-  const handleCloseMenu = useCallback(() => {
-    timeoutRef.current = setTimeout(() => {
-      setOpenMenu(false);
-    }, 100);
-  }, []);
+    if (active && data.children) setOpenMenu(true);
+    else setOpenMenu(false);
+  }, [active, data.children]);
 
   const renderNavItem = (
     <NavItem
@@ -80,8 +57,6 @@ export function NavList({
       // styles
       slotProps={depth === 1 ? slotProps?.rootItem : slotProps?.subItem}
       // actions
-      onMouseEnter={handleOpenMenu}
-      onMouseLeave={handleCloseMenu}
       secondaryColor={secondaryColor}
     />
   );
@@ -98,17 +73,15 @@ export function NavList({
     return (
       <NavLi disabled={data.disabled}>
         {renderNavItem}
-
         <Box
           sx={{
-            position: 'fixed',
+            position: 'absolute',
             top: 0,
             left: '87px',
             height: '100%',
-            backgroundColor: theme.vars.palette.grey['200'],
+            backgroundColor: theme.vars.palette.background.paper,
             color: 'red !important',
             width: openMenu ? '87px' : 0,
-            // width: '87px',
             pt: '80px',
             px: openMenu ? 0.5 : 0,
             borderRight: openMenu
@@ -121,12 +94,7 @@ export function NavList({
                 blur: 20,
               }),
             },
-            transition: theme.transitions.create(['width'], {
-              duration: theme.transitions.duration.shorter,
-            }),
           }}
-          onMouseEnter={handleOpenMenu}
-          onMouseLeave={handleCloseMenu}
         >
           {openMenu && (
             <NavSubList

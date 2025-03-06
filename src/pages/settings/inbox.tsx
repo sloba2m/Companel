@@ -92,6 +92,7 @@ export default function Page() {
         drawerContent={<InboxDrawer editData={editData} />}
         onSearch={() => console.log('test')}
         tableDrawer={tableDrawer}
+        isInSubMenu
       />
     </>
   );

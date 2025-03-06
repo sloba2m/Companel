@@ -13,6 +13,7 @@ interface TableWithDrawerProps<RowData extends GridValidRowModel> {
   drawerContent: ReactNode;
   entity: string;
   tableDrawer: UseTableDrawerReturn<RowData>;
+  isInSubMenu?: boolean;
   onSearch?: () => void;
 }
 
@@ -25,9 +26,11 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
   drawerContent,
   entity,
   tableDrawer,
+  isInSubMenu,
   onSearch,
 }: TableWithDrawerProps<RowData>) => {
   const mdUp = useResponsive('up', 'md');
+  const lgUp = useResponsive('up', 'lg');
 
   return (
     <Container
@@ -41,13 +44,20 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
         gap: 2,
       }}
     >
-      <Box sx={{ display: 'flex', gap: 2, justifyContent: 'space-between' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 2,
+          justifyContent: 'space-between',
+          ml: isInSubMenu && lgUp ? '87px' : 0,
+        }}
+      >
         <Typography variant="h4">{entity}</Typography>
         <Button variant="soft" color="primary" onClick={tableDrawer.onOpenDrawer}>
           Create
         </Button>
       </Box>
-      <Card sx={{ display: 'flex', flexGrow: 1 }}>
+      <Card sx={{ display: 'flex', flexGrow: 1, ml: isInSubMenu && lgUp ? '87px' : 0 }}>
         <Stack direction="column" sx={{ width: '100%' }}>
           <Stack
             direction={mdUp ? 'row' : 'column'}
