@@ -130,6 +130,7 @@ export const CONVERSATIONS_DATA = {
           id: '7f3efed0-673d-45c9-bb67-de6b77e8e486',
           body: 'He carefully crafted a beautiful sculpture out of clay, his hands skillfully shaping the intricate details.',
           contentType: 'text',
+          note: 'Test note',
           attachments: [
             {
               id: 'e99f09a7-dd88-49d5-b1c8-1daf80c2d7b7',
@@ -263,6 +264,7 @@ export const CONVERSATIONS_DATA = {
           attachments: [],
           createdAt: '2025-02-22T18:03:36+00:00',
           senderId: '8864c717-587d-472a-929a-8e5f298024da-0',
+          note: 'Test note',
         },
         {
           id: 'fe34328c-6442-41a3-b091-491ac5298f29',
@@ -364,6 +366,7 @@ export const CONVERSATIONS_DATA = {
           attachments: [],
           createdAt: '2025-02-22T15:48:36+00:00',
           senderId: 'e99f09a7-dd88-49d5-b1c8-1daf80c2d7b4',
+          note: 'Test note',
         },
         {
           id: 'e1ce5fc4-794a-44cf-a081-f69193b8957c',
@@ -484,6 +487,7 @@ export const CONVERSATIONS_DATA = {
           id: '6ac67140-d1b8-40c2-9742-2f47599a34e3',
           body: 'He carefully crafted a beautiful sculpture out of clay, his hands skillfully shaping the intricate details.',
           contentType: 'text',
+          note: 'Test note',
           attachments: [
             {
               id: 'e99f09a7-dd88-49d5-b1c8-1daf80c2d7b5',
@@ -618,6 +622,7 @@ export const CONVERSATIONS_DATA = {
         {
           id: 'b2b7a4c5-ae55-4f52-b4a0-c4a9067f69a2',
           body: 'He carefully crafted a beautiful sculpture out of clay, his hands skillfully shaping the intricate details.',
+          note: 'Test note',
           contentType: 'text',
           attachments: [],
           createdAt: '2025-02-22T20:17:36+00:00',
@@ -1135,6 +1140,7 @@ export const CONVERSATIONS_DATA = {
         {
           id: 'e5a3c141-ffea-4032-ad97-81900a0ff284',
           body: 'He carefully crafted a beautiful sculpture out of clay, his hands skillfully shaping the intricate details.',
+          note: 'Test note',
           contentType: 'text',
           attachments: [
             {

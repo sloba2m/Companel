@@ -19,6 +19,7 @@ export type IChatMessage = {
   contentType: string;
   createdAt: IDateValue;
   attachments: IChatAttachment[];
+  note?: string;
 };
 
 export type IChatParticipant = {

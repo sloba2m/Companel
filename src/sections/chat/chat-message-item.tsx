@@ -3,6 +3,7 @@ import type { IChatMessage, IChatParticipant } from 'src/types/chat';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
+import { Badge, Tooltip } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
@@ -48,38 +49,51 @@ export function ChatMessageItem({ message, participants, onOpenLightbox }: Props
   );
 
   const renderBody = (
-    <Stack
-      sx={{
-        p: 1.5,
-        minWidth: 48,
-        maxWidth: 320,
-        borderRadius: 1,
-        typography: 'body2',
-        bgcolor: 'background.neutral',
-        ...(me && { color: 'grey.800', bgcolor: 'primary.lighter' }),
-        ...(hasImage && { p: 0, bgcolor: 'transparent' }),
-      }}
+    <Badge
+      badgeContent={
+        message.note ? (
+          <Tooltip title={message.note}>
+            <Iconify icon="mdi:note" width={16} />
+          </Tooltip>
+        ) : (
+          0
+        )
+      }
+      color="primary"
     >
-      {hasImage ? (
-        <Box
-          component="img"
-          alt="attachment"
-          src={body}
-          onClick={() => onOpenLightbox(body)}
-          sx={{
-            width: 400,
-            height: 'auto',
-            borderRadius: 1.5,
-            cursor: 'pointer',
-            objectFit: 'cover',
-            aspectRatio: '16/11',
-            '&:hover': { opacity: 0.9 },
-          }}
-        />
-      ) : (
-        body
-      )}
-    </Stack>
+      <Stack
+        sx={{
+          p: 1.5,
+          minWidth: 48,
+          maxWidth: 320,
+          borderRadius: 1,
+          typography: 'body2',
+          bgcolor: 'background.neutral',
+          ...(me && { color: 'grey.800', bgcolor: 'primary.lighter' }),
+          ...(hasImage && { p: 0, bgcolor: 'transparent' }),
+        }}
+      >
+        {hasImage ? (
+          <Box
+            component="img"
+            alt="attachment"
+            src={body}
+            onClick={() => onOpenLightbox(body)}
+            sx={{
+              width: 400,
+              height: 'auto',
+              borderRadius: 1.5,
+              cursor: 'pointer',
+              objectFit: 'cover',
+              aspectRatio: '16/11',
+              '&:hover': { opacity: 0.9 },
+            }}
+          />
+        ) : (
+          body
+        )}
+      </Stack>
+    </Badge>
   );
 
   const renderActions = (
@@ -107,6 +121,10 @@ export function ChatMessageItem({ message, participants, onOpenLightbox }: Props
 
       <IconButton size="small">
         <Iconify icon="solar:trash-bin-trash-bold" width={16} />
+      </IconButton>
+
+      <IconButton size="small">
+        <Iconify icon="mdi:note" width={16} />
       </IconButton>
     </Stack>
   );
