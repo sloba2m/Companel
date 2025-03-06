@@ -1,4 +1,7 @@
 import type { IChatParticipant } from 'src/types/chat';
+import type { SnackbarCloseReason } from '@mui/material';
+
+import { useState } from 'react';
 
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
@@ -7,8 +10,8 @@ import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
-import { Box, Button, TextField, Autocomplete } from '@mui/material';
 import AvatarGroup, { avatarGroupClasses } from '@mui/material/AvatarGroup';
+import { Box, Alert, Button, Snackbar, TextField, Autocomplete } from '@mui/material';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
@@ -40,10 +43,19 @@ export function ChatHeaderDetail({ collapseNav, participants, loading, collapseM
 
   const { onOpenMobile } = collapseNav;
 
-  // const handleToggleNav = useCallback(() => {
-  //     onOpenMobile();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [lgUp]);
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event: React.SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const renderGroup = (
     <AvatarGroup max={3} sx={{ [`& .${avatarGroupClasses.avatar}`]: { width: 32, height: 32 } }}>
@@ -104,6 +116,7 @@ export function ChatHeaderDetail({ collapseNav, participants, loading, collapseM
           //     {option.title}
           //   </li>
           // )}
+          onChange={() => handleClick()}
           renderOption={(props, option, { selected }) => {
             // eslint-disable-next-line react/prop-types
             const { key, ...optionProps } = props;
@@ -172,6 +185,11 @@ export function ChatHeaderDetail({ collapseNav, participants, loading, collapseM
           </MenuItem>
         </MenuList>
       </CustomPopover>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" variant="filled" sx={{ width: '100%' }}>
+          User is assigned
+        </Alert>
+      </Snackbar>
     </>
   );
 }
