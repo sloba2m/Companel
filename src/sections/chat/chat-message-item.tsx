@@ -130,7 +130,12 @@ export function ChatMessageItem({ message, participants, onOpenLightbox }: Props
   );
 
   return (
-    <Stack direction="row" justifyContent={me ? 'flex-end' : 'unset'} sx={{ mb: 5 }}>
+    <Stack
+      direction="row"
+      justifyContent={me ? 'flex-end' : 'unset'}
+      sx={{ mb: 5 }}
+      key={message.id}
+    >
       {!me && <Avatar alt={firstName} src={avatarUrl} sx={{ width: 32, height: 32, mr: 2 }} />}
 
       <Stack alignItems={me ? 'flex-end' : 'flex-start'}>

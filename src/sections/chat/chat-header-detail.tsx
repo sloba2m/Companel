@@ -96,6 +96,7 @@ export function ChatHeaderDetail({ collapseNav, participants, loading, collapseM
           sx={{ minWidth: '200px' }}
           options={['One guy', 'Other guy']}
           size="small"
+          disableCloseOnSelect
           // getOptionLabel={(option) => option.title}
           renderInput={(params) => <TextField {...params} label="Assign" margin="none" />}
           // renderOption={(props, option) => (
@@ -103,6 +104,19 @@ export function ChatHeaderDetail({ collapseNav, participants, loading, collapseM
           //     {option.title}
           //   </li>
           // )}
+          renderOption={(props, option, { selected }) => {
+            // eslint-disable-next-line react/prop-types
+            const { key, ...optionProps } = props;
+
+            return (
+              <li key={key} {...optionProps}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                  {option}
+                  {selected && <Iconify icon="mdi:check" />}
+                </Box>
+              </li>
+            );
+          }}
         />
 
         <Button variant="soft" color="primary" size="medium">

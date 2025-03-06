@@ -51,7 +51,7 @@ export function ChatMessageList({ messages = [], participants, loading }: Props)
         {messages.map((message, i) => (
           <>
             {i === messages.length - 1 && (
-              <Box>
+              <Box key={`${message.id}status`}>
                 <Alert sx={{ maxWidth: '300px', ml: 'auto', my: 2 }} severity="info">
                   Created: 9:20
                 </Alert>

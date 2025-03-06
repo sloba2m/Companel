@@ -6,7 +6,16 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
 import { useTheme } from '@mui/material/styles';
-import { Tab, Menu, Divider, MenuItem, TextField, IconButton, Autocomplete } from '@mui/material';
+import {
+  Tab,
+  Menu,
+  Divider,
+  MenuItem,
+  TextField,
+  IconButton,
+  Autocomplete,
+  InputAdornment,
+} from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -192,7 +201,19 @@ export function ChatNav({
           </IconButton>
         </Box>
         <Menu id="simple-menu" anchorEl={isOpen} onClose={handleClose} open={!!isOpen}>
-          {['Tag 1', 'Tag 2', 'Tag 3'].map((option) => (
+          <TextField
+            size="small"
+            sx={{ mb: 2 }}
+            placeholder="Search chat"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Iconify icon="ic:baseline-search" width={24} />
+                </InputAdornment>
+              ),
+            }}
+          />
+          {['Oldest', 'Newest'].map((option) => (
             <MenuItem key={option} selected={option === 'Profile'} onClick={handleClose}>
               {option}
             </MenuItem>
