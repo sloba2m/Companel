@@ -27,7 +27,7 @@ export function Layout({ slots, sx, ...other }: Props) {
       direction="row"
       alignItems="center"
       sx={{
-        py: 1.65,
+        py: 0.75,
         pr: 1,
         pl: 2.5,
         flexShrink: 0,

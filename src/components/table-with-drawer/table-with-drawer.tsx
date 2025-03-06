@@ -55,6 +55,7 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
           >
             {onSearch && (
               <TextField
+                size="small"
                 placeholder={`Search ${entity.toLowerCase()}`}
                 sx={{ width: mdUp ? '400px' : '100%' }}
               />
@@ -81,4 +82,9 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
       </Card>
     </Container>
   );
+};
+
+export const firstColumnMargin: Partial<GridColDef> = {
+  renderHeader: (param) => <Box sx={{ ml: 1 }}>{param.colDef.headerName}</Box>,
+  renderCell: (param) => <Box sx={{ ml: 1 }}>{param.row.name}</Box>,
 };

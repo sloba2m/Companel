@@ -4,8 +4,12 @@ import { Helmet } from 'react-helmet-async';
 
 import { useTableDrawer } from 'src/hooks/use-table-drawer';
 
-import { ContactDrawer, TableWithDrawer } from 'src/components/table-with-drawer';
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
+import {
+  ContactDrawer,
+  TableWithDrawer,
+  firstColumnMargin,
+} from 'src/components/table-with-drawer';
 
 // ----------------------------------------------------------------------
 
@@ -49,6 +53,7 @@ export default function Page() {
       headerName: 'Name',
       width: 160,
       sortable: false,
+      ...firstColumnMargin,
     },
     {
       field: 'phone',

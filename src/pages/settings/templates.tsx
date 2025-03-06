@@ -6,8 +6,12 @@ import { useTableDrawer } from 'src/hooks/use-table-drawer';
 
 import { CONFIG } from 'src/config-global';
 
-import { TableWithDrawer, TemplatesDrawer } from 'src/components/table-with-drawer';
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
+import {
+  TableWithDrawer,
+  TemplatesDrawer,
+  firstColumnMargin,
+} from 'src/components/table-with-drawer';
 
 // ----------------------------------------------------------------------
 
@@ -51,6 +55,7 @@ export default function Page() {
       headerName: 'Name',
       width: 160,
       sortable: false,
+      ...firstColumnMargin,
     },
     {
       field: 'template',

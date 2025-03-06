@@ -6,16 +6,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
 import { useTheme } from '@mui/material/styles';
-import {
-  Tab,
-  Menu,
-  Divider,
-  MenuItem,
-  TextField,
-  IconButton,
-  Autocomplete,
-  InputAdornment,
-} from '@mui/material';
+import { Tab, Menu, Divider, MenuItem, TextField, IconButton, Autocomplete } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -158,20 +149,9 @@ export function ChatNav({
           // getOptionLabel={(option) => option.title}
           value="Rotmark"
           disableClearable
+          size="small"
           renderInput={(params) => (
-            <TextField
-              {...params}
-              placeholder="Search Inboxes"
-              margin="none"
-              InputProps={{
-                ...params.InputProps,
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Iconify icon="ic:baseline-search" width={24} />
-                  </InputAdornment>
-                ),
-              }}
-            />
+            <TextField {...params} placeholder="Search Inboxes" margin="none" />
           )}
           // renderOption={(props, option) => (
           //   <li {...props} key={option.title}>

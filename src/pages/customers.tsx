@@ -4,8 +4,12 @@ import { type GridColDef } from '@mui/x-data-grid';
 
 import { useTableDrawer } from 'src/hooks/use-table-drawer';
 
-import { CustomerDrawer, TableWithDrawer } from 'src/components/table-with-drawer';
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
+import {
+  CustomerDrawer,
+  TableWithDrawer,
+  firstColumnMargin,
+} from 'src/components/table-with-drawer';
 
 // ----------------------------------------------------------------------
 
@@ -53,6 +57,7 @@ export default function Page() {
       headerName: 'Name',
       width: 160,
       sortable: false,
+      ...firstColumnMargin,
     },
     {
       field: 'id',
