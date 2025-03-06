@@ -1,8 +1,6 @@
 import type { IChatParticipant, IChatConversation } from 'src/types/chat';
 
-import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
-import { useTheme } from '@mui/material/styles';
 
 import { Scrollbar } from 'src/components/scrollbar';
 
@@ -14,8 +12,6 @@ import type { UseNavCollapseReturn } from './hooks/use-collapse-nav';
 
 // ----------------------------------------------------------------------
 
-const NAV_WIDTH = 280;
-
 const NAV_DRAWER_WIDTH = 320;
 
 type Props = {
@@ -26,9 +22,7 @@ type Props = {
 };
 
 export function ChatRoom({ collapseNav, participants, messages, loading }: Props) {
-  const theme = useTheme();
-
-  const { collapseDesktop, openMobile, onCloseMobile } = collapseNav;
+  const { openMobile, onCloseMobile } = collapseNav;
 
   const group = participants.length > 1;
 
@@ -47,32 +41,14 @@ export function ChatRoom({ collapseNav, participants, messages, loading }: Props
   );
 
   return (
-    <>
-      <Stack
-        sx={{
-          minHeight: 0,
-          flex: '1 1 auto',
-          width: NAV_WIDTH,
-          display: { xs: 'none', lg: 'flex' },
-          borderLeft: `solid 1px ${theme.vars.palette.divider}`,
-          transition: theme.transitions.create(['width'], {
-            duration: theme.transitions.duration.shorter,
-          }),
-          ...(collapseDesktop && { width: 0 }),
-        }}
-      >
-        {!collapseDesktop && renderContent}
-      </Stack>
-
-      <Drawer
-        anchor="right"
-        open={openMobile}
-        onClose={onCloseMobile}
-        slotProps={{ backdrop: { invisible: true } }}
-        PaperProps={{ sx: { width: NAV_DRAWER_WIDTH } }}
-      >
-        {renderContent}
-      </Drawer>
-    </>
+    <Drawer
+      anchor="right"
+      open={openMobile}
+      onClose={onCloseMobile}
+      slotProps={{ backdrop: { invisible: true } }}
+      PaperProps={{ sx: { width: NAV_DRAWER_WIDTH } }}
+    >
+      {renderContent}
+    </Drawer>
   );
 }

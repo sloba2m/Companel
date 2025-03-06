@@ -1,7 +1,5 @@
 import type { IChatParticipant } from 'src/types/chat';
 
-import { useCallback } from 'react';
-
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
@@ -33,7 +31,6 @@ type Props = {
 export function ChatHeaderDetail({ collapseNav, participants, loading, collapseMenuNav }: Props) {
   const popover = usePopover();
 
-  const lgUp = useResponsive('up', 'lg');
   const smUp = useResponsive('up', 'sm');
   const mdDown = useResponsive('down', 'md');
 
@@ -41,16 +38,12 @@ export function ChatHeaderDetail({ collapseNav, participants, loading, collapseM
 
   const singleParticipant = participants[0];
 
-  const { collapseDesktop, onCollapseDesktop, onOpenMobile } = collapseNav;
+  const { onOpenMobile } = collapseNav;
 
-  const handleToggleNav = useCallback(() => {
-    if (lgUp) {
-      onCollapseDesktop();
-    } else {
-      onOpenMobile();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lgUp]);
+  // const handleToggleNav = useCallback(() => {
+  //     onOpenMobile();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [lgUp]);
 
   const renderGroup = (
     <AvatarGroup max={3} sx={{ [`& .${avatarGroupClasses.avatar}`]: { width: 32, height: 32 } }}>
@@ -117,12 +110,8 @@ export function ChatHeaderDetail({ collapseNav, participants, loading, collapseM
         </Button>
 
         <Box sx={{ margin: 'auto 0' }}>
-          <IconButton onClick={handleToggleNav} size="small">
-            <Iconify
-              width={24}
-              icon="ic:baseline-arrow-back-ios-new"
-              sx={{ transform: `rotate(${!collapseDesktop ? '180deg' : '0'})` }}
-            />
+          <IconButton onClick={onOpenMobile} size="small">
+            <Iconify width={24} icon="ic:baseline-arrow-back-ios-new" />
           </IconButton>
         </Box>
       </Stack>
