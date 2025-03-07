@@ -13,6 +13,7 @@ import {
   MenuItem,
   TextField,
   IconButton,
+  Typography,
   Autocomplete,
   InputAdornment,
 } from '@mui/material';
@@ -204,7 +205,7 @@ export function ChatNav({
           <TextField
             size="small"
             sx={{ mb: 2 }}
-            placeholder="Search chat"
+            placeholder="Find in inbox"
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -213,11 +214,23 @@ export function ChatNav({
               ),
             }}
           />
-          {['Oldest', 'Newest'].map((option) => (
-            <MenuItem key={option} selected={option === 'Profile'} onClick={handleClose}>
-              {option}
-            </MenuItem>
-          ))}
+          <Typography variant="body1" fontWeight="fontWeightBold" sx={{ ml: 1, mb: 0.5 }}>
+            Sort
+          </Typography>
+          <MenuItem key="Oldest" onClick={handleClose}>
+            <Iconify
+              icon="mdi:sort-calendar-ascending"
+              sx={{ mr: 1, color: theme.vars.palette.grey[600] }}
+            />
+            Oldest
+          </MenuItem>
+          <MenuItem key="Newest" onClick={handleClose}>
+            <Iconify
+              icon="mdi:sort-calendar-descending"
+              sx={{ mr: 1, color: theme.vars.palette.grey[600] }}
+            />
+            Newest
+          </MenuItem>
         </Menu>
       </Box>
       <Divider />

@@ -3,9 +3,9 @@ import type { IChatMessage, IChatParticipant } from 'src/types/chat';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
-import { Badge, Tooltip } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import { Badge, Tooltip, useTheme } from '@mui/material';
 
 import { fDateTime } from 'src/utils/format-time';
 
@@ -25,6 +25,7 @@ type Props = {
 
 export function ChatMessageItem({ message, participants, onOpenLightbox }: Props) {
   const { user } = useMockedUser();
+  const theme = useTheme();
 
   const { me, senderDetails, hasImage } = useMessage({
     message,
@@ -53,13 +54,18 @@ export function ChatMessageItem({ message, participants, onOpenLightbox }: Props
       badgeContent={
         message.note ? (
           <Tooltip title={message.note}>
-            <Iconify icon="mdi:note" width={16} />
+            <IconButton disableTouchRipple sx={{ backgroundColor: theme.vars.palette.grey[300] }}>
+              <Iconify
+                icon="mdi:speaker-notes"
+                width={16}
+                sx={{ color: theme.vars.palette.grey[600] }}
+              />
+            </IconButton>
           </Tooltip>
         ) : (
           0
         )
       }
-      color="primary"
     >
       <Stack
         sx={{
@@ -106,7 +112,7 @@ export function ChatMessageItem({ message, participants, onOpenLightbox }: Props
         opacity: 0,
         top: '100%',
         position: 'absolute',
-        transition: (theme) =>
+        transition: () =>
           theme.transitions.create(['opacity'], { duration: theme.transitions.duration.shorter }),
         ...(me && { right: 0, left: 'unset' }),
       }}

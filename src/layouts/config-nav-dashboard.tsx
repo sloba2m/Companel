@@ -34,7 +34,7 @@ export const navData = [
             icon: <Iconify icon="ic:twotone-people-alt" />,
           },
           {
-            title: 'Inbox Settings',
+            title: 'Inbox',
             path: paths.navigation.settings.inbox,
             icon: <Iconify icon="ic:twotone-all-inbox" />,
           },
