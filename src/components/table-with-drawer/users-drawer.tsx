@@ -11,6 +11,8 @@ import {
   FormControlLabel,
 } from '@mui/material';
 
+import { stylesMode } from 'src/theme/styles';
+
 interface UsersDrawerProps {
   editData: MockUser | null;
 }
@@ -21,11 +23,14 @@ export const UsersDrawer = ({ editData }: UsersDrawerProps) => (
     <TextField label="First name" size="small" defaultValue={editData?.firstName} />
     <TextField label="Last name" size="small" defaultValue={editData?.lastName} />
     <TextField label="Email" size="small" defaultValue={editData?.email} />
-    <Button variant="soft" color="primary" size="small">
-      Save
-    </Button>
 
-    <Card sx={(theme) => ({ p: 2, backgroundColor: theme.vars.palette.primary.lighter })}>
+    <Card
+      sx={(theme) => ({
+        p: 2,
+        backgroundColor: theme.vars.palette.primary.lighter,
+        [stylesMode.dark]: { backgroundColor: theme.vars.palette.primary.dark },
+      })}
+    >
       <FormGroup>
         <FormControlLabel control={<Switch />} label="default-roles-comunication-platform" />
         <FormControlLabel control={<Switch />} label="Administrator" />
@@ -34,5 +39,9 @@ export const UsersDrawer = ({ editData }: UsersDrawerProps) => (
         <FormControlLabel control={<Switch />} label="offline_access" />
       </FormGroup>
     </Card>
+
+    <Button variant="soft" color="primary" size="small">
+      Save
+    </Button>
   </Box>
 );
