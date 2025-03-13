@@ -40,7 +40,7 @@ export function ChatHeaderCompose({ contacts, onAddRecipients, onOpenMobile }: P
 
   const recipientRender = (
     <Autocomplete
-      sx={{ minWidth: 320, flexGrow: { xs: 1, md: 'unset' } }}
+      sx={{ minWidth: mdDown ? 240 : 400, flexGrow: { xs: 1, md: 'unset' } }}
       multiple
       limitTags={3}
       popupIcon={null}
@@ -123,26 +123,22 @@ export function ChatHeaderCompose({ contacts, onAddRecipients, onOpenMobile }: P
           <Iconify width={16} icon="solar:users-group-rounded-bold" />
         </IconButton>
       )}
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.2, width: '100%' }}>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          <Box sx={{ display: 'flex' }}>
-            <Typography variant="subtitle2" sx={{ color: 'text.primary', mr: 2, my: 1.4 }}>
-              To:
-            </Typography>
-            {recipientRender}
-          </Box>
-          <Box sx={{ display: 'flex' }}>
-            <Typography variant="subtitle2" sx={{ color: 'text.primary', mr: 2, my: 1.4 }}>
-              Cc:
-            </Typography>
-            {recipientRender}
-          </Box>
-        </Box>
-        <Box sx={{ display: 'flex' }}>
-          <Typography variant="subtitle2" sx={{ color: 'text.primary', mr: 2, my: 1.4 }}>
+      <Box sx={{ display: 'flex', gap: 2, width: '100%', mt: 0.7 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 2 }}>
+          <Typography variant="subtitle2" sx={{ color: 'text.primary', my: 1.1 }}>
+            To:
+          </Typography>
+          <Typography variant="subtitle2" sx={{ color: 'text.primary', my: 1.1 }}>
+            Cc:
+          </Typography>
+          <Typography variant="subtitle2" sx={{ color: 'text.primary', my: 1.1 }}>
             Subject:
           </Typography>
-          <TextField size="small" placeholder="Add Subject" sx={{ minWidth: '288px' }} />
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 2 }}>
+          {recipientRender}
+          {recipientRender}
+          <TextField size="small" placeholder="Add Subject" />
         </Box>
       </Box>
     </>
