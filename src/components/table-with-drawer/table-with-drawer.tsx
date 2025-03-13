@@ -53,12 +53,26 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
         }}
       >
         <Typography variant="h4">{entity}</Typography>
-        <Button variant="soft" color="primary" onClick={tableDrawer.onOpenDrawer}>
-          Create
+        <Button
+          variant="soft"
+          color="primary"
+          onClick={() =>
+            tableDrawer.isOpenDrawer ? tableDrawer.onCloseDrawer() : tableDrawer.onOpenDrawer()
+          }
+        >
+          {tableDrawer.isOpenDrawer ? 'Close' : 'Create'}
         </Button>
       </Box>
       <Card sx={{ display: 'flex', flexGrow: 1, ml: isInSubMenu && lgUp ? '87px' : 0 }}>
-        <Stack direction="column" sx={{ width: '100%' }}>
+        <Stack
+          direction="column"
+          sx={(theme) => ({
+            width: tableDrawer.isOpenDrawer && mdUp ? `calc(100% - ${DRAWER_WIDTH})` : '100%',
+            transition: theme.transitions.create(['width'], {
+              duration: theme.transitions.duration.short,
+            }),
+          })}
+        >
           <Stack
             direction={mdUp ? 'row' : 'column'}
             sx={{ gap: 2, p: 2, justifyContent: onSearch ? 'space-between' : 'flex-end' }}
@@ -80,15 +94,33 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
           />
         </Stack>
 
-        <Drawer
-          anchor="right"
-          open={tableDrawer.isOpenDrawer}
-          onClose={tableDrawer.onCloseDrawer}
-          slotProps={{ backdrop: { invisible: true } }}
-          PaperProps={{ sx: { width: mdUp ? DRAWER_WIDTH : MOBILE_DRAWER_WIDTH } }}
-        >
-          {drawerContent}
-        </Drawer>
+        {mdUp ? (
+          <Box
+            sx={(theme) => ({
+              minHeight: 0,
+              flex: '1 1 auto',
+              width: DRAWER_WIDTH,
+              display: { xs: 'none', lg: 'flex' },
+              borderLeft: `solid 1px ${theme.vars.palette.divider}`,
+              transition: theme.transitions.create(['width'], {
+                duration: theme.transitions.duration.short,
+              }),
+              ...(!tableDrawer.isOpenDrawer && { width: '0px' }),
+            })}
+          >
+            {tableDrawer.isOpenDrawer && drawerContent}
+          </Box>
+        ) : (
+          <Drawer
+            anchor="right"
+            open={tableDrawer.isOpenDrawer}
+            onClose={tableDrawer.onCloseDrawer}
+            slotProps={{ backdrop: { invisible: true } }}
+            PaperProps={{ sx: { width: MOBILE_DRAWER_WIDTH } }}
+          >
+            {drawerContent}
+          </Drawer>
+        )}
       </Card>
     </Container>
   );
