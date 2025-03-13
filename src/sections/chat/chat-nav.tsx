@@ -11,6 +11,7 @@ import {
   Menu,
   Divider,
   MenuItem,
+  Checkbox,
   TextField,
   IconButton,
   Typography,
@@ -136,38 +137,24 @@ export function ChatNav({
     setOpen(null);
   }, []);
 
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+
+  const handleToggle = (value: string) => {
+    setSelectedFilters((prev) =>
+      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
+    );
+  };
+
   const renderContent = (
     <>
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
-          // width: mdUp ? NAV_WIDTH : '890px',
           p: 1,
           gap: 1,
-          // borderRight: mdUp ? `solid 1px ${theme.vars.palette.divider}` : 'none',
         }}
       >
-        {/* <Autocomplete
-          // fullWidth
-          sx={{
-            flexGrow: 1,
-            // minWidth: '200px',
-          }}
-          options={['Rotmark', 'Demo Account', 'Widget']}
-          // getOptionLabel={(option) => option.title}
-          value="Rotmark"
-          disableClearable
-          size="small"
-          renderInput={(params) => (
-            <TextField {...params} placeholder="Search Inboxes" margin="none" />
-          )}
-          // renderOption={(props, option) => (
-          //   <li {...props} key={option.title}>
-          //     {option.title}
-          //   </li>
-          // )}
-        /> */}
         <TextField
           placeholder="Search Inboxes"
           margin="none"
@@ -214,34 +201,20 @@ export function ChatNav({
           </IconButton>
         </Box>
         <Menu id="simple-menu" anchorEl={isOpen} onClose={handleClose} open={!!isOpen}>
-          <TextField
-            size="small"
-            sx={{ mb: 2 }}
-            placeholder="Find in inbox"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Iconify icon="ic:baseline-search" width={24} />
-                </InputAdornment>
-              ),
-            }}
-          />
           <Typography variant="body1" fontWeight="fontWeightBold" sx={{ ml: 1, mb: 0.5 }}>
-            Sort
+            Inbox selector
           </Typography>
-          <MenuItem key="Oldest" onClick={handleClose}>
-            <Iconify
-              icon="mdi:sort-calendar-ascending"
-              sx={{ mr: 1, color: theme.vars.palette.grey[600] }}
-            />
-            Oldest
+          <MenuItem key="Rotmark" onClick={() => handleToggle('Rotmark')}>
+            <Checkbox checked={selectedFilters.includes('Rotmark')} />
+            Rotmark
           </MenuItem>
-          <MenuItem key="Newest" onClick={handleClose}>
-            <Iconify
-              icon="mdi:sort-calendar-descending"
-              sx={{ mr: 1, color: theme.vars.palette.grey[600] }}
-            />
-            Newest
+          <MenuItem key="Demo account" onClick={() => handleToggle('Demo account')}>
+            <Checkbox checked={selectedFilters.includes('Demo account')} />
+            Demo account
+          </MenuItem>
+          <MenuItem key="Widget" onClick={() => handleToggle('Widget')}>
+            <Checkbox checked={selectedFilters.includes('Widget')} />
+            Widget
           </MenuItem>
         </Menu>
       </Box>
