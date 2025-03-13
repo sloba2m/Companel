@@ -31,6 +31,8 @@ export function Layout({ slots, sx, ...other }: Props) {
         pr: 1,
         pl: 2.5,
         flexShrink: 0,
+        rowGap: 1,
+        flexWrap: 'wrap',
         borderBottom: (theme) => `solid 1px ${theme.vars.palette.divider}`,
       }}
     >

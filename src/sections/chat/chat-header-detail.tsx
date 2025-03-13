@@ -11,7 +11,15 @@ import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import AvatarGroup, { avatarGroupClasses } from '@mui/material/AvatarGroup';
-import { Box, Alert, Button, Snackbar, TextField, Autocomplete } from '@mui/material';
+import {
+  Box,
+  Alert,
+  Button,
+  Snackbar,
+  TextField,
+  Autocomplete,
+  InputAdornment,
+} from '@mui/material';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
@@ -80,7 +88,7 @@ export function ChatHeaderDetail({ collapseNav, participants, loading, collapseM
     .map((word) => word[0])
     .join('');
   const renderSingle = (
-    <Stack direction="row" alignItems="center" spacing={2}>
+    <Stack direction="row" alignItems="center" spacing={2} mr={6}>
       {smUp && <Avatar alt={singleParticipant?.name}>{initials}</Avatar>}
 
       <ListItemText primary={singleParticipant?.name} secondary="email@email.com" />
@@ -108,11 +116,24 @@ export function ChatHeaderDetail({ collapseNav, participants, loading, collapseM
       )}
       {group ? renderGroup : renderSingle}
 
+      <TextField
+        placeholder="Search Chat"
+        margin="none"
+        size="small"
+        sx={{ flexGrow: 10 }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <Iconify icon="ic:baseline-search" width={24} />
+            </InputAdornment>
+          ),
+        }}
+      />
+
       <Stack
         direction="row"
-        flexGrow={1}
         justifyContent="flex-end"
-        sx={{ gap: 2, flexWrap: 'wrap-reverse' }}
+        sx={{ gap: 2, flexWrap: 'wrap-reverse', flexGrow: 1 }}
       >
         <Autocomplete
           sx={{ minWidth: '200px' }}

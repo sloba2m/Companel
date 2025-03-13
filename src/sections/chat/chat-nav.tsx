@@ -14,7 +14,6 @@ import {
   TextField,
   IconButton,
   Typography,
-  Autocomplete,
   InputAdornment,
 } from '@mui/material';
 
@@ -149,7 +148,7 @@ export function ChatNav({
           // borderRight: mdUp ? `solid 1px ${theme.vars.palette.divider}` : 'none',
         }}
       >
-        <Autocomplete
+        {/* <Autocomplete
           // fullWidth
           sx={{
             flexGrow: 1,
@@ -168,6 +167,19 @@ export function ChatNav({
           //     {option.title}
           //   </li>
           // )}
+        /> */}
+        <TextField
+          placeholder="Search Inboxes"
+          margin="none"
+          size="small"
+          sx={{ flexGrow: 1 }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Iconify icon="ic:baseline-search" width={24} />
+              </InputAdornment>
+            ),
+          }}
         />
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <IconButton>
