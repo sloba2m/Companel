@@ -91,6 +91,11 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
             disableRowSelectionOnClick
             disableColumnMenu
             disableColumnResize
+            sx={{
+              '&.MuiDataGrid-root .MuiDataGrid-cell:focus-within': {
+                outline: 'none !important',
+              },
+            }}
           />
         </Stack>
 

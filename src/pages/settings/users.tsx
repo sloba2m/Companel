@@ -81,7 +81,7 @@ export default function Page() {
         entity="Users"
         columns={columns}
         rows={mockUsers}
-        drawerContent={<UsersDrawer editData={editData} />}
+        drawerContent={<UsersDrawer key={editData?.id} editData={editData} />}
         onSearch={() => console.log('test')}
         tableDrawer={tableDrawer}
         isInSubMenu
