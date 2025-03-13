@@ -1,7 +1,7 @@
 import type { IChatParticipant } from 'src/types/chat';
 import type { SnackbarCloseReason } from '@mui/material';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
@@ -34,6 +34,7 @@ type Props = {
 export function ChatHeaderDetail({ collapseNav, participants, loading, collapseMenuNav }: Props) {
   const popover = usePopover();
 
+  const lgUp = useResponsive('up', 'lg');
   const smUp = useResponsive('up', 'sm');
   const mdDown = useResponsive('down', 'md');
 
@@ -41,7 +42,16 @@ export function ChatHeaderDetail({ collapseNav, participants, loading, collapseM
 
   const singleParticipant = participants[0];
 
-  const { onOpenMobile } = collapseNav;
+  const { collapseDesktop, onCollapseDesktop, onOpenMobile } = collapseNav;
+
+  const handleToggleNav = useCallback(() => {
+    if (lgUp) {
+      onCollapseDesktop();
+    } else {
+      onOpenMobile();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lgUp]);
 
   const [open, setOpen] = useState(false);
 
@@ -137,8 +147,12 @@ export function ChatHeaderDetail({ collapseNav, participants, loading, collapseM
         </Button>
 
         <Box sx={{ margin: 'auto 0' }}>
-          <IconButton onClick={onOpenMobile} size="small">
-            <Iconify width={24} icon="ic:baseline-arrow-back-ios-new" />
+          <IconButton onClick={handleToggleNav} size="small">
+            <Iconify
+              width={24}
+              icon="ic:baseline-arrow-back-ios-new"
+              sx={{ transform: `rotate(${!collapseDesktop ? '180deg' : '0'})` }}
+            />
           </IconButton>
         </Box>
       </Stack>
