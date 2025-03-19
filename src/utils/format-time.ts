@@ -267,3 +267,8 @@ export function fSub({
 
   return result;
 }
+
+export const formatSeconds = (seconds: number) => {
+  const timeDuration = dayjs.duration(seconds, 'seconds');
+  return `${timeDuration.minutes()}:${timeDuration.seconds().toString().padStart(2, '0')}`;
+};

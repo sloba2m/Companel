@@ -1,15 +1,20 @@
+import type { StatItem } from 'src/components/widget/stat-card';
+
 import { Helmet } from 'react-helmet-async';
 
-import { Box, Card, Grid, CardHeader, CardContent } from '@mui/material';
+import { Box, Card, Grid } from '@mui/material';
+
+import { formatSeconds } from 'src/utils/format-time';
 
 import { _mock } from 'src/_mock';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { ChartArea } from 'src/layouts/components/chart-area';
 import { BookingBooked } from 'src/layouts/components/booking-booked';
 import { BookingTotalIncomes } from 'src/layouts/components/booking-total-incomes';
+import { useGetUsersDashboardData, useGetConversationDashboardData } from 'src/actions/dashboard';
 
 import { svgColorClasses } from 'src/components/svg-color';
-import { AppWidget } from 'src/components/widget/app-widget';
+import { StatCard } from 'src/components/widget/stat-card';
 
 // ----------------------------------------------------------------------
 
@@ -22,6 +27,35 @@ export const _bookingsOverview = [...Array(3)].map((_, index) => ({
 }));
 
 export default function Page() {
+  const { data: conversationData } = useGetConversationDashboardData();
+  const { data: usersData } = useGetUsersDashboardData();
+
+  const conversationStats: StatItem[] = [
+    { title: 'Queue size', total: conversationData?.countTotal, icon: 'mdi:human-queue' },
+    {
+      title: 'Average time in queue',
+      total: formatSeconds(conversationData?.timeAverageWaiting ?? 0),
+      icon: 'mdi:access-time',
+      sx: { bgcolor: 'info.dark', [`& .${svgColorClasses.root}`]: { color: 'info.light' } },
+    },
+  ];
+
+  const userStats: StatItem[] = [
+    {
+      title: 'Total',
+      total: usersData?.countUsers,
+      icon: 'mdi:users-group',
+      sx: { bgcolor: 'info.darker', [`& .${svgColorClasses.root}`]: { color: 'info.light' } },
+    },
+    {
+      title: 'Online',
+      total: usersData?.countUsersOnline,
+      icon: 'mdi:account-online',
+      flipIcon: true,
+      sx: { bgcolor: 'primary.darker', [`& .${svgColorClasses.root}`]: { color: 'primary.light' } },
+    },
+  ];
+
   return (
     <>
       <Helmet>
@@ -30,63 +64,10 @@ export default function Page() {
 
       <DashboardContent maxWidth="xl">
         <Grid container spacing={3} justifyContent="center">
-          <Grid item xs={12} md={6}>
-            <Card>
-              <CardHeader title="Conversations" />
-              <CardContent>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} sm={6}>
-                    <AppWidget title="Queue size" total={2} icon="mdi:human-queue" />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <AppWidget
-                      title="Average time in queue"
-                      total={1035}
-                      icon="mdi:access-time"
-                      sx={{
-                        bgcolor: 'info.dark',
-                        [`& .${svgColorClasses.root}`]: { color: 'info.light' },
-                      }}
-                    />
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Card>
-              <CardHeader title="Users" />
-              <CardContent>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} sm={6}>
-                    <AppWidget
-                      title="Total"
-                      total={5}
-                      icon="mdi:users-group"
-                      sx={{
-                        bgcolor: 'info.darker',
-                        [`& .${svgColorClasses.root}`]: { color: 'info.light' },
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <AppWidget
-                      title="Online"
-                      total={2}
-                      icon="mdi:account-online"
-                      flipIcon
-                      sx={{
-                        bgcolor: 'primary.darker',
-                        [`& .${svgColorClasses.root}`]: { color: 'primary.light' },
-                      }}
-                    />
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
+          <StatCard headerTitle="Conversations" data={conversationStats} />
+          <StatCard headerTitle="Users" data={userStats} />
         </Grid>
+
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
           <Box
             sx={{

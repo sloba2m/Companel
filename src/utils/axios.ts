@@ -4,6 +4,8 @@ import axios from 'axios';
 
 import { CONFIG } from 'src/config-global';
 
+import getKeycloak from './keycloakService';
+
 // ----------------------------------------------------------------------
 
 const axiosInstance = axios.create({ baseURL: CONFIG.site.serverUrl });
@@ -21,7 +23,20 @@ export const fetcher = async (args: string | [string, AxiosRequestConfig]) => {
   try {
     const [url, config] = Array.isArray(args) ? args : [args];
 
-    const res = await axiosInstance.get(url, { ...config });
+    const keycloak = getKeycloak();
+
+    await keycloak.updateToken(30);
+
+    const { token } = keycloak;
+
+    const res = await axiosInstance.get(url, {
+      ...config,
+      withCredentials: true,
+      headers: {
+        ...config?.headers,
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     return res.data;
   } catch (error) {

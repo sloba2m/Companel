@@ -2,6 +2,8 @@ import 'src/global.css';
 
 // ----------------------------------------------------------------------
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 import { Router } from 'src/routes/sections';
 
 import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
@@ -16,28 +18,32 @@ import { AuthProvider } from 'src/auth/context/jwt';
 
 // ----------------------------------------------------------------------
 
+const queryClient = new QueryClient();
+
 export default function App() {
   useScrollToTop();
 
   return (
     <AuthProvider>
-      <SettingsProvider settings={defaultSettings}>
-        <ThemeProvider>
-          <MotionLazy>
-            <ProgressBar />
-            <SettingsDrawer
-              hideCompact
-              hideContrast
-              hideDirection
-              hideFont
-              hideNavColor
-              hideNavLayout
-              hidePresets
-            />
-            <Router />
-          </MotionLazy>
-        </ThemeProvider>
-      </SettingsProvider>
+      <QueryClientProvider client={queryClient}>
+        <SettingsProvider settings={defaultSettings}>
+          <ThemeProvider>
+            <MotionLazy>
+              <ProgressBar />
+              <SettingsDrawer
+                hideCompact
+                hideContrast
+                hideDirection
+                hideFont
+                hideNavColor
+                hideNavLayout
+                hidePresets
+              />
+              <Router />
+            </MotionLazy>
+          </ThemeProvider>
+        </SettingsProvider>
+      </QueryClientProvider>
     </AuthProvider>
   );
 }
