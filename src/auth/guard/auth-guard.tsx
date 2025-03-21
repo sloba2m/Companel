@@ -14,13 +14,11 @@ export function AuthGuard({ children }: Props) {
   const pathname = usePathname();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const keycloak = getKeycloak();
-  console.log(keycloak);
 
   useEffect(() => {
     const initKeycloak = async () => {
       try {
         if (!keycloak.authenticated) {
-          console.log('init');
           const authenticated = await keycloak.init({
             onLoad: 'check-sso',
           });
@@ -39,8 +37,6 @@ export function AuthGuard({ children }: Props) {
         }
       }
     };
-
-    console.log(isAuthenticated);
 
     if (!isAuthenticated) initKeycloak();
   }, [pathname, isAuthenticated, keycloak]);

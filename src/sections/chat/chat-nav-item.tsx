@@ -1,6 +1,6 @@
-import type { IChatConversation } from 'src/types/chat';
+import type { Conversation } from 'src/types/chat';
 
-import { useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import { Chip } from '@mui/material';
@@ -22,14 +22,14 @@ import { Iconify } from 'src/components/iconify';
 
 import { useMockedUser } from 'src/auth/hooks';
 
-import { useNavItem } from './hooks/use-nav-item';
+import { AssignedStatus, ConversationStatus } from 'src/types/chat';
 
 // ----------------------------------------------------------------------
 
 type Props = {
   selected: boolean;
   onCloseMobile: () => void;
-  conversation: IChatConversation;
+  conversation: Conversation;
 };
 
 export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
@@ -38,11 +38,6 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
   const mdUp = useResponsive('up', 'md');
 
   const router = useRouter();
-
-  const { displayName, displayText, lastActivity } = useNavItem({
-    conversation,
-    currentUserId: `${user?.id}`,
-  });
 
   const handleClickConversation = useCallback(async () => {
     try {
@@ -57,6 +52,23 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
       console.error(error);
     }
   }, [conversation.id, mdUp, onCloseMobile, router]);
+
+  const assignedStatus: AssignedStatus = useMemo(() => {
+    if (conversation.status === ConversationStatus.RESOLVED) {
+      return AssignedStatus.RESOLVED;
+    }
+    return conversation.assignee ? AssignedStatus.ASSIGNED : AssignedStatus.UNASSIGNED;
+  }, [conversation.status, conversation.assignee]);
+
+  const assignedColor = useMemo(() => {
+    const statusToColorMap: Record<AssignedStatus, 'info' | 'success' | 'error'> = {
+      [AssignedStatus.ASSIGNED]: 'info',
+      [AssignedStatus.RESOLVED]: 'success',
+      [AssignedStatus.UNASSIGNED]: 'error',
+    };
+
+    return statusToColorMap[assignedStatus];
+  }, [assignedStatus]);
 
   return (
     <Box component="li" sx={{ display: 'flex' }}>
@@ -73,7 +85,7 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
         <Badge
           color="error"
           overlap="circular"
-          badgeContent={conversation.unreadCount}
+          badgeContent={conversation.unreadMessages}
           anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
         >
           <Iconify width={24} icon="logos:facebook" />
@@ -101,50 +113,29 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
               component="span"
               sx={{ fontSize: 12, color: 'text.disabled' }}
             >
-              {fDate(lastActivity)}
+              {fDate(conversation.lastContactActivity)}
             </Typography>
           </Box>
           <ListItemText
             sx={{ width: '100%' }}
-            primary={displayName}
+            primary={conversation.contact.name}
             primaryTypographyProps={{ noWrap: true, component: 'span', variant: 'subtitle2' }}
-            secondary={displayText}
+            secondary={conversation.subject}
             secondaryTypographyProps={{
               noWrap: true,
               component: 'span',
-              variant: conversation.unreadCount ? 'subtitle2' : 'body2',
-              color: conversation.unreadCount ? 'text.primary' : 'text.secondary',
+              variant: conversation.unreadMessages ? 'subtitle2' : 'body2',
+              color: conversation.unreadMessages ? 'text.primary' : 'text.secondary',
             }}
           />
           <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mt: 1 }}>
             <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-              <Chip variant="soft" label="tag 1" size="small" />
-              <Chip variant="soft" label="tag 2" size="small" />
+              {conversation.tags.map((tag) => (
+                <Chip variant="soft" label={tag.name} size="small" />
+              ))}
             </Box>
-            <Chip variant="outlined" label="Assigned" size="small" color="success" />
+            <Chip variant="outlined" label={assignedStatus} size="small" color={assignedColor} />
           </Box>
-
-          {/* <Stack alignItems="flex-end" sx={{ alignSelf: 'stretch' }}>
-            <Typography
-              noWrap
-              variant="body2"
-              component="span"
-              sx={{ mb: 1.5, fontSize: 12, color: 'text.disabled' }}
-            >
-              {fToNow(lastActivity)}
-            </Typography>
-
-            {!!conversation.unreadCount && (
-              <Box
-                sx={{
-                  width: 8,
-                  height: 8,
-                  bgcolor: 'info.main',
-                  borderRadius: '50%',
-                }}
-              />
-            )}
-          </Stack> */}
         </Box>
       </ListItemButton>
     </Box>

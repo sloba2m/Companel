@@ -1,10 +1,18 @@
-import type { IChatMessage, IChatParticipant, IChatConversation } from 'src/types/chat';
+import type { StatusFilters } from 'src/sections/chat/chat-nav';
+import type {
+  PageInfo,
+  IChatMessage,
+  Conversation,
+  IChatParticipant,
+  IChatConversation,
+} from 'src/types/chat';
 
 import { mutate } from 'swr';
 import { useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 import { keyBy } from 'src/utils/helper';
-import axios, { endpoints } from 'src/utils/axios';
+import axios, { fetcher, endpoints } from 'src/utils/axios';
 
 import { CONTACTS_DATA, CONVERSATIONS_DATA } from './chat-mock';
 
@@ -53,7 +61,7 @@ type ConversationsData = {
   conversations: IChatConversation[];
 };
 
-export function useGetConversations() {
+export function useGetConversationsOld() {
   // const url = [CHART_ENDPOINT, { params: { endpoint: 'conversations' } }];
 
   // const { data, isLoading, error, isValidating } = useSWR<ConversationsData>(
@@ -224,3 +232,63 @@ export async function clickConversation(conversationId: string) {
     false
   );
 }
+
+export interface ConversationData {
+  content: Conversation[];
+  page: PageInfo;
+}
+
+interface UseGetConversationsParams {
+  page?: number;
+  size?: number;
+  inboxId: string;
+  filter: StatusFilters;
+  sort?: string;
+}
+
+export const useGetConversations = (
+  {
+    page = 0,
+    size = 10,
+    inboxId,
+    filter,
+    sort = 'lastContactActivity,desc',
+  }: UseGetConversationsParams,
+  options?: { enabled?: boolean }
+) => {
+  const params: Record<string, any> = {
+    page,
+    size,
+    inboxId,
+    sort,
+  };
+
+  switch (filter) {
+    case 'unhandled':
+      params.assigned = false;
+      break;
+    case 'mine':
+      params.myConversations = true;
+      break;
+    case 'closed':
+      params.status = 'RESOLVED';
+      break;
+    case 'all':
+      break;
+    default:
+      console.warn(`Unknown filter type: ${filter}`);
+      break;
+  }
+
+  return useQuery<ConversationData>({
+    queryKey: ['conversations', { page, size, inboxId, filter, sort }],
+    queryFn: () =>
+      fetcher([
+        '/conversation',
+        {
+          params,
+        },
+      ]),
+    enabled: options?.enabled !== false,
+  });
+};

@@ -1,3 +1,4 @@
+import type { ConversationData } from 'src/actions/chat';
 import type { IChatParticipant, IChatConversations } from 'src/types/chat';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -40,20 +41,35 @@ import type { UseNavCollapseReturn } from './hooks/use-collapse-nav';
 export const NAV_WIDTH = 420;
 export const NAV_WIDTH_MOBILE = 320;
 
+export enum StatusFilters {
+  ALL = 'all',
+  UNHANDLED = 'unhandled',
+  MINE = 'mine',
+  CLOSED = 'closed',
+}
+
 type Props = {
   loading: boolean;
   selectedConversationId: string;
-  contacts: IChatParticipant[];
+  selectedInboxes: string[];
+  handleInboxChange: (value: string) => void;
   collapseNav: UseNavCollapseReturn;
   conversations: IChatConversations;
+  conversationData?: ConversationData;
+  selectedFilter: StatusFilters;
+  setSelectedFilter: React.Dispatch<React.SetStateAction<StatusFilters>>;
 };
 
 export function ChatNav({
   loading,
-  contacts,
+  selectedInboxes,
+  handleInboxChange,
   conversations,
   collapseNav,
   selectedConversationId,
+  conversationData,
+  selectedFilter,
+  setSelectedFilter,
 }: Props) {
   const theme = useTheme();
   const router = useRouter();
@@ -107,11 +123,11 @@ export function ChatNav({
   const renderList = (
     <nav>
       <Box component="ul">
-        {conversations.allIds.map((conversationId) => (
+        {conversationData?.content.map((conversation) => (
           <ChatNavItem
-            key={conversationId}
-            conversation={conversations.byId[conversationId]}
-            selected={conversationId === selectedConversationId}
+            key={conversation.id}
+            conversation={conversation}
+            selected={conversation.id === selectedConversationId}
             onCloseMobile={onCloseMobile}
           />
         ))}
@@ -128,7 +144,6 @@ export function ChatNav({
   );
 
   const [selectedSocial, setSelectedSocial] = useState('all');
-  const [selectedFilter, setSelectedFilter] = useState('all');
   const [isOpen, setOpen] = useState<null | HTMLElement>(null);
 
   const handleOpen = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -138,14 +153,6 @@ export function ChatNav({
   const handleClose = useCallback(() => {
     setOpen(null);
   }, []);
-
-  const [selectedInboxes, setSelectedInboxes] = useState<string[]>([]);
-
-  const handleToggle = (value: string) => {
-    setSelectedInboxes((prev) =>
-      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
-    );
-  };
 
   const renderContent = (
     <>
@@ -184,10 +191,10 @@ export function ChatNav({
           variant="fullWidth"
           sx={{ flexGrow: 1 }}
         >
-          <Tab key="all" value="all" label="All" />
-          <Tab key="unhandled" value="unhandled" label="Unhandled" />
-          <Tab key="mine" value="mine" label="Mine" />
-          <Tab key="closed" value="closed" label="Closed" />
+          <Tab key="all" value={StatusFilters.ALL} label="All" />
+          <Tab key="unhandled" value={StatusFilters.UNHANDLED} label="Unhandled" />
+          <Tab key="mine" value={StatusFilters.MINE} label="Mine" />
+          <Tab key="closed" value={StatusFilters.CLOSED} label="Closed" />
         </CustomTabs>
         <Box
           sx={{
@@ -208,12 +215,8 @@ export function ChatNav({
           </Typography>
           {!isLoading && workspaceData && (
             <>
-              <MenuItem key={workspaceData.name} onClick={() => handleToggle(workspaceData.name)}>
-                <Checkbox checked={selectedInboxes.includes(workspaceData.name)} />
-                {workspaceData?.name}
-              </MenuItem>
               {workspaceData?.inboxes.map((inbox) => (
-                <MenuItem key={inbox.id} onClick={() => handleToggle(inbox.id)}>
+                <MenuItem key={inbox.id} onClick={() => handleInboxChange(inbox.id)}>
                   <Checkbox checked={selectedInboxes.includes(inbox.id)} />
                   {inbox.name}
                 </MenuItem>
@@ -245,7 +248,8 @@ export function ChatNav({
         renderLoading
       ) : (
         <Scrollbar sx={{ pb: 1 }}>
-          {searchContacts.query && !!conversations.allIds.length ? renderListResults : renderList}
+          {/* {searchContacts.query && !!conversations.allIds.length ? renderListResults : renderList} */}
+          {renderList}
         </Scrollbar>
       )}
     </>

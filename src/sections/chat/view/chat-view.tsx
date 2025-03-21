@@ -9,15 +9,20 @@ import { useResponsive } from 'src/hooks/use-responsive';
 
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
-import { useGetContacts, useGetConversation, useGetConversations } from 'src/actions/chat';
+import {
+  useGetContacts,
+  useGetConversation,
+  useGetConversations,
+  useGetConversationsOld,
+} from 'src/actions/chat';
 
 import { EmptyContent } from 'src/components/empty-content';
 
 import { useMockedUser } from 'src/auth/hooks';
 
 import { Layout } from '../layout';
-import { ChatNav } from '../chat-nav';
 import { ChatRoom } from '../chat-room';
+import { ChatNav, StatusFilters } from '../chat-nav';
 import { ChatMessageList } from '../chat-message-list';
 import { ChatMessageInput } from '../chat-message-input';
 import { ChatHeaderDetail } from '../chat-header-detail';
@@ -39,7 +44,21 @@ export function ChatView() {
 
   const [recipients, setRecipients] = useState<IChatParticipant[]>([]);
 
-  const { conversations, conversationsLoading } = useGetConversations();
+  const [selectedInboxes, setSelectedInboxes] = useState<string[]>([]);
+  const [selectedFilter, setSelectedFilter] = useState<StatusFilters>(StatusFilters.ALL);
+
+  const handleInboxChange = (value: string) => {
+    setSelectedInboxes((prev) =>
+      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
+    );
+  };
+
+  const { conversations, conversationsLoading } = useGetConversationsOld();
+
+  const { data: conversationsData } = useGetConversations(
+    { inboxId: selectedInboxes[0] ? selectedInboxes[0] : '', filter: selectedFilter },
+    { enabled: !!selectedInboxes.length }
+  );
 
   const { conversation, conversationError, conversationLoading } = useGetConversation(
     `${selectedConversationId}`
@@ -104,11 +123,15 @@ export function ChatView() {
           ),
           nav: (
             <ChatNav
-              contacts={contacts}
               conversations={conversations}
               loading={conversationsLoading}
+              selectedInboxes={selectedInboxes}
+              handleInboxChange={handleInboxChange}
               selectedConversationId={selectedConversationId}
               collapseNav={conversationsNav}
+              conversationData={conversationsData}
+              selectedFilter={selectedFilter}
+              setSelectedFilter={setSelectedFilter}
             />
           ),
           main: (
