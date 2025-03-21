@@ -23,6 +23,8 @@ import { useRouter } from 'src/routes/hooks';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { useGetWorkspaceData } from 'src/actions/account';
+
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { CustomTabs } from 'src/components/custom-tabs';
@@ -54,12 +56,12 @@ export function ChatNav({
   selectedConversationId,
 }: Props) {
   const theme = useTheme();
-
   const router = useRouter();
-
   const mdUp = useResponsive('up', 'md');
 
   const { openMobile, onCloseMobile, onCloseDesktop } = collapseNav;
+
+  const { data: workspaceData, isLoading } = useGetWorkspaceData();
 
   const [searchContacts, setSearchContacts] = useState<{
     query: string;
@@ -137,10 +139,10 @@ export function ChatNav({
     setOpen(null);
   }, []);
 
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [selectedInboxes, setSelectedInboxes] = useState<string[]>([]);
 
   const handleToggle = (value: string) => {
-    setSelectedFilters((prev) =>
+    setSelectedInboxes((prev) =>
       prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
     );
   };
@@ -204,18 +206,20 @@ export function ChatNav({
           <Typography variant="body1" fontWeight="fontWeightBold" sx={{ ml: 1, mb: 0.5 }}>
             Inbox selector
           </Typography>
-          <MenuItem key="Rotmark" onClick={() => handleToggle('Rotmark')}>
-            <Checkbox checked={selectedFilters.includes('Rotmark')} />
-            Rotmark
-          </MenuItem>
-          <MenuItem key="Demo account" onClick={() => handleToggle('Demo account')}>
-            <Checkbox checked={selectedFilters.includes('Demo account')} />
-            Demo account
-          </MenuItem>
-          <MenuItem key="Widget" onClick={() => handleToggle('Widget')}>
-            <Checkbox checked={selectedFilters.includes('Widget')} />
-            Widget
-          </MenuItem>
+          {!isLoading && workspaceData && (
+            <>
+              <MenuItem key={workspaceData.name} onClick={() => handleToggle(workspaceData.name)}>
+                <Checkbox checked={selectedInboxes.includes(workspaceData.name)} />
+                {workspaceData?.name}
+              </MenuItem>
+              {workspaceData?.inboxes.map((inbox) => (
+                <MenuItem key={inbox.id} onClick={() => handleToggle(inbox.id)}>
+                  <Checkbox checked={selectedInboxes.includes(inbox.id)} />
+                  {inbox.name}
+                </MenuItem>
+              ))}
+            </>
+          )}
         </Menu>
       </Box>
       <Divider />
