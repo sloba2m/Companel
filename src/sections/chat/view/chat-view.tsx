@@ -10,7 +10,7 @@ import { useResponsive } from 'src/hooks/use-responsive';
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
 import {
-  useGetContacts,
+  useGetContactsOld,
   useGetConversation,
   useGetConversations,
   useGetConversationsOld,
@@ -36,7 +36,7 @@ export function ChatView() {
 
   const { user } = useMockedUser();
 
-  const { contacts } = useGetContacts();
+  const { contacts } = useGetContactsOld();
 
   const searchParams = useSearchParams();
 

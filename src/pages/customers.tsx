@@ -1,10 +1,10 @@
-import type { Customer } from 'src/types/customers';
-import type { CustomerPayload } from 'src/actions/customers';
-import type { GridColDef, GridPaginationModel } from '@mui/x-data-grid';
+import type { GridColDef } from '@mui/x-data-grid';
+import type { Customer, CustomerPayload } from 'src/types/customers';
 
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
+import { usePagination } from 'src/hooks/use-pagination';
 import { useTableDrawer } from 'src/hooks/use-table-drawer';
 
 import { useGetCustomers, useCreateCustomer } from 'src/actions/customers';
@@ -23,10 +23,7 @@ const metadata = { title: `Customers` };
 export default function Page() {
   const [search, setSearch] = useState('');
 
-  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
-    page: 0,
-    pageSize: 10,
-  });
+  const { paginationModel, setPaginationModel } = usePagination();
 
   const { data: customersData, isLoading } = useGetCustomers({
     search,

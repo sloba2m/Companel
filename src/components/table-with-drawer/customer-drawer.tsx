@@ -1,5 +1,4 @@
-import type { Customer } from 'src/types/customers';
-import type { CustomerPayload } from 'src/actions/customers';
+import type { Customer, CustomerPayload } from 'src/types/customers';
 
 import { useState, useEffect } from 'react';
 

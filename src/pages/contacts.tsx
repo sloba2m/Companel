@@ -1,8 +1,13 @@
 import type { GridColDef } from '@mui/x-data-grid';
+import type { Contact, ContactPayload } from 'src/types/contacts';
 
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
+import { usePagination } from 'src/hooks/use-pagination';
 import { useTableDrawer } from 'src/hooks/use-table-drawer';
+
+import { useGetContacts, useCreateContact } from 'src/actions/contacts';
 
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
 import {
@@ -15,39 +20,23 @@ import {
 
 const metadata = { title: `Contacts` };
 
-export interface MockContact {
-  id: string;
-  name: string;
-  phone: string;
-  email: string;
-}
-
-const mockContacts: MockContact[] = [
-  {
-    id: '1',
-    name: 'John Doe',
-    phone: '+1 555-123-4567',
-    email: 'john.doe@example.com',
-  },
-  {
-    id: '2',
-    name: 'Jane Smith',
-    phone: '+1 555-987-6543',
-    email: 'jane.smith@example.com',
-  },
-  {
-    id: '3',
-    name: 'Michael Johnson',
-    phone: '+1 555-456-7890',
-    email: 'michael.johnson@example.com',
-  },
-];
-
 export default function Page() {
-  const tableDrawer = useTableDrawer<MockContact>();
+  const [search, setSearch] = useState('');
+
+  const { paginationModel, setPaginationModel } = usePagination();
+
+  const { data: contactsData, isLoading } = useGetContacts({
+    search,
+    page: paginationModel.page,
+    size: paginationModel.pageSize,
+  });
+
+  const { mutate: createMutation } = useCreateContact();
+
+  const tableDrawer = useTableDrawer<Contact>();
   const { handleEdit, handleDelete, editData } = tableDrawer;
 
-  const columns: GridColDef<MockContact>[] = [
+  const columns: GridColDef<Contact>[] = [
     {
       field: 'name',
       headerName: 'Name',
@@ -71,6 +60,11 @@ export default function Page() {
     getActionColumn(handleEdit, handleDelete),
   ];
 
+  const onSave = (data: ContactPayload) => {
+    if (!editData) createMutation(data);
+    tableDrawer.onCloseDrawer();
+  };
+
   return (
     <>
       <Helmet>
@@ -80,10 +74,14 @@ export default function Page() {
       <TableWithDrawer
         columns={columns}
         entity="Contacts"
-        rows={mockContacts}
-        drawerContent={<ContactDrawer editData={editData} />}
-        onSearch={() => console.log('test')}
+        rows={contactsData?.content ?? []}
+        drawerContent={<ContactDrawer editData={editData} onSave={onSave} />}
+        onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
+        isLoading={isLoading}
+        onPaginationModelChange={setPaginationModel}
+        paginationModel={paginationModel}
+        totalCount={contactsData?.page.totalElements}
       />
     </>
   );

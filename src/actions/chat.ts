@@ -34,7 +34,7 @@ type ContactsData = {
   contacts: IChatParticipant[];
 };
 
-export function useGetContacts() {
+export function useGetContactsOld() {
   // const url = [CHART_ENDPOINT, { params: { endpoint: 'contacts' } }];
 
   // const { data, isLoading, error, isValidating } = useSWR<ContactsData>(url, fetcher, swrOptions);

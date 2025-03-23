@@ -1,5 +1,5 @@
+import type { Contact } from './contacts';
 import type { IDateValue } from './common';
-import type { Customer } from './customers';
 
 // ----------------------------------------------------------------------
 
@@ -47,15 +47,6 @@ export type IChatConversations = {
   byId: Record<string, IChatConversation>;
   allIds: string[];
 };
-
-export interface Contact {
-  id: string;
-  name: string;
-  email: string;
-  phoneNumber: string | null;
-  createdAt: string;
-  customer: Customer;
-}
 
 export interface Tag {
   createdAt: string;

@@ -7,3 +7,5 @@ export interface Customer {
   customCustomerId: string | null;
   createdAt: string;
 }
+
+export type CustomerPayload = Omit<Customer, 'id' | 'createdAt'>;
