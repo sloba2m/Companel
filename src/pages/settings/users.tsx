@@ -1,3 +1,6 @@
+import type { User, UserPayload } from 'src/types/users';
+
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import { Box } from '@mui/material';
@@ -6,6 +9,7 @@ import { type GridColDef } from '@mui/x-data-grid';
 import { useTableDrawer } from 'src/hooks/use-table-drawer';
 
 import { CONFIG } from 'src/config-global';
+import { useGetUsers, useCreateUser, useUpdateUser } from 'src/actions/users';
 
 import { UsersDrawer, TableWithDrawer } from 'src/components/table-with-drawer';
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
@@ -14,39 +18,29 @@ import { getActionColumn } from 'src/components/table-with-drawer/utils/action-c
 
 const metadata = { title: `Users settings - ${CONFIG.site.name}` };
 
-export interface MockUser {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-}
-
-const mockUsers: MockUser[] = [
-  {
-    id: '1',
-    firstName: 'Alice',
-    lastName: 'Johnson',
-    email: 'alice.johnson@example.com',
-  },
-  {
-    id: '2',
-    firstName: 'Bob',
-    lastName: 'Williams',
-    email: 'bob.williams@example.com',
-  },
-  {
-    id: '3',
-    firstName: 'Charlie',
-    lastName: 'Davis',
-    email: 'charlie.davis@example.com',
-  },
-];
-
 export default function Page() {
-  const tableDrawer = useTableDrawer<MockUser>();
+  const [search, setSearch] = useState('');
+
+  const { data: usersData, isLoading } = useGetUsers();
+
+  const { mutate: createMutation } = useCreateUser();
+
+  const { mutate: updateMutation } = useUpdateUser();
+
+  const tableDrawer = useTableDrawer<User>();
   const { handleEdit, handleDelete, editData } = tableDrawer;
 
-  const columns: GridColDef<MockUser>[] = [
+  const filteredUsers = usersData?.filter((user) =>
+    user.fullName.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const onSave = (data: UserPayload, id?: string) => {
+    if (editData && id) updateMutation({ id, data });
+    else createMutation(data);
+    tableDrawer.onCloseDrawer();
+  };
+
+  const columns: GridColDef<User>[] = [
     {
       field: 'firstName',
       headerName: 'First Name',
@@ -80,10 +74,12 @@ export default function Page() {
       <TableWithDrawer
         entity="Users"
         columns={columns}
-        rows={mockUsers}
-        drawerContent={<UsersDrawer key={editData?.id} editData={editData} />}
-        onSearch={() => console.log('test')}
+        rows={filteredUsers ?? []}
+        drawerContent={<UsersDrawer key={editData?.id} editData={editData} onSave={onSave} />}
+        onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
+        isLoading={isLoading}
+        totalCount={filteredUsers?.length}
         isInSubMenu
       />
     </>

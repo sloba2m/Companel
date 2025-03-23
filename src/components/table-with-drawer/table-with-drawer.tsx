@@ -31,7 +31,7 @@ interface TableWithDrawerProps<RowData extends GridValidRowModel> {
 const DRAWER_WIDTH = '400px';
 const MOBILE_DRAWER_WIDTH = '300px';
 
-const PAGE_SIZE_OPTIONS = [10, 20, 50];
+const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
 
 export const TableWithDrawer = <RowData extends GridValidRowModel>({
   columns,
@@ -108,9 +108,6 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
             )}
           </Stack>
           <DataGrid
-            columns={columns}
-            rows={rows}
-            rowCount={totalCount}
             disableRowSelectionOnClick
             disableColumnMenu
             disableColumnResize
@@ -119,9 +116,12 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
                 outline: 'none !important',
               },
             }}
+            pageSizeOptions={paginationModel ? PAGE_SIZE_OPTIONS : []}
+            columns={columns}
+            rows={rows}
+            rowCount={paginationModel ? totalCount : undefined}
             loading={isLoading}
-            pageSizeOptions={PAGE_SIZE_OPTIONS}
-            paginationMode="server"
+            paginationMode={paginationModel ? 'server' : 'client'}
             paginationModel={paginationModel}
             onPaginationModelChange={onPaginationModelChange}
           />

@@ -1,4 +1,4 @@
-import type { AxiosRequestConfig } from 'axios';
+import type { Method, AxiosRequestConfig } from 'axios';
 
 import axios from 'axios';
 
@@ -46,8 +46,9 @@ export const fetcher = async (args: string | [string, AxiosRequestConfig]) => {
 };
 
 export const mutationFetcher = async <T = any>(
+  method: Method,
   url: string,
-  data: any,
+  data?: any,
   config?: AxiosRequestConfig
 ): Promise<T> => {
   try {
@@ -55,7 +56,10 @@ export const mutationFetcher = async <T = any>(
     await keycloak.updateToken(30);
     const { token } = keycloak;
 
-    const response = await axiosInstance.post(url, data, {
+    const response = await axiosInstance.request<T>({
+      method,
+      url,
+      data,
       ...config,
       withCredentials: true,
       headers: {
@@ -66,7 +70,7 @@ export const mutationFetcher = async <T = any>(
 
     return response.data;
   } catch (error) {
-    console.error('Mutation failed:', error);
+    console.error(`${method} mutation failed:`, error);
     throw error;
   }
 };

@@ -1,3 +1,4 @@
+import type { User } from './users';
 import type { Contact } from './contacts';
 import type { IDateValue } from './common';
 
@@ -54,22 +55,13 @@ export interface Tag {
   id: string;
 }
 
-export interface Assignee {
-  id: string;
-  authId: string;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  email: string;
-}
-
 export interface Conversation {
   id: string;
   inboxId: string;
   status: string;
   subject: string;
   contact: Contact;
-  assignee: Assignee | null;
+  assignee: User | null;
   tags: Tag[];
   createdAt: string;
   lastContactActivity: string;

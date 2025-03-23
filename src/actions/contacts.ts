@@ -29,7 +29,7 @@ export const useCreateContact = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: ContactPayload) => mutationFetcher('/contact', payload),
+    mutationFn: (payload: ContactPayload) => mutationFetcher('post', '/contact', payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['contact'] });
     },
