@@ -1,4 +1,5 @@
 import type { IDateValue } from './common';
+import type { Customer } from './customers';
 
 // ----------------------------------------------------------------------
 
@@ -47,16 +48,6 @@ export type IChatConversations = {
   allIds: string[];
 };
 
-export interface Customer {
-  id: string;
-  name: string;
-  email: string;
-  domain: string;
-  phoneNumber: string | null;
-  customCustomerId: string | null;
-  createdAt: string;
-}
-
 export interface Contact {
   id: string;
   name: string;
@@ -92,13 +83,6 @@ export interface Conversation {
   createdAt: string;
   lastContactActivity: string;
   unreadMessages: number;
-}
-
-export interface PageInfo {
-  size: number;
-  number: number;
-  totalElements: number;
-  totalPages: number;
 }
 
 export enum ConversationStatus {

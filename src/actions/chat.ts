@@ -1,6 +1,6 @@
+import type { PageInfo } from 'src/types/common';
 import type { StatusFilters } from 'src/sections/chat/chat-nav';
 import type {
-  PageInfo,
   IChatMessage,
   Conversation,
   IChatParticipant,

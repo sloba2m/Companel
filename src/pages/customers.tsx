@@ -1,8 +1,12 @@
+import type { Customer } from 'src/types/customers';
+import type { GridColDef, GridPaginationModel } from '@mui/x-data-grid';
+
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { type GridColDef } from '@mui/x-data-grid';
-
 import { useTableDrawer } from 'src/hooks/use-table-drawer';
+
+import { useGetCustomers } from 'src/actions/customers';
 
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
 import {
@@ -15,43 +19,24 @@ import {
 
 const metadata = { title: `Customers` };
 
-export interface MockCustomer {
-  id: string;
-  name: string;
-  phone: string;
-  email: string;
-  domain: string;
-}
-
-const mockData: MockCustomer[] = [
-  {
-    id: '1',
-    name: 'Marko Petrović',
-    phone: '+381641234567',
-    email: 'marko.petrovic@example.com',
-    domain: 'marko-company.com',
-  },
-  {
-    id: '2',
-    name: 'Jelena Stanković',
-    phone: '+381621234567',
-    email: 'jelena.stankovic@example.com',
-    domain: 'stankovic-tech.rs',
-  },
-  {
-    id: '3',
-    name: 'Nikola Jovanović',
-    phone: '+381601234567',
-    email: 'nikola.jovanovic@example.com',
-    domain: 'jovanovic-solutions.net',
-  },
-];
-
 export default function Page() {
-  const tableDrawer = useTableDrawer<MockCustomer>();
+  const [search, setSearch] = useState('');
+
+  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+    page: 0,
+    pageSize: 10,
+  });
+
+  const { data: customersData, isLoading } = useGetCustomers({
+    search,
+    page: paginationModel.page,
+    size: paginationModel.pageSize,
+  });
+
+  const tableDrawer = useTableDrawer<Customer>();
   const { handleEdit, handleDelete, editData } = tableDrawer;
 
-  const columns: GridColDef<MockCustomer>[] = [
+  const columns: GridColDef<Customer>[] = [
     {
       field: 'name',
       headerName: 'Name',
@@ -60,13 +45,7 @@ export default function Page() {
       ...firstColumnMargin,
     },
     {
-      field: 'id',
-      headerName: 'Customer ID',
-      width: 160,
-      sortable: false,
-    },
-    {
-      field: 'phone',
+      field: 'phoneNumber',
       headerName: 'Phone number',
       width: 160,
       sortable: false,
@@ -76,13 +55,13 @@ export default function Page() {
       headerName: 'Email',
       width: 230,
       sortable: false,
-      flex: 1,
     },
     {
       field: 'domain',
       headerName: 'Domain',
       width: 230,
       sortable: false,
+      flex: 1,
     },
     getActionColumn(handleEdit, handleDelete),
   ];
@@ -95,11 +74,15 @@ export default function Page() {
 
       <TableWithDrawer
         columns={columns}
-        rows={mockData}
+        rows={customersData?.content ?? []}
         entity="Customers"
         drawerContent={<CustomerDrawer editData={editData} />}
-        onSearch={() => console.log('test')}
+        onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
+        isLoading={isLoading}
+        onPaginationModelChange={setPaginationModel}
+        paginationModel={paginationModel}
+        totalCount={customersData?.page.totalElements}
       />
     </>
   );

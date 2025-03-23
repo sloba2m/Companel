@@ -1,9 +1,16 @@
 import type { ReactNode } from 'react';
-import type { GridColDef, GridValidRowModel } from '@mui/x-data-grid';
 import type { UseTableDrawerReturn } from 'src/hooks/use-table-drawer';
+import type {
+  GridColDef,
+  GridValidRowModel,
+  GridPaginationModel,
+  GridCallbackDetails,
+} from '@mui/x-data-grid';
 
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, Card, Stack, Button, Drawer, TextField, Container, Typography } from '@mui/material';
+
+import { useDebouncedCallback } from 'src/routes/hooks/use-debounce';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
@@ -13,12 +20,18 @@ interface TableWithDrawerProps<RowData extends GridValidRowModel> {
   drawerContent: ReactNode;
   entity: string;
   tableDrawer: UseTableDrawerReturn<RowData>;
+  isLoading?: boolean;
   isInSubMenu?: boolean;
-  onSearch?: () => void;
+  paginationModel?: GridPaginationModel;
+  totalCount?: number;
+  onPaginationModelChange?: (model: GridPaginationModel, details: GridCallbackDetails) => void;
+  onSearch?: (value: string) => void;
 }
 
 const DRAWER_WIDTH = '400px';
 const MOBILE_DRAWER_WIDTH = '300px';
+
+const PAGE_SIZE_OPTIONS = [10, 20, 50];
 
 export const TableWithDrawer = <RowData extends GridValidRowModel>({
   columns,
@@ -27,10 +40,18 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
   entity,
   tableDrawer,
   isInSubMenu,
+  isLoading,
+  paginationModel,
+  totalCount,
+  onPaginationModelChange,
   onSearch,
 }: TableWithDrawerProps<RowData>) => {
   const mdUp = useResponsive('up', 'md');
   const lgUp = useResponsive('up', 'lg');
+
+  const debouncedSearch = useDebouncedCallback((value: string) => {
+    onSearch?.(value);
+  }, 300);
 
   return (
     <Container
@@ -82,12 +103,14 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
                 size="small"
                 placeholder={`Search ${entity.toLowerCase()}`}
                 sx={{ width: mdUp ? '400px' : '100%' }}
+                onChange={(e) => debouncedSearch(e.target.value)}
               />
             )}
           </Stack>
           <DataGrid
             columns={columns}
             rows={rows}
+            rowCount={totalCount}
             disableRowSelectionOnClick
             disableColumnMenu
             disableColumnResize
@@ -96,6 +119,11 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
                 outline: 'none !important',
               },
             }}
+            loading={isLoading}
+            pageSizeOptions={PAGE_SIZE_OPTIONS}
+            paginationMode="server"
+            paginationModel={paginationModel}
+            onPaginationModelChange={onPaginationModelChange}
           />
         </Stack>
 

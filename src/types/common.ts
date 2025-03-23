@@ -29,3 +29,10 @@ export type ISocialLink = {
   linkedin: string;
   twitter: string;
 };
+
+export interface PageInfo {
+  size: number;
+  number: number;
+  totalElements: number;
+  totalPages: number;
+}
