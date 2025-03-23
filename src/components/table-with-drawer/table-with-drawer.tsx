@@ -133,7 +133,7 @@ export const TableWithDrawer = <RowData extends GridValidRowModel>({
               minHeight: 0,
               flex: '1 1 auto',
               width: DRAWER_WIDTH,
-              display: { xs: 'none', lg: 'flex' },
+              display: { xs: 'none', md: 'flex' },
               borderLeft: `solid 1px ${theme.vars.palette.divider}`,
               transition: theme.transitions.create(['width'], {
                 duration: theme.transitions.duration.short,

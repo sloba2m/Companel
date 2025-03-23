@@ -45,6 +45,32 @@ export const fetcher = async (args: string | [string, AxiosRequestConfig]) => {
   }
 };
 
+export const mutationFetcher = async <T = any>(
+  url: string,
+  data: any,
+  config?: AxiosRequestConfig
+): Promise<T> => {
+  try {
+    const keycloak = getKeycloak();
+    await keycloak.updateToken(30);
+    const { token } = keycloak;
+
+    const response = await axiosInstance.post(url, data, {
+      ...config,
+      withCredentials: true,
+      headers: {
+        ...config?.headers,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Mutation failed:', error);
+    throw error;
+  }
+};
+
 // ----------------------------------------------------------------------
 
 export const endpoints = {

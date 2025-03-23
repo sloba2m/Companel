@@ -1,8 +1,8 @@
 export interface Customer {
   id: string;
-  name: string;
-  email: string;
-  domain: string;
+  name: string | null;
+  email: string | null;
+  domain: string | null;
   phoneNumber: string | null;
   customCustomerId: string | null;
   createdAt: string;
