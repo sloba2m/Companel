@@ -48,6 +48,7 @@ export const CustomerDrawer = ({ editData, onSave }: CustomerDrawerProps) => {
       <TextField
         label="Email"
         size="small"
+        type="email"
         value={formData.email}
         onChange={handleChange('email')}
       />

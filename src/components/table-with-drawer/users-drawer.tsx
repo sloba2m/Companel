@@ -22,7 +22,7 @@ export const UsersDrawer = ({ editData }: UsersDrawerProps) => (
     <Typography variant="subtitle1">{editData ? 'Edit' : 'Create'} user</Typography>
     <TextField label="First name" size="small" defaultValue={editData?.firstName} />
     <TextField label="Last name" size="small" defaultValue={editData?.lastName} />
-    <TextField label="Email" size="small" defaultValue={editData?.email} />
+    <TextField label="Email" size="small" type="email" defaultValue={editData?.email} />
 
     <Card
       sx={(theme) => ({

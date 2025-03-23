@@ -46,6 +46,7 @@ export const ContactDrawer = ({ editData, onSave }: ContactDrawerProps) => {
       <TextField
         label="Email"
         size="small"
+        type="email"
         value={formData.email ?? ''}
         onChange={handleChange('email')}
       />
