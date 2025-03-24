@@ -1,10 +1,17 @@
+import type { Inbox } from 'src/types/inbox';
+
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import { type GridColDef } from '@mui/x-data-grid';
 
+import { usePagination } from 'src/hooks/use-pagination';
 import { useTableDrawer } from 'src/hooks/use-table-drawer';
 
+import { fDate } from 'src/utils/format-time';
+
 import { CONFIG } from 'src/config-global';
+import { useGetInboxes } from 'src/actions/inbox';
 
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
 import { InboxDrawer, TableWithDrawer, firstColumnMargin } from 'src/components/table-with-drawer';
@@ -13,43 +20,27 @@ import { InboxDrawer, TableWithDrawer, firstColumnMargin } from 'src/components/
 
 const metadata = { title: `Inbox settings - ${CONFIG.site.name}` };
 
-export interface MockInbox {
-  id: string;
-  name: string;
-  template: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-const mockInboxes: MockInbox[] = [
-  {
-    id: '1',
-    name: 'Support Inbox',
-    template: 'Customer Support Template',
-    createdAt: '20 Feb 2024',
-    updatedAt: '21 Feb 2024',
-  },
-  {
-    id: '2',
-    name: 'Sales Inbox',
-    template: 'Sales Outreach Template',
-    createdAt: '18 Feb 2024',
-    updatedAt: '22 Feb 2024',
-  },
-  {
-    id: '3',
-    name: 'Marketing Inbox',
-    template: 'Newsletter Campaign Template',
-    createdAt: '15 Feb 2024',
-    updatedAt: '23 Feb 2024',
-  },
-];
-
 export default function Page() {
-  const tableDrawer = useTableDrawer<MockInbox>();
+  const [search, setSearch] = useState('');
+
+  const { paginationModel, setPaginationModel } = usePagination();
+
+  const { data: inboxesData, isLoading } = useGetInboxes({
+    search,
+    page: paginationModel.page,
+    size: paginationModel.pageSize,
+  });
+
+  const tableDrawer = useTableDrawer<Inbox>();
   const { handleEdit, handleDelete, editData } = tableDrawer;
 
-  const columns: GridColDef<MockInbox>[] = [
+  const inboxesWithId =
+    inboxesData?.content.map((inbox) => ({
+      ...inbox,
+      id: inbox.externalId,
+    })) ?? [];
+
+  const columns: GridColDef<Inbox>[] = [
     {
       field: 'name',
       headerName: 'Name',
@@ -68,12 +59,14 @@ export default function Page() {
       headerName: 'Created At',
       width: 230,
       sortable: false,
+      renderCell: (params) => fDate(params.row.createdAt),
     },
     {
       field: 'updatedAt',
       headerName: 'Updated At',
       width: 230,
       sortable: false,
+      renderCell: (params) => fDate(params.row.updatedAt),
       flex: 1,
     },
     getActionColumn(handleEdit, handleDelete),
@@ -87,11 +80,15 @@ export default function Page() {
 
       <TableWithDrawer
         columns={columns}
-        rows={mockInboxes}
+        rows={inboxesWithId}
         entity="Inbox"
         drawerContent={<InboxDrawer editData={editData} />}
-        onSearch={() => console.log('test')}
+        onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
+        isLoading={isLoading}
+        onPaginationModelChange={setPaginationModel}
+        paginationModel={paginationModel}
+        totalCount={inboxesData?.page.totalElements ?? 0}
         isInSubMenu
       />
     </>

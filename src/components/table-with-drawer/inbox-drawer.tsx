@@ -1,9 +1,9 @@
-import type { MockInbox } from 'src/pages/settings/inbox';
+import type { Inbox } from 'src/types/inbox';
 
 import { Box, Button, TextField, Typography, Autocomplete } from '@mui/material';
 
 interface InboxDrawerProps {
-  editData: MockInbox | null;
+  editData: Inbox | null;
 }
 
 export const InboxDrawer = ({ editData }: InboxDrawerProps) => (
