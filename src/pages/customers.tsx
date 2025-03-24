@@ -93,7 +93,7 @@ export default function Page() {
         isLoading={isLoading}
         onPaginationModelChange={setPaginationModel}
         paginationModel={paginationModel}
-        totalCount={customersData?.page.totalElements}
+        totalCount={customersData?.page.totalElements ?? 0}
       />
     </>
   );

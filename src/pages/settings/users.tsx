@@ -79,7 +79,7 @@ export default function Page() {
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
         isLoading={isLoading}
-        totalCount={filteredUsers?.length}
+        totalCount={filteredUsers?.length ?? 0}
         isInSubMenu
       />
     </>
