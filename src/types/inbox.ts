@@ -5,31 +5,36 @@ export interface EmailTemplate {
   logoUrl: string;
 }
 
-export type EmailProvider = 'MICROSOFT_OAUTH';
+export type EmailProvider = 'MICROSOFT_OAUTH' | 'MICROSOFT_BASIC';
 
 export interface EmailChannel {
-  email: string;
-  clientId: string;
-  clientSecret: string;
-  tenantId: string;
-  provider: EmailProvider;
-  imapAddress: string;
-  imapEnabled: boolean;
-  imapPort: number;
-  imapLogin: string;
-  imapPassword: string;
-  imapEnableSsl: boolean;
-  smtpEnabled: boolean;
-  smtpAddress: string;
-  smtpPort: number;
-  smtpLogin: string;
-  smtpPassword: string;
-  smtpDomain: string;
-  smtpEnableStarttlsAuto: boolean;
-  smtpAuthentication: string;
-  smtpOpensslVerifyMode: string;
-  smtpEnableSslTls: boolean;
-  providerConfig: unknown;
+  email?: string | null;
+  clientId?: string | null;
+  clientSecret?: string | null;
+  tenantId?: string | null;
+  provider?: EmailProvider | null;
+  imapAddress?: string | null;
+  imapEnabled?: boolean | null;
+  imapPort?: number | null;
+  imapLogin?: string | null;
+  imapPassword?: string | null;
+  imapEnableSsl?: boolean | null;
+  smtpEnabled?: boolean | null;
+  smtpAddress?: string | null;
+  smtpPort?: number | null;
+  smtpLogin?: string | null;
+  smtpPassword?: string | null;
+  smtpDomain?: string | null;
+  smtpEnableStarttlsAuto?: boolean | null;
+  smtpAuthentication?: string | null;
+  smtpOpensslVerifyMode?: string | null;
+  smtpEnableSslTls?: boolean | null;
+  providerConfig?: string | null;
+}
+
+export interface InboxPayload extends EmailChannel {
+  name?: string | null;
+  emailTemplateId?: string | null;
 }
 
 export interface Inbox {
