@@ -6,7 +6,7 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 
 interface ContactDrawerProps {
   editData: Contact | null;
-  onSave: (data: ContactPayload) => void;
+  onSave: (data: ContactPayload, id?: string) => void;
 }
 
 export const ContactDrawer = ({ editData, onSave }: ContactDrawerProps) => {
@@ -50,7 +50,12 @@ export const ContactDrawer = ({ editData, onSave }: ContactDrawerProps) => {
         value={formData.email ?? ''}
         onChange={handleChange('email')}
       />
-      <Button variant="soft" color="primary" size="small" onClick={() => onSave(formData)}>
+      <Button
+        variant="soft"
+        color="primary"
+        size="small"
+        onClick={() => onSave(formData, editData?.id)}
+      >
         Save
       </Button>
     </Box>

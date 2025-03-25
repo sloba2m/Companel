@@ -35,3 +35,31 @@ export const useCreateContact = () => {
     },
   });
 };
+
+interface UpdateContactInput {
+  id: string;
+  data: ContactPayload;
+}
+
+export const useUpdateContact = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: UpdateContactInput) =>
+      mutationFetcher('put', `/contact/${payload.id}`, payload.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['contact'] });
+    },
+  });
+};
+
+export const useDeleteContact = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => mutationFetcher('delete', `/contact/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['contact'] });
+    },
+  });
+};

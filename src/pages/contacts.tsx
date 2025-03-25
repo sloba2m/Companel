@@ -7,8 +7,14 @@ import { Helmet } from 'react-helmet-async';
 import { usePagination } from 'src/hooks/use-pagination';
 import { useTableDrawer } from 'src/hooks/use-table-drawer';
 
-import { useGetContacts, useCreateContact } from 'src/actions/contacts';
+import {
+  useGetContacts,
+  useCreateContact,
+  useUpdateContact,
+  useDeleteContact,
+} from 'src/actions/contacts';
 
+import { YesNoDialog } from 'src/components/Dialog/YesNoDialog';
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
 import {
   ContactDrawer,
@@ -32,9 +38,12 @@ export default function Page() {
   });
 
   const { mutate: createMutation } = useCreateContact();
+  const { mutate: updateMutation } = useUpdateContact();
+  const { mutate: deleteMutation } = useDeleteContact();
 
-  const tableDrawer = useTableDrawer<Contact>();
-  const { handleEdit, handleDelete, editData } = tableDrawer;
+  const tableDrawer = useTableDrawer<Contact>(deleteMutation);
+  const { handleEdit, handleDelete, editData, handleDeleteConfirm, onYesNoToggle, yesNoOpen } =
+    tableDrawer;
 
   const columns: GridColDef<Contact>[] = [
     {
@@ -60,8 +69,9 @@ export default function Page() {
     getActionColumn(handleEdit, handleDelete),
   ];
 
-  const onSave = (data: ContactPayload) => {
-    if (!editData) createMutation(data);
+  const onSave = (data: ContactPayload, id?: string) => {
+    if (editData && id) updateMutation({ id, data });
+    else createMutation(data);
     tableDrawer.onCloseDrawer();
   };
 
@@ -83,6 +93,8 @@ export default function Page() {
         paginationModel={paginationModel}
         totalCount={contactsData?.page.totalElements ?? 0}
       />
+
+      <YesNoDialog onClose={onYesNoToggle} open={yesNoOpen} onYes={handleDeleteConfirm} />
     </>
   );
 }
