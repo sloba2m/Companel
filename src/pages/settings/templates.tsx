@@ -1,3 +1,5 @@
+import type { Template, TemplatePayload } from 'src/types/templates';
+
 import { Helmet } from 'react-helmet-async';
 
 import { type GridColDef } from '@mui/x-data-grid';
@@ -5,6 +7,7 @@ import { type GridColDef } from '@mui/x-data-grid';
 import { useTableDrawer } from 'src/hooks/use-table-drawer';
 
 import { CONFIG } from 'src/config-global';
+import { useUploadLogo, useGetTemplates, useCreateTemplate } from 'src/actions/templates';
 
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
 import {
@@ -17,39 +20,15 @@ import {
 
 const metadata = { title: `Templates settings - ${CONFIG.site.name}` };
 
-export interface MockTemplate {
-  id: string;
-  name: string;
-  template: string;
-  logo: string;
-}
-
-const mockTemplates: MockTemplate[] = [
-  {
-    id: '1',
-    name: 'Welcome Email',
-    template: "Welcome to our platform! We're excited to have you on board.",
-    logo: 'https://example.com/logos/welcome.png',
-  },
-  {
-    id: '2',
-    name: 'Newsletter',
-    template: 'Stay updated with our latest news and special offers!',
-    logo: 'https://example.com/logos/newsletter.png',
-  },
-  {
-    id: '3',
-    name: 'Password Reset',
-    template: 'Click the link below to reset your password securely.',
-    logo: 'https://example.com/logos/password-reset.png',
-  },
-];
-
 export default function Page() {
-  const tableDrawer = useTableDrawer<MockTemplate>();
+  const tableDrawer = useTableDrawer<Template>();
   const { handleEdit, handleDelete, editData } = tableDrawer;
 
-  const columns: GridColDef<MockTemplate>[] = [
+  const { data: templatesData } = useGetTemplates();
+  const { mutate: createMutation } = useCreateTemplate();
+  const { mutate: uploadLogoMutation } = useUploadLogo();
+
+  const columns: GridColDef<Template>[] = [
     {
       field: 'name',
       headerName: 'Name',
@@ -68,10 +47,23 @@ export default function Page() {
       headerName: 'Logo',
       width: 160,
       sortable: false,
+      renderCell: (params) => <>{params.row.logoUrl ? 'Yes' : 'No'}</>,
       flex: 1,
     },
     getActionColumn(handleEdit, handleDelete),
   ];
+
+  const onSave = (data: TemplatePayload, id?: string) => {
+    console.log(data);
+    // if (editData && id) updateMutation({ id, data });
+    createMutation(data, {
+      onSuccess: (res: Template) => {
+        if (data.logoFile) uploadLogoMutation({ id: res.id, file: data.logoFile });
+      },
+    });
+    // if (data.logoFile) uploadLogoMutation({ id: data.id, file: data.logoFile });
+    // tableDrawer.onCloseDrawer();
+  };
 
   return (
     <>
@@ -82,8 +74,8 @@ export default function Page() {
       <TableWithDrawer
         entity="Templates"
         columns={columns}
-        rows={mockTemplates}
-        drawerContent={<TemplatesDrawer editData={editData} />}
+        rows={templatesData ?? []}
+        drawerContent={<TemplatesDrawer editData={editData} onSave={onSave} />}
         onSearch={() => console.log('test')}
         tableDrawer={tableDrawer}
         isInSubMenu

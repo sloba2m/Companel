@@ -4,3 +4,10 @@ export interface Template {
   template: string;
   logoUrl: string;
 }
+
+export type TemplatePayload = {
+  name: string;
+  template: string;
+  logoFile?: File | null;
+  logoUrl?: string;
+};
