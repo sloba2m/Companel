@@ -1,11 +1,9 @@
 import type { Template, TemplatePayload } from 'src/types/templates';
 
-import { useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import { type GridColDef } from '@mui/x-data-grid';
 
-import { useBoolean } from 'src/hooks/use-boolean';
 import { useTableDrawer } from 'src/hooks/use-table-drawer';
 
 import { CONFIG } from 'src/config-global';
@@ -30,29 +28,14 @@ import {
 const metadata = { title: `Templates settings - ${CONFIG.site.name}` };
 
 export default function Page() {
-  const tableDrawer = useTableDrawer<Template>();
-  const { handleEdit, editData } = tableDrawer;
-  const { value: yesNoOpen, onToggle: onYesNoToggle } = useBoolean(false);
-
   const { data: templatesData } = useGetTemplates();
   const { mutate: createMutation } = useCreateTemplate();
   const { mutate: uploadLogoMutation } = useUploadLogo();
   const { mutate: updateMutation } = useUpdateTemplate();
   const { mutate: deleteMutation } = useDeleteTemplate();
-
-  const idToDelete = useRef<string | null>(null);
-
-  const handleDelete = (data: Template) => {
-    idToDelete.current = data.id;
-    onYesNoToggle();
-  };
-
-  const handleDeleteConfirm = () => {
-    if (idToDelete.current) {
-      deleteMutation(idToDelete.current);
-      onYesNoToggle();
-    }
-  };
+  const tableDrawer = useTableDrawer<Template>(deleteMutation);
+  const { handleEdit, editData, handleDelete, yesNoOpen, onYesNoToggle, handleDeleteConfirm } =
+    tableDrawer;
 
   const columns: GridColDef<Template>[] = [
     {

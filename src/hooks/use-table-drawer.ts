@@ -1,19 +1,43 @@
-import { useState } from 'react';
+import type { UseMutateFunction } from '@tanstack/react-query';
+
+import { useRef, useState } from 'react';
 
 import { useBoolean } from './use-boolean';
 
-export type UseTableDrawerReturn<T> = {
+type WithId = { id: string };
+
+export type UseTableDrawerReturn<T extends WithId> = {
   onCloseDrawer: () => void;
   onOpenDrawer: () => void;
   handleEdit: (data: T) => void;
-  handleDelete: () => void;
+  handleDelete: (data: T) => void;
+  handleDeleteConfirm: () => void;
+  yesNoOpen: boolean;
+  onYesNoToggle: () => void;
   isOpenDrawer: boolean;
   editData: T | null;
 };
 
-export const useTableDrawer = <T>(): UseTableDrawerReturn<T> => {
+export const useTableDrawer = <T extends WithId>(
+  deleteMutation?: UseMutateFunction<any, Error, string, unknown>
+): UseTableDrawerReturn<T> => {
   const { onFalse, onTrue, value } = useBoolean(false);
   const [editData, setEditData] = useState<T | null>(null);
+
+  const { value: yesNoOpen, onToggle: onYesNoToggle } = useBoolean(false);
+  const idToDelete = useRef<string | null>(null);
+
+  const handleDelete = (data: T) => {
+    idToDelete.current = data.id;
+    onYesNoToggle();
+  };
+
+  const handleDeleteConfirm = () => {
+    if (idToDelete.current) {
+      deleteMutation?.(idToDelete.current);
+      onYesNoToggle();
+    }
+  };
 
   const onCloseDrawer = () => {
     onFalse();
@@ -25,15 +49,14 @@ export const useTableDrawer = <T>(): UseTableDrawerReturn<T> => {
     setEditData(data);
   };
 
-  const handleDelete = () => {
-    console.log('Delete');
-  };
-
   return {
     onCloseDrawer,
     onOpenDrawer: onTrue,
     handleEdit,
     handleDelete,
+    handleDeleteConfirm,
+    yesNoOpen,
+    onYesNoToggle,
     isOpenDrawer: value,
     editData,
   };
