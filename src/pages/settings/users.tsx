@@ -9,8 +9,9 @@ import { type GridColDef } from '@mui/x-data-grid';
 import { useTableDrawer } from 'src/hooks/use-table-drawer';
 
 import { CONFIG } from 'src/config-global';
-import { useGetUsers, useCreateUser, useUpdateUser } from 'src/actions/users';
+import { useGetUsers, useCreateUser, useUpdateUser, useDeleteUser } from 'src/actions/users';
 
+import { YesNoDialog } from 'src/components/Dialog/YesNoDialog';
 import { UsersDrawer, TableWithDrawer } from 'src/components/table-with-drawer';
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
 
@@ -24,11 +25,12 @@ export default function Page() {
   const { data: usersData, isLoading } = useGetUsers();
 
   const { mutate: createMutation } = useCreateUser();
-
   const { mutate: updateMutation } = useUpdateUser();
+  const { mutate: deleteMutation } = useDeleteUser();
 
-  const tableDrawer = useTableDrawer<User>();
-  const { handleEdit, handleDelete, editData } = tableDrawer;
+  const tableDrawer = useTableDrawer<User>(deleteMutation);
+  const { handleEdit, handleDelete, editData, handleDeleteConfirm, onYesNoToggle, yesNoOpen } =
+    tableDrawer;
 
   const filteredUsers = usersData?.filter((user) =>
     user.fullName.toLowerCase().includes(search.toLowerCase())
@@ -82,6 +84,8 @@ export default function Page() {
         totalCount={filteredUsers?.length ?? 0}
         isInSubMenu
       />
+
+      <YesNoDialog onClose={onYesNoToggle} open={yesNoOpen} onYes={handleDeleteConfirm} />
     </>
   );
 }
