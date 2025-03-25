@@ -32,8 +32,6 @@ export const TemplatesDrawer = ({ editData, onSave }: TemplatesDrawerProps) => {
       setFormData((prev) => ({ ...prev, [field]: e.target.value }));
     };
 
-  console.log(editData);
-
   const imageToDisplay = formData.logoFile
     ? URL.createObjectURL(formData.logoFile)
     : editData?.logoUrl;
