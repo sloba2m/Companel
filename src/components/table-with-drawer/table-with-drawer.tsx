@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { UseTableDrawerReturn } from 'src/hooks/use-table-drawer';
+import type { WithId, UseTableDrawerReturn } from 'src/hooks/use-table-drawer';
 import type {
   GridColDef,
   GridValidRowModel,
@@ -14,7 +14,7 @@ import { useDebouncedCallback } from 'src/routes/hooks/use-debounce';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-interface TableWithDrawerProps<RowData extends GridValidRowModel> {
+interface TableWithDrawerProps<RowData extends GridValidRowModel & WithId> {
   columns: GridColDef<RowData>[];
   rows: RowData[];
   drawerContent: ReactNode;
@@ -33,7 +33,7 @@ const MOBILE_DRAWER_WIDTH = '300px';
 
 const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
 
-export const TableWithDrawer = <RowData extends GridValidRowModel>({
+export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
   columns,
   rows,
   drawerContent,

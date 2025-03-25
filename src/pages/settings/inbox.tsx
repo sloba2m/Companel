@@ -1,3 +1,4 @@
+import type { WithId } from 'src/hooks/use-table-drawer';
 import type { Inbox, InboxPayload } from 'src/types/inbox';
 
 import { useState } from 'react';
@@ -20,6 +21,8 @@ import { InboxDrawer, TableWithDrawer, firstColumnMargin } from 'src/components/
 
 const metadata = { title: `Inbox settings - ${CONFIG.site.name}` };
 
+type InboxWithId = Inbox & WithId;
+
 export default function Page() {
   const [search, setSearch] = useState('');
 
@@ -34,16 +37,16 @@ export default function Page() {
   const { mutate: createMutation } = useCreateInbox();
   const { mutate: updateMutation } = useUpdateInbox();
 
-  const tableDrawer = useTableDrawer<Inbox>();
+  const tableDrawer = useTableDrawer<InboxWithId>();
   const { handleEdit, handleDelete, editData } = tableDrawer;
 
-  const inboxesWithId =
+  const inboxesWithId: InboxWithId[] =
     inboxesData?.content.map((inbox) => ({
       ...inbox,
       id: inbox.externalId,
     })) ?? [];
 
-  const columns: GridColDef<Inbox>[] = [
+  const columns: GridColDef<InboxWithId>[] = [
     {
       field: 'name',
       headerName: 'Name',

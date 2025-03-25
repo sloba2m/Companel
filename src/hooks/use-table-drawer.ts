@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 
 import { useBoolean } from './use-boolean';
 
-type WithId = { id: string };
+export type WithId = { id: string };
 
 export type UseTableDrawerReturn<T extends WithId> = {
   onCloseDrawer: () => void;
