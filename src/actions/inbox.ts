@@ -52,3 +52,14 @@ export const useUpdateInbox = () => {
     },
   });
 };
+
+export const useDeleteInbox = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => mutationFetcher('delete', `/inbox/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['inbox'] });
+    },
+  });
+};

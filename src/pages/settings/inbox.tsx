@@ -12,8 +12,9 @@ import { useTableDrawer } from 'src/hooks/use-table-drawer';
 import { fDate } from 'src/utils/format-time';
 
 import { CONFIG } from 'src/config-global';
-import { useGetInboxes, useCreateInbox, useUpdateInbox } from 'src/actions/inbox';
+import { useGetInboxes, useCreateInbox, useUpdateInbox, useDeleteInbox } from 'src/actions/inbox';
 
+import { YesNoDialog } from 'src/components/Dialog/YesNoDialog';
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
 import { InboxDrawer, TableWithDrawer, firstColumnMargin } from 'src/components/table-with-drawer';
 
@@ -36,9 +37,11 @@ export default function Page() {
 
   const { mutate: createMutation } = useCreateInbox();
   const { mutate: updateMutation } = useUpdateInbox();
+  const { mutate: deleteMutation } = useDeleteInbox();
 
-  const tableDrawer = useTableDrawer<InboxWithId>();
-  const { handleEdit, handleDelete, editData } = tableDrawer;
+  const tableDrawer = useTableDrawer<InboxWithId>(deleteMutation);
+  const { handleEdit, handleDelete, editData, handleDeleteConfirm, yesNoOpen, onYesNoToggle } =
+    tableDrawer;
 
   const inboxesWithId: InboxWithId[] =
     inboxesData?.content.map((inbox) => ({
@@ -80,7 +83,7 @@ export default function Page() {
 
   const onSave = (data: InboxPayload, id?: string) => {
     if (editData && id) updateMutation({ id, data });
-    createMutation(data);
+    else createMutation(data);
     tableDrawer.onCloseDrawer();
   };
 
@@ -103,6 +106,8 @@ export default function Page() {
         totalCount={inboxesData?.page.totalElements ?? 0}
         isInSubMenu
       />
+
+      <YesNoDialog onClose={onYesNoToggle} open={yesNoOpen} onYes={handleDeleteConfirm} />
     </>
   );
 }
