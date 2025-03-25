@@ -46,3 +46,31 @@ export const useUploadLogo = () => {
     },
   });
 };
+
+interface UpdateTemplateInput {
+  id: string;
+  data: TemplatePayload;
+}
+
+export const useUpdateTemplate = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: UpdateTemplateInput) =>
+      mutationFetcher('put', `/template/email/${payload.id}`, payload.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['templates'] });
+    },
+  });
+};
+
+export const useDeleteTemplate = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => mutationFetcher('delete', `/template/email/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['templates'] });
+    },
+  });
+};

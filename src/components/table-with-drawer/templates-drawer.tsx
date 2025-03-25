@@ -10,7 +10,7 @@ import { UploadBox } from '../upload-box';
 
 interface TemplatesDrawerProps {
   editData: Template | null;
-  onSave: (data: TemplatePayload) => void;
+  onSave: (data: TemplatePayload, id?: string) => void;
 }
 
 export const TemplatesDrawer = ({ editData, onSave }: TemplatesDrawerProps) => {
@@ -99,7 +99,12 @@ export const TemplatesDrawer = ({ editData, onSave }: TemplatesDrawerProps) => {
         <img src={imageToDisplay} height={120} alt="Logo" style={{ objectFit: 'cover' }} />
       )}
 
-      <Button variant="soft" color="primary" size="small" onClick={() => onSave(formData)}>
+      <Button
+        variant="soft"
+        color="primary"
+        size="small"
+        onClick={() => onSave(formData, editData?.id)}
+      >
         Save
       </Button>
     </Box>
