@@ -35,3 +35,31 @@ export const useCreateCustomer = () => {
     },
   });
 };
+
+interface UpdateCustomerInput {
+  id: string;
+  data: CustomerPayload;
+}
+
+export const useUpdateCustomer = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: UpdateCustomerInput) =>
+      mutationFetcher('put', `/customer/${payload.id}`, payload.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['customers'] });
+    },
+  });
+};
+
+export const useDeleteCustomer = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => mutationFetcher('delete', `/customer/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['customers'] });
+    },
+  });
+};

@@ -6,7 +6,7 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 
 interface CustomerDrawerProps {
   editData: Customer | null;
-  onSave: (data: CustomerPayload) => void;
+  onSave: (data: CustomerPayload, id?: string) => void;
 }
 
 export const CustomerDrawer = ({ editData, onSave }: CustomerDrawerProps) => {
@@ -20,7 +20,8 @@ export const CustomerDrawer = ({ editData, onSave }: CustomerDrawerProps) => {
 
   useEffect(() => {
     if (editData) {
-      setFormData(editData);
+      const { name, customCustomerId, phoneNumber, email, domain } = editData;
+      setFormData({ name, customCustomerId, phoneNumber, email, domain });
     }
   }, [editData]);
 
@@ -58,7 +59,12 @@ export const CustomerDrawer = ({ editData, onSave }: CustomerDrawerProps) => {
         value={formData.domain}
         onChange={handleChange('domain')}
       />
-      <Button variant="soft" color="primary" size="small" onClick={() => onSave(formData)}>
+      <Button
+        variant="soft"
+        color="primary"
+        size="small"
+        onClick={() => onSave(formData, editData?.id)}
+      >
         Save
       </Button>
     </Box>
