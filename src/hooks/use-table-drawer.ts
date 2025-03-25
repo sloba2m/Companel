@@ -19,7 +19,7 @@ export type UseTableDrawerReturn<T extends WithId> = {
 };
 
 export const useTableDrawer = <T extends WithId>(
-  deleteMutation?: UseMutateFunction<any, Error, string, unknown>
+  deleteMutation: UseMutateFunction<any, Error, string, unknown>
 ): UseTableDrawerReturn<T> => {
   const { onFalse, onTrue, value } = useBoolean(false);
   const [editData, setEditData] = useState<T | null>(null);
