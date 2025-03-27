@@ -8,13 +8,7 @@ import { useResponsive } from 'src/hooks/use-responsive';
 
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
-import {
-  useGetMessages,
-  useGetContactsOld,
-  useGetConversation,
-  useGetConversations,
-  useGetConversationsOld,
-} from 'src/actions/chat';
+import { useGetMessages, useGetContactsOld, useGetConversations } from 'src/actions/chat';
 
 import { EmptyContent } from 'src/components/empty-content';
 
@@ -46,20 +40,14 @@ export function ChatView() {
 
   const [recipients, setRecipients] = useState<IChatParticipant[]>([]);
 
-  const { conversationsLoading } = useGetConversationsOld();
-
-  const { data: conversationsData } = useGetConversations(
+  const { data: conversationsData, isLoading: conversationsLoading } = useGetConversations(
     { inboxId: selectedInboxes[0] ? selectedInboxes[0] : '', filter: selectedStatus },
     { enabled: !!selectedInboxes.length }
   );
 
-  const { conversation, conversationLoading } = useGetConversation(`${selectedConversationId}`);
+  const conversation = conversationsData?.items.find((item) => item.id === selectedConversationId);
 
-  const contact = conversationsData?.items.find(
-    (item) => item.id === selectedConversationId
-  )?.contact;
-
-  const { data: messages } = useGetMessages(selectedConversationId);
+  const { data: messages, isLoading: messagesLoading } = useGetMessages(selectedConversationId);
 
   const isTablet = useResponsive('between', 'sm', 'lg');
 
@@ -96,8 +84,8 @@ export function ChatView() {
             <ChatHeaderDetail
               collapseNav={roomNav}
               collapseMenuNav={conversationsNav}
-              contact={contact}
-              loading={conversationLoading}
+              contact={conversation?.contact}
+              loading={messagesLoading}
             />
           ) : (
             <ChatHeaderCompose
@@ -121,8 +109,8 @@ export function ChatView() {
               {selectedConversationId ? (
                 <ChatMessageList
                   messages={messages?.items?.slice().reverse() ?? []}
-                  contact={contact}
-                  loading={conversationLoading}
+                  contact={conversation?.contact}
+                  loading={messagesLoading}
                 />
               ) : (
                 <EmptyContent
@@ -143,9 +131,9 @@ export function ChatView() {
           details: selectedConversationId && (
             <ChatRoom
               collapseNav={roomNav}
-              contact={contact}
-              loading={conversationLoading}
-              messages={conversation?.messages ?? []}
+              conversation={conversation}
+              loading={messagesLoading}
+              messages={[]}
             />
           ),
         }}

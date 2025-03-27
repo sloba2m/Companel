@@ -9,10 +9,10 @@ import type {
 
 import { mutate } from 'swr';
 import { useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { keyBy } from 'src/utils/helper';
-import axios, { fetcher, endpoints } from 'src/utils/axios';
+import axios, { fetcher, endpoints, mutationFetcher } from 'src/utils/axios';
 
 import { CONTACTS_DATA, CONVERSATIONS_DATA } from './chat-mock';
 
@@ -309,3 +309,32 @@ export const useGetMessages = (conversationId: string) =>
     queryFn: () => fetcher(`/v2/conversation/${conversationId}/message`),
     enabled: conversationId !== '',
   });
+
+interface TagToConversationInput {
+  conversationId: string;
+  tagId: string;
+}
+
+export const useAddTagToConversation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: TagToConversationInput) =>
+      mutationFetcher('post', `/conversation/${payload.conversationId}/tag/${payload.tagId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['conversations'] });
+    },
+  });
+};
+
+export const useRemoveTagFromConversation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: TagToConversationInput) =>
+      mutationFetcher('delete', `/conversation/${payload.conversationId}/tag/${payload.tagId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['conversations'] });
+    },
+  });
+};

@@ -130,7 +130,7 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
           <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mt: 1 }}>
             <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
               {conversation.tags.map((tag) => (
-                <Chip variant="soft" label={tag.name} size="small" />
+                <Chip key={tag.id} variant="soft" label={tag.name} size="small" />
               ))}
             </Box>
             <Chip variant="outlined" label={assignedStatus} size="small" color={assignedColor} />

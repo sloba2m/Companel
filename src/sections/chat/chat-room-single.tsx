@@ -1,4 +1,6 @@
-import type { Contact, ContactPayload } from 'src/types/contacts';
+import type { Tag } from 'src/types/tags';
+import type { Conversation } from 'src/types/chat';
+import type { ContactPayload } from 'src/types/contacts';
 
 import { useState } from 'react';
 
@@ -7,8 +9,8 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import {
   Box,
-  Chip,
   List,
+  Chip,
   Button,
   ListItem,
   Collapse,
@@ -24,6 +26,7 @@ import {
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { useUpdateContact } from 'src/actions/contacts';
+import { useAddTagToConversation, useRemoveTagFromConversation } from 'src/actions/chat';
 
 import { Iconify } from 'src/components/iconify';
 
@@ -32,14 +35,16 @@ import { CollapseButton } from './styles';
 // ----------------------------------------------------------------------
 
 type Props = {
-  contact?: Contact;
+  conversation: Conversation;
+  allTags: Tag[];
 };
 
-export function ChatRoomSingle({ contact }: Props) {
+export function ChatRoomSingle({ conversation, allTags }: Props) {
   const theme = useTheme();
   const collapseTag = useBoolean(true);
   const collapseConv = useBoolean(true);
   const { value: isEdit, onTrue: onEditTrue, onFalse: onEditFalse } = useBoolean(false);
+  const { contact } = conversation;
   const initials = contact?.name
     .split(' ')
     .map((word) => word[0])
@@ -57,11 +62,23 @@ export function ChatRoomSingle({ contact }: Props) {
     };
 
   const { mutate: updateMutation } = useUpdateContact();
+  const { mutate: addTagMutation } = useAddTagToConversation();
+  const { mutate: removeTagMutation } = useRemoveTagFromConversation();
 
   const onSave = () => {
     if (!contact) return;
     updateMutation({ data: formData, id: contact?.id });
     onEditFalse();
+  };
+
+  const onTagAdd = (tag?: Tag) => {
+    if (!tag) return;
+    addTagMutation({ conversationId: conversation.id, tagId: tag.id });
+  };
+
+  const onTagRemove = (tag?: Tag) => {
+    if (!tag) return;
+    removeTagMutation({ conversationId: conversation.id, tagId: tag.id });
   };
 
   const renderInfo = (
@@ -141,20 +158,27 @@ export function ChatRoomSingle({ contact }: Props) {
       <Collapse in={collapseTag.value}>
         <Autocomplete
           multiple
-          options={['tag1', 'tag2']}
-          defaultValue={['tag2']}
+          options={allTags.filter(
+            (tag) => !conversation.tags.some((selected) => selected.id === tag.id)
+          )}
+          value={conversation.tags}
           freeSolo
           disableClearable
           sx={{ m: 2 }}
-          renderTags={(value: readonly string[], getTagProps) =>
-            value.map((option: string, index: number) => {
+          getOptionLabel={(option) => (typeof option === 'string' ? option : option.name)}
+          renderTags={(value: readonly Tag[], getTagProps) =>
+            value.map((option: Tag, index: number) => {
               const { key, ...tagProps } = getTagProps({ index });
               return (
-                <Chip variant="outlined" size="small" label={option} key={key} {...tagProps} />
+                <Chip variant="outlined" size="small" label={option.name} key={key} {...tagProps} />
               );
             })
           }
           renderInput={(params) => <TextField {...params} placeholder="Add Tags" size="small" />}
+          onChange={(_e, _value, reason, details) => {
+            if (reason === 'selectOption') onTagAdd(details?.option);
+            if (reason === 'removeOption') onTagRemove(details?.option);
+          }}
         />
       </Collapse>
 

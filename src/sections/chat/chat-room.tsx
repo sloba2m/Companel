@@ -1,10 +1,11 @@
-import type { Contact } from 'src/types/contacts';
-import type { IChatConversation } from 'src/types/chat';
+import type { Conversation, IChatConversation } from 'src/types/chat';
 
 import { useEffect } from 'react';
 
 import Drawer from '@mui/material/Drawer';
 import { Stack, useTheme } from '@mui/material';
+
+import { useGetTags } from 'src/actions/tags';
 
 import { Scrollbar } from 'src/components/scrollbar';
 
@@ -20,31 +21,38 @@ const NAV_WIDTH = 280;
 
 type Props = {
   loading: boolean;
-  contact?: Contact;
+  conversation?: Conversation;
   collapseNav: UseNavCollapseReturn;
   messages: IChatConversation['messages'];
 };
 
-export function ChatRoom({ collapseNav, contact, messages, loading }: Props) {
+export function ChatRoom({ collapseNav, conversation, messages, loading }: Props) {
   const theme = useTheme();
 
   const { collapseDesktop, openMobile, onCloseMobile, onCollapseDesktop } = collapseNav;
 
   useEffect(() => {
-    if (contact?.id) return;
+    if (conversation?.contact?.id) return;
     onCollapseDesktop();
     onCloseMobile();
-  }, [contact, onCollapseDesktop, onCloseMobile]);
+  }, [conversation, onCollapseDesktop, onCloseMobile]);
 
-  const renderContent = loading ? (
-    <ChatRoomSkeleton />
-  ) : (
-    <Scrollbar>
-      <div>
-        <ChatRoomSingle key={contact?.id} contact={contact} />
-      </div>
-    </Scrollbar>
-  );
+  const { data } = useGetTags();
+
+  const renderContent =
+    loading || !conversation ? (
+      <ChatRoomSkeleton />
+    ) : (
+      <Scrollbar>
+        <div>
+          <ChatRoomSingle
+            key={conversation?.contact?.id}
+            conversation={conversation}
+            allTags={data ?? []}
+          />
+        </div>
+      </Scrollbar>
+    );
 
   return (
     <>
