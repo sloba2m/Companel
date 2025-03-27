@@ -45,11 +45,7 @@ export function ChatRoom({ collapseNav, conversation, messages, loading }: Props
     ) : (
       <Scrollbar>
         <div>
-          <ChatRoomSingle
-            key={conversation?.contact?.id}
-            conversation={conversation}
-            allTags={data ?? []}
-          />
+          <ChatRoomSingle key={conversation?.id} conversation={conversation} allTags={data ?? []} />
         </div>
       </Scrollbar>
     );

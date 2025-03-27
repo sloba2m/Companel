@@ -25,6 +25,7 @@ import {
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import { useCreateTag } from 'src/actions/tags';
 import { useUpdateContact } from 'src/actions/contacts';
 import { useAddTagToConversation, useRemoveTagFromConversation } from 'src/actions/chat';
 
@@ -40,6 +41,7 @@ type Props = {
 };
 
 export function ChatRoomSingle({ conversation, allTags }: Props) {
+  const [selectedTags, setSelectedTags] = useState<Tag[]>(conversation.tags);
   const theme = useTheme();
   const collapseTag = useBoolean(true);
   const collapseConv = useBoolean(true);
@@ -64,6 +66,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
   const { mutate: updateMutation } = useUpdateContact();
   const { mutate: addTagMutation } = useAddTagToConversation();
   const { mutate: removeTagMutation } = useRemoveTagFromConversation();
+  const { mutate: createTag } = useCreateTag();
 
   const onSave = () => {
     if (!contact) return;
@@ -73,12 +76,36 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
 
   const onTagAdd = (tag?: Tag) => {
     if (!tag) return;
-    addTagMutation({ conversationId: conversation.id, tagId: tag.id });
+    addTagMutation(
+      { conversationId: conversation.id, tagId: tag.id },
+      {
+        onError: (_err, variables) =>
+          setSelectedTags((prev) => prev.filter((t) => t.id !== variables.tagId)),
+      }
+    );
   };
 
   const onTagRemove = (tag?: Tag) => {
     if (!tag) return;
-    removeTagMutation({ conversationId: conversation.id, tagId: tag.id });
+    removeTagMutation(
+      { conversationId: conversation.id, tagId: tag.id },
+      {
+        onError: (_err, variables) => {
+          const fTag = allTags.find((t) => t.id === variables.tagId);
+          if (fTag) setSelectedTags((prev) => [...prev, fTag]);
+        },
+      }
+    );
+  };
+
+  const onCreateTag = (tag?: string) => {
+    if (!tag) return;
+    createTag(tag, {
+      onSuccess: (data: Tag) => {
+        setSelectedTags((prev) => prev.map((t) => (t.id === tag ? data : t)));
+        onTagAdd(data);
+      },
+    });
   };
 
   const renderInfo = (
@@ -159,9 +186,9 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
         <Autocomplete
           multiple
           options={allTags.filter(
-            (tag) => !conversation.tags.some((selected) => selected.id === tag.id)
+            (tag) => !selectedTags.some((selected) => selected.id === tag.id)
           )}
-          value={conversation.tags}
+          value={selectedTags}
           freeSolo
           disableClearable
           sx={{ m: 2 }}
@@ -176,8 +203,30 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
           }
           renderInput={(params) => <TextField {...params} placeholder="Add Tags" size="small" />}
           onChange={(_e, _value, reason, details) => {
-            if (reason === 'selectOption') onTagAdd(details?.option);
-            if (reason === 'removeOption') onTagRemove(details?.option);
+            if (reason === 'selectOption') {
+              const newTag = details?.option;
+              if (newTag) {
+                setSelectedTags((prev) => [...prev, newTag]);
+                onTagAdd(newTag);
+              }
+            }
+            if (reason === 'removeOption') {
+              const removedTag = details?.option;
+              if (removedTag) {
+                setSelectedTags((prev) => prev.filter((tag) => tag.id !== removedTag.id));
+                onTagRemove(removedTag);
+              }
+            }
+            if (reason === 'createOption') {
+              const newTag = details?.option as unknown as string;
+              if (newTag) {
+                setSelectedTags((prev) => [
+                  ...prev,
+                  { id: newTag, createdAt: newTag, name: newTag },
+                ]);
+                onCreateTag(newTag);
+              }
+            }
           }}
         />
       </Collapse>
