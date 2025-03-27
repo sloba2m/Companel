@@ -41,18 +41,19 @@ export function ChatView() {
 
   const searchParams = useSearchParams();
 
-  const selectedConversationId = searchParams.get('id') || '';
+  const selectedConversationId = searchParams.get('conversationId') || '';
+  const selectedInboxes = searchParams.getAll('id');
 
   const [recipients, setRecipients] = useState<IChatParticipant[]>([]);
 
-  const [selectedInboxes, setSelectedInboxes] = useState<string[]>([]);
+  // const [selectedInboxes, setSelectedInboxes] = useState<string[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<StatusFilters>(StatusFilters.ALL);
 
-  const handleInboxChange = (value: string) => {
-    setSelectedInboxes((prev) =>
-      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
-    );
-  };
+  // const handleInboxChange = (value: string) => {
+  //   setSelectedInboxes((prev) =>
+  //     prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
+  //   );
+  // };
 
   const { conversations, conversationsLoading } = useGetConversationsOld();
 
@@ -127,7 +128,6 @@ export function ChatView() {
               conversations={conversations}
               loading={conversationsLoading}
               selectedInboxes={selectedInboxes}
-              handleInboxChange={handleInboxChange}
               selectedConversationId={selectedConversationId}
               collapseNav={conversationsNav}
               conversationData={conversationsData}

@@ -22,7 +22,7 @@ export function NavList({
   cssVars,
   slotProps,
   enabledRootRedirect,
-  secondaryColor,
+  secondarycolor,
 }: NavListProps) {
   const theme = useTheme();
 
@@ -57,7 +57,7 @@ export function NavList({
       // styles
       slotProps={depth === 1 ? slotProps?.rootItem : slotProps?.subItem}
       // actions
-      secondaryColor={secondaryColor}
+      secondarycolor={secondarycolor}
     />
   );
 
@@ -136,7 +136,7 @@ function NavSubList({
           cssVars={cssVars}
           slotProps={slotProps}
           enabledRootRedirect={enabledRootRedirect}
-          secondaryColor
+          secondarycolor
         />
       ))}
     </NavUl>

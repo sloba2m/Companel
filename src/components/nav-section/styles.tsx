@@ -182,6 +182,7 @@ export function NavLi({
 }: BoxProps & {
   disabled?: boolean;
 }) {
+  console.log('other', other);
   return (
     <Box
       component="li"

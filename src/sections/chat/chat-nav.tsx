@@ -52,7 +52,6 @@ type Props = {
   loading: boolean;
   selectedConversationId: string;
   selectedInboxes: string[];
-  handleInboxChange: (value: string) => void;
   collapseNav: UseNavCollapseReturn;
   conversations: IChatConversations;
   conversationData?: ConversationData;
@@ -63,7 +62,6 @@ type Props = {
 export function ChatNav({
   loading,
   selectedInboxes,
-  handleInboxChange,
   conversations,
   collapseNav,
   selectedConversationId,
@@ -117,6 +115,17 @@ export function ChatNav({
     },
     [handleClickAwaySearch, router]
   );
+
+  const handleInboxChange = (value: string) => {
+    const newInboxes = selectedInboxes.includes(value)
+      ? selectedInboxes.filter((item) => item !== value)
+      : [...selectedInboxes, value];
+
+    console.log('ovde');
+    const queryParams = newInboxes.map((id) => `id=${id}`).join('&');
+
+    router.push(`${paths.navigation.inbox}?${queryParams}`);
+  };
 
   const renderLoading = <ChatNavItemSkeleton />;
 

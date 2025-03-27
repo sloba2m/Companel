@@ -106,7 +106,7 @@ export const NavItem = forwardRef<HTMLButtonElement, NavItemProps>(
 const StyledNavItem = styled(ButtonBase, {
   shouldForwardProp: (prop) =>
     prop !== 'active' && prop !== 'open' && prop !== 'disabled' && prop !== 'depth',
-})<NavItemStateProps>(({ active, open, disabled, depth, theme, secondaryColor }) => {
+})<NavItemStateProps>(({ active, open, disabled, depth, theme, secondarycolor }) => {
   const rootItem = depth === 1;
 
   const subItem = !rootItem;
@@ -115,14 +115,14 @@ const StyledNavItem = styled(ButtonBase, {
     item: {
       width: '100%',
       borderRadius: 'var(--nav-item-radius)',
-      color: secondaryColor ? 'var(--nav-item-color-secondary)' : 'var(--nav-item-color)',
+      color: secondarycolor ? 'var(--nav-item-color-secondary)' : 'var(--nav-item-color)',
       '&:hover': {
-        backgroundColor: secondaryColor
+        backgroundColor: secondarycolor
           ? 'var(--nav-item-root-active-hover-bg)'
           : 'var(--nav-item-hover-bg)',
       },
       [stylesMode.dark]: {
-        color: secondaryColor
+        color: secondarycolor
           ? 'var(--nav-item-root-active-color-on-dark)'
           : 'var(--nav-item-color)',
       },
@@ -178,10 +178,10 @@ const StyledNavItem = styled(ButtonBase, {
       [`& .${navSectionClasses.item.info}`]: { ...baseStyles.info },
       // State
       ...(active && {
-        color: secondaryColor
+        color: secondarycolor
           ? 'var(--nav-item-color-secondary)'
           : 'var(--nav-item-root-active-color)',
-        backgroundColor: secondaryColor
+        backgroundColor: secondarycolor
           ? 'var(--nav-item-root-active-hover-bg)'
           : 'var(--nav-item-root-active-bg)',
         [stylesMode.dark]: {
