@@ -30,7 +30,6 @@ export default function Page() {
   const { paginationModel, setPaginationModel } = usePagination();
 
   const { data: inboxesData, isLoading } = useGetInboxes({
-    search,
     page: paginationModel.page,
     size: paginationModel.pageSize,
   });
@@ -48,6 +47,10 @@ export default function Page() {
       ...inbox,
       id: inbox.externalId,
     })) ?? [];
+
+  const filteredInboxes = inboxesWithId?.filter((inbox) =>
+    inbox.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   const columns: GridColDef<InboxWithId>[] = [
     {
@@ -95,7 +98,7 @@ export default function Page() {
 
       <TableWithDrawer
         columns={columns}
-        rows={inboxesWithId}
+        rows={filteredInboxes}
         entity="Inbox"
         drawerContent={<InboxDrawer editData={editData} onSave={onSave} />}
         onSearch={(val) => setSearch(val)}

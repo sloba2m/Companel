@@ -5,16 +5,15 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { fetcher, mutationFetcher } from 'src/utils/axios';
 
-export const useGetInboxes = ({ page = 0, size = 10, search, sort = 'name,desc' }: GetParams) => {
+export const useGetInboxes = ({ page = 0, size = 10, sort = 'name,desc' }: GetParams) => {
   const params: GetParams = {
     page,
     size,
-    search,
     sort,
   };
 
   return useQuery<GetRsponse<Inbox>>({
-    queryKey: ['inbox', { page, size, search, sort }],
+    queryKey: ['inbox', { page, size, sort }],
     queryFn: () =>
       fetcher([
         '/inbox',

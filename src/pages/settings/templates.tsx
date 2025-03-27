@@ -1,5 +1,6 @@
 import type { Template, TemplatePayload } from 'src/types/templates';
 
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import { type GridColDef } from '@mui/x-data-grid';
@@ -28,6 +29,8 @@ import {
 const metadata = { title: `Templates settings - ${CONFIG.site.name}` };
 
 export default function Page() {
+  const [search, setSearch] = useState('');
+
   const { data: templatesData } = useGetTemplates();
   const { mutate: createMutation } = useCreateTemplate();
   const { mutate: uploadLogoMutation } = useUploadLogo();
@@ -36,6 +39,10 @@ export default function Page() {
   const tableDrawer = useTableDrawer<Template>(deleteMutation);
   const { handleEdit, editData, handleDelete, yesNoOpen, onYesNoToggle, handleDeleteConfirm } =
     tableDrawer;
+
+  const filteredTemplates = templatesData?.filter((template) =>
+    template.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   const columns: GridColDef<Template>[] = [
     {
@@ -90,9 +97,9 @@ export default function Page() {
       <TableWithDrawer
         entity="Templates"
         columns={columns}
-        rows={templatesData ?? []}
+        rows={filteredTemplates ?? []}
         drawerContent={<TemplatesDrawer editData={editData} onSave={onSave} key={editData?.id} />}
-        onSearch={() => console.log('test')}
+        onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
         isInSubMenu
       />

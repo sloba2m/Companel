@@ -1,5 +1,6 @@
 import type { Tag } from 'src/types/tags';
 
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import { type GridColDef } from '@mui/x-data-grid';
@@ -18,6 +19,8 @@ import { TagsDrawer, TableWithDrawer, firstColumnMargin } from 'src/components/t
 const metadata = { title: `Tags settings - ${CONFIG.site.name}` };
 
 export default function Page() {
+  const [search, setSearch] = useState('');
+
   const { data: tagsData } = useGetTags();
   const { mutate: createMutation } = useCreateTag();
   const { mutate: updateMutation } = useUpdateTag();
@@ -44,6 +47,10 @@ export default function Page() {
     getActionColumn(handleEdit, handleDelete),
   ];
 
+  const filteredTags = tagsData?.filter((tag) =>
+    tag.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <>
       <Helmet>
@@ -53,9 +60,9 @@ export default function Page() {
       <TableWithDrawer
         columns={columns}
         entity="Tags"
-        rows={tagsData ?? []}
+        rows={filteredTags ?? []}
         drawerContent={<TagsDrawer editData={editData} onSave={onSave} />}
-        onSearch={() => console.log('test')}
+        onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
         isInSubMenu
       />
