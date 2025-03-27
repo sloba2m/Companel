@@ -48,7 +48,7 @@ export const useUpdateContact = () => {
     mutationFn: (payload: UpdateContactInput) =>
       mutationFetcher('put', `/contact/${payload.id}`, payload.data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['contact'] });
+      queryClient.invalidateQueries({ queryKey: ['contact', 'conversations'] });
     },
   });
 };

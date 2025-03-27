@@ -54,7 +54,7 @@ export default function Page() {
       ...firstColumnMargin,
     },
     {
-      field: 'phone',
+      field: 'phoneNumber',
       headerName: 'Phone number',
       width: 160,
       sortable: false,

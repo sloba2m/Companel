@@ -1,4 +1,6 @@
-import type { Contact } from 'src/types/contacts';
+import type { Contact, ContactPayload } from 'src/types/contacts';
+
+import { useState } from 'react';
 
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
@@ -21,6 +23,8 @@ import {
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import { useUpdateContact } from 'src/actions/contacts';
+
 import { Iconify } from 'src/components/iconify';
 
 import { CollapseButton } from './styles';
@@ -40,6 +44,25 @@ export function ChatRoomSingle({ contact }: Props) {
     .split(' ')
     .map((word) => word[0])
     .join('');
+
+  const [formData, setFormData] = useState<ContactPayload>({
+    name: contact?.name ?? '',
+    phoneNumber: contact?.phoneNumber ?? '',
+    email: contact?.email ?? '',
+  });
+
+  const handleChange =
+    (field: keyof ContactPayload) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData((prev) => ({ ...prev, [field]: e.target.value }));
+    };
+
+  const { mutate: updateMutation } = useUpdateContact();
+
+  const onSave = () => {
+    if (!contact) return;
+    updateMutation({ data: formData, id: contact?.id });
+    onEditFalse();
+  };
 
   const renderInfo = (
     <Stack alignItems="center" direction="row" justifyContent="center" sx={{ p: 3, gap: 2 }}>
@@ -65,33 +88,40 @@ export function ChatRoomSingle({ contact }: Props) {
       </Box>
       {isEdit ? (
         <>
-          <TextField fullWidth label="Address" size="small" defaultValue={contact?.email} />
+          <TextField
+            fullWidth
+            label="Name"
+            size="small"
+            value={formData.name ?? ''}
+            onChange={handleChange('name')}
+          />
           <TextField
             size="small"
             fullWidth
             label="Phone number"
-            defaultValue={contact?.phoneNumber}
             type="tel"
+            value={formData.phoneNumber ?? ''}
+            onChange={handleChange('phoneNumber')}
           />
           <TextField
             fullWidth
             size="small"
             label="Email"
-            defaultValue={contact?.email}
             type="email"
+            value={formData.email ?? ''}
+            onChange={handleChange('email')}
           />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
             <Button size="small" onClick={onEditFalse}>
               Cancel
             </Button>
-            <Button size="small" variant="soft" color="primary">
+            <Button size="small" variant="soft" color="primary" onClick={onSave}>
               Save
             </Button>
           </Box>
         </>
       ) : (
         <>
-          <ListItemText primary="Address" secondary={contact?.email} />
           <ListItemText primary="Phone number" secondary={contact?.phoneNumber} />
           <ListItemText primary="Email" secondary={contact?.email} />
         </>

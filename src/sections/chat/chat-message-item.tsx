@@ -2,6 +2,8 @@ import type { User } from 'src/types/users';
 import type { Message } from 'src/types/chat';
 import type { Contact } from 'src/types/contacts';
 
+import parse from 'html-react-parser';
+
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
@@ -107,7 +109,7 @@ export function ChatMessageItem({ message, contact, onOpenLightbox }: Props) {
             }}
           />
         ) : (
-          content
+          parse(content)
         )}
       </Stack>
     </Badge>

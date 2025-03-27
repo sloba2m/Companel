@@ -303,8 +303,9 @@ interface MessagesData {
   links: LinksInfo;
 }
 
-export const useGetMessages = (conversaationId: string) =>
+export const useGetMessages = (conversationId: string) =>
   useQuery<MessagesData>({
-    queryKey: ['messages', { conversaationId }],
-    queryFn: () => fetcher(`/v2/conversation/${conversaationId}/message`),
+    queryKey: ['messages', { conversaationId: conversationId }],
+    queryFn: () => fetcher(`/v2/conversation/${conversationId}/message`),
+    enabled: conversationId !== '',
   });

@@ -43,27 +43,24 @@ export function ChatMessageList({ messages = [], contact, loading }: Props) {
       </Stack>
     );
   }
-
-  return (
-    <>
-      <Scrollbar ref={messagesEndRef} sx={{ px: 3, pt: 5, pb: 3, flex: '1 1 auto' }}>
-        {messages.map((message, i) => (
-          <>
-            {/* {i === messages.length - 1 && (
+  /* {i === messages.length - 1 && (
               <Box key={`${message.id}status`}>
                 <Alert sx={{ maxWidth: '300px', ml: 'auto', my: 2 }} severity="info">
                   Created: 9:20
                 </Alert>
               </Box>
-            )} */}
-            <ChatMessageItem
-              key={message.id}
-              message={message}
-              contact={contact}
-              // onOpenLightbox={() => lightbox.onOpen(message.body)}
-              onOpenLightbox={() => console.log('images')}
-            />
-          </>
+            )} */
+  return (
+    <>
+      <Scrollbar ref={messagesEndRef} sx={{ px: 3, pt: 5, pb: 3, flex: '1 1 auto' }}>
+        {messages.map((message, i) => (
+          <ChatMessageItem
+            key={message.id}
+            message={message}
+            contact={contact}
+            // onOpenLightbox={() => lightbox.onOpen(message.body)}
+            onOpenLightbox={() => console.log('images')}
+          />
         ))}
       </Scrollbar>
 
