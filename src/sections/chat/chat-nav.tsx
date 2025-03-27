@@ -123,7 +123,7 @@ export function ChatNav({
   const renderList = (
     <nav>
       <Box component="ul">
-        {conversationData?.content.map((conversation) => (
+        {conversationData?.items.map((conversation) => (
           <ChatNavItem
             key={conversation.id}
             conversation={conversation}

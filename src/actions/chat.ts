@@ -1,6 +1,6 @@
-import type { PageInfo } from 'src/types/common';
 import type { StatusFilters } from 'src/sections/chat/chat-nav';
 import type {
+  Message,
   IChatMessage,
   Conversation,
   IChatParticipant,
@@ -233,9 +233,14 @@ export async function clickConversation(conversationId: string) {
   );
 }
 
+interface LinksInfo {
+  self: string;
+  next: string;
+}
+
 export interface ConversationData {
-  content: Conversation[];
-  page: PageInfo;
+  items: Conversation[];
+  links: LinksInfo;
 }
 
 interface UseGetConversationsParams {
@@ -284,7 +289,7 @@ export const useGetConversations = (
     queryKey: ['conversations', { page, size, inboxId, filter, sort }],
     queryFn: () =>
       fetcher([
-        '/conversation',
+        '/v2/conversation',
         {
           params,
         },
@@ -292,3 +297,14 @@ export const useGetConversations = (
     enabled: options?.enabled !== false,
   });
 };
+
+interface MessagesData {
+  items: Message[];
+  links: LinksInfo;
+}
+
+export const useGetMessages = (conversaationId: string) =>
+  useQuery<MessagesData>({
+    queryKey: ['messages', { conversaationId }],
+    queryFn: () => fetcher(`/v2/conversation/${conversaationId}/message`),
+  });

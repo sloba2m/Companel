@@ -10,6 +10,7 @@ import { useResponsive } from 'src/hooks/use-responsive';
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
 import {
+  useGetMessages,
   useGetContactsOld,
   useGetConversation,
   useGetConversations,
@@ -64,17 +65,17 @@ export function ChatView() {
     `${selectedConversationId}`
   );
 
+  const contact = conversationsData?.items.find(
+    (item) => item.id === selectedConversationId
+  )?.contact;
+
+  const { data: messages } = useGetMessages(selectedConversationId);
+
   const isTablet = useResponsive('between', 'sm', 'lg');
 
   const roomNav = useCollapseNav();
 
   const conversationsNav = useCollapseNav();
-
-  const participants: IChatParticipant[] = conversation
-    ? conversation.participants.filter(
-        (participant: IChatParticipant) => participant.id !== `${user?.id}`
-      )
-    : [];
 
   useEffect(() => {
     if (conversationError || !selectedConversationId) {
@@ -111,7 +112,7 @@ export function ChatView() {
             <ChatHeaderDetail
               collapseNav={roomNav}
               collapseMenuNav={conversationsNav}
-              participants={participants}
+              contact={contact}
               loading={conversationLoading}
             />
           ) : (
@@ -138,8 +139,8 @@ export function ChatView() {
             <>
               {selectedConversationId ? (
                 <ChatMessageList
-                  messages={conversation?.messages ?? []}
-                  participants={participants}
+                  messages={messages?.items?.slice().reverse() ?? []}
+                  contact={contact}
                   loading={conversationLoading}
                 />
               ) : (
@@ -161,7 +162,7 @@ export function ChatView() {
           details: selectedConversationId && (
             <ChatRoom
               collapseNav={roomNav}
-              participants={participants}
+              contact={contact}
               loading={conversationLoading}
               messages={conversation?.messages ?? []}
             />

@@ -1,41 +1,51 @@
-import type { IChatMessage, IChatParticipant } from 'src/types/chat';
+import type { User } from 'src/types/users';
+import type { Message } from 'src/types/chat';
+import type { Contact } from 'src/types/contacts';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
+import { Badge, useTheme } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { Badge, Tooltip, useTheme } from '@mui/material';
 
 import { fDateTime } from 'src/utils/format-time';
 
 import { Iconify } from 'src/components/iconify';
-
-import { useMockedUser } from 'src/auth/hooks';
 
 import { useMessage } from './hooks/use-message';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  message: IChatMessage;
-  participants: IChatParticipant[];
+  message: Message;
+  contact?: Contact;
   onOpenLightbox: (value: string) => void;
 };
 
-export function ChatMessageItem({ message, participants, onOpenLightbox }: Props) {
-  const { user } = useMockedUser();
+export function ChatMessageItem({ message, contact, onOpenLightbox }: Props) {
+  // const { user } = useMockedUser();
+
+  const user: User = {
+    id: '3aa02f71-539e-4fbd-8191-718b398af9ef',
+    authId: '8ba33e21-49b8-4f7c-abc8-0f059ecad7db',
+    firstName: 'Slobo',
+    lastName: 'Developer',
+    fullName: 'Slobo Developer',
+    email: 'freelancerslobodan@gmail.com',
+  };
+
   const theme = useTheme();
 
   const { me, senderDetails, hasImage } = useMessage({
     message,
-    participants,
+    contact,
     currentUserId: `${user?.id}`,
   });
 
-  const { firstName, avatarUrl } = senderDetails;
+  const { fullName } = senderDetails;
 
-  const { body, createdAt } = message;
+  const { content, createdAt } = message;
 
   const renderInfo = (
     <Typography
@@ -43,7 +53,7 @@ export function ChatMessageItem({ message, participants, onOpenLightbox }: Props
       variant="caption"
       sx={{ mb: 1, color: 'text.disabled', ...(!me && { mr: 'auto' }) }}
     >
-      {!me && `${firstName}, `}
+      {!me && `${fullName}, `}
 
       {fDateTime(createdAt)}
     </Typography>
@@ -51,21 +61,21 @@ export function ChatMessageItem({ message, participants, onOpenLightbox }: Props
 
   const renderBody = (
     <Badge
-      badgeContent={
-        message.note ? (
-          <Tooltip title={message.note}>
-            <IconButton disableTouchRipple sx={{ backgroundColor: theme.vars.palette.grey[300] }}>
-              <Iconify
-                icon="mdi:speaker-notes"
-                width={16}
-                sx={{ color: theme.vars.palette.grey[600] }}
-              />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          0
-        )
-      }
+    // badgeContent={
+    //   message.note ? (
+    //     <Tooltip title={message.note}>
+    //       <IconButton disableTouchRipple sx={{ backgroundColor: theme.vars.palette.grey[300] }}>
+    //         <Iconify
+    //           icon="mdi:speaker-notes"
+    //           width={16}
+    //           sx={{ color: theme.vars.palette.grey[600] }}
+    //         />
+    //       </IconButton>
+    //     </Tooltip>
+    //   ) : (
+    //     0
+    //   )
+    // }
     >
       <Stack
         sx={{
@@ -83,8 +93,9 @@ export function ChatMessageItem({ message, participants, onOpenLightbox }: Props
           <Box
             component="img"
             alt="attachment"
-            src={body}
-            onClick={() => onOpenLightbox(body)}
+            src={content}
+            // onClick={() => onOpenLightbox(body)}
+            onClick={() => console.log('open')}
             sx={{
               width: 400,
               height: 'auto',
@@ -96,7 +107,7 @@ export function ChatMessageItem({ message, participants, onOpenLightbox }: Props
             }}
           />
         ) : (
-          body
+          content
         )}
       </Stack>
     </Badge>
@@ -142,7 +153,7 @@ export function ChatMessageItem({ message, participants, onOpenLightbox }: Props
       sx={{ mb: 5 }}
       key={message.id}
     >
-      {!me && <Avatar alt={firstName} src={avatarUrl} sx={{ width: 32, height: 32, mr: 2 }} />}
+      {!me && <Avatar alt={fullName} sx={{ width: 32, height: 32, mr: 2 }} />}
 
       <Stack alignItems={me ? 'flex-end' : 'flex-start'}>
         {renderInfo}

@@ -1,11 +1,11 @@
-import type { IChatParticipant, IChatConversation } from 'src/types/chat';
+import type { Contact } from 'src/types/contacts';
+import type { IChatConversation } from 'src/types/chat';
 
 import Drawer from '@mui/material/Drawer';
 import { Stack, useTheme } from '@mui/material';
 
 import { Scrollbar } from 'src/components/scrollbar';
 
-import { ChatRoomGroup } from './chat-room-group';
 import { ChatRoomSkeleton } from './chat-skeleton';
 import { ChatRoomSingle } from './chat-room-single';
 
@@ -18,28 +18,22 @@ const NAV_WIDTH = 280;
 
 type Props = {
   loading: boolean;
-  participants: IChatParticipant[];
+  contact?: Contact;
   collapseNav: UseNavCollapseReturn;
   messages: IChatConversation['messages'];
 };
 
-export function ChatRoom({ collapseNav, participants, messages, loading }: Props) {
+export function ChatRoom({ collapseNav, contact, messages, loading }: Props) {
   const theme = useTheme();
 
   const { collapseDesktop, openMobile, onCloseMobile } = collapseNav;
-
-  const group = participants.length > 1;
 
   const renderContent = loading ? (
     <ChatRoomSkeleton />
   ) : (
     <Scrollbar>
       <div>
-        {group ? (
-          <ChatRoomGroup participants={participants} />
-        ) : (
-          <ChatRoomSingle participant={participants[0]} />
-        )}
+        <ChatRoomSingle contact={contact} />
       </div>
     </Scrollbar>
   );

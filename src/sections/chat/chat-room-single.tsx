@@ -1,4 +1,4 @@
-import type { IChatParticipant } from 'src/types/chat';
+import type { Contact } from 'src/types/contacts';
 
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
@@ -28,25 +28,25 @@ import { CollapseButton } from './styles';
 // ----------------------------------------------------------------------
 
 type Props = {
-  participant: IChatParticipant;
+  contact?: Contact;
 };
 
-export function ChatRoomSingle({ participant }: Props) {
+export function ChatRoomSingle({ contact }: Props) {
   const theme = useTheme();
   const collapseTag = useBoolean(true);
   const collapseConv = useBoolean(true);
   const { value: isEdit, onTrue: onEditTrue, onFalse: onEditFalse } = useBoolean(false);
-  const initials = participant?.name
+  const initials = contact?.name
     .split(' ')
     .map((word) => word[0])
     .join('');
 
   const renderInfo = (
     <Stack alignItems="center" direction="row" justifyContent="center" sx={{ p: 3, gap: 2 }}>
-      <Avatar alt={participant?.name} sx={{ width: 48, height: 48 }}>
+      <Avatar alt={contact?.name} sx={{ width: 48, height: 48 }}>
         {initials}
       </Avatar>
-      <Typography variant="subtitle1">{participant?.name}</Typography>
+      <Typography variant="subtitle1">{contact?.name}</Typography>
       <IconButton>
         <Iconify icon="ic:baseline-settings" />
       </IconButton>
@@ -65,19 +65,19 @@ export function ChatRoomSingle({ participant }: Props) {
       </Box>
       {isEdit ? (
         <>
-          <TextField fullWidth label="Address" size="small" defaultValue={participant?.address} />
+          <TextField fullWidth label="Address" size="small" defaultValue={contact?.email} />
           <TextField
             size="small"
             fullWidth
             label="Phone number"
-            defaultValue={participant?.phoneNumber}
+            defaultValue={contact?.phoneNumber}
             type="tel"
           />
           <TextField
             fullWidth
             size="small"
             label="Email"
-            defaultValue={participant?.email}
+            defaultValue={contact?.email}
             type="email"
           />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
@@ -91,9 +91,9 @@ export function ChatRoomSingle({ participant }: Props) {
         </>
       ) : (
         <>
-          <ListItemText primary="Address" secondary={participant?.address} />
-          <ListItemText primary="Phone number" secondary={participant?.phoneNumber} />
-          <ListItemText primary="Email" secondary={participant?.email} />
+          <ListItemText primary="Address" secondary={contact?.email} />
+          <ListItemText primary="Phone number" secondary={contact?.phoneNumber} />
+          <ListItemText primary="Email" secondary={contact?.email} />
         </>
       )}
     </Stack>

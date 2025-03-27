@@ -1,24 +1,21 @@
-import type { IChatMessage, IChatParticipant } from 'src/types/chat';
+import type { Message } from 'src/types/chat';
+import type { Contact } from 'src/types/contacts';
 
 // ----------------------------------------------------------------------
 
 type Props = {
   currentUserId: string;
-  message: IChatMessage;
-  participants: IChatParticipant[];
+  message: Message;
+  contact?: Contact;
 };
 
-export function useMessage({ message, participants, currentUserId }: Props) {
-  const sender = participants.find((participant) => participant.id === message.senderId);
-
+export function useMessage({ message, contact, currentUserId }: Props) {
   const senderDetails =
-    message.senderId === currentUserId
-      ? { type: 'me' }
-      : { avatarUrl: sender?.avatarUrl, firstName: sender?.name.split(' ')[0] };
+    message.user?.id === currentUserId ? { type: 'me' } : { fullName: contact?.name };
 
   const me = senderDetails.type === 'me';
 
-  const hasImage = message.contentType === 'image';
+  // const hasImage = message.contentType === 'image';
 
-  return { hasImage, me, senderDetails };
+  return { hasImage: false, me, senderDetails };
 }

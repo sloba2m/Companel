@@ -1,4 +1,4 @@
-import type { IChatParticipant } from 'src/types/chat';
+import type { Contact } from 'src/types/contacts';
 import type { SnackbarCloseReason } from '@mui/material';
 
 import { useState, useCallback } from 'react';
@@ -10,7 +10,6 @@ import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
-import AvatarGroup, { avatarGroupClasses } from '@mui/material/AvatarGroup';
 import {
   Box,
   Alert,
@@ -34,21 +33,17 @@ import type { UseNavCollapseReturn } from './hooks/use-collapse-nav';
 
 type Props = {
   loading: boolean;
-  participants: IChatParticipant[];
+  contact?: Contact;
   collapseNav: UseNavCollapseReturn;
   collapseMenuNav: UseNavCollapseReturn;
 };
 
-export function ChatHeaderDetail({ collapseNav, participants, loading, collapseMenuNav }: Props) {
+export function ChatHeaderDetail({ collapseNav, contact, loading, collapseMenuNav }: Props) {
   const popover = usePopover();
 
   const lgUp = useResponsive('up', 'lg');
   const smUp = useResponsive('up', 'sm');
   const mdDown = useResponsive('down', 'md');
-
-  const group = participants.length > 1;
-
-  const singleParticipant = participants[0];
 
   const { collapseDesktop, onCollapseDesktop, onOpenMobile } = collapseNav;
 
@@ -75,23 +70,15 @@ export function ChatHeaderDetail({ collapseNav, participants, loading, collapseM
     setOpen(false);
   };
 
-  const renderGroup = (
-    <AvatarGroup max={3} sx={{ [`& .${avatarGroupClasses.avatar}`]: { width: 32, height: 32 } }}>
-      {participants.map((participant) => (
-        <Avatar key={participant.id} alt={participant.name} src={participant.avatarUrl} />
-      ))}
-    </AvatarGroup>
-  );
-
-  const initials = singleParticipant?.name
+  const initials = contact?.name
     .split(' ')
     .map((word) => word[0])
     .join('');
   const renderSingle = (
     <Stack direction="row" alignItems="center" spacing={2} mr={6}>
-      {smUp && <Avatar alt={singleParticipant?.name}>{initials}</Avatar>}
+      {smUp && <Avatar alt={contact?.name}>{initials}</Avatar>}
 
-      <ListItemText primary={singleParticipant?.name} secondary="email@email.com" />
+      <ListItemText primary={contact?.name} secondary="email@email.com" />
     </Stack>
   );
 
@@ -114,7 +101,7 @@ export function ChatHeaderDetail({ collapseNav, participants, loading, collapseM
           <Iconify width={16} icon="solar:users-group-rounded-bold" />
         </IconButton>
       )}
-      {group ? renderGroup : renderSingle}
+      {renderSingle}
 
       <TextField
         placeholder="Search Chat"

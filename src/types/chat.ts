@@ -76,3 +76,20 @@ export enum AssignedStatus {
   UNASSIGNED = 'UNASSIGNED',
   ASSIGNED = 'ASSIGNED',
 }
+
+export interface Message {
+  id: string;
+  conversationId: string;
+  contact: Contact;
+  content: string;
+  type: 'INCOMING' | 'OUTGOING';
+  remoteReceivedAt: string;
+  createdAt: string;
+  updatedAt: string;
+  messagePrivate: boolean;
+  status: 'DELIVERED' | 'READ' | 'FAILED' | string;
+  createdBy: string;
+  read: boolean | null;
+  user: User | null;
+  attachments: any[]; // replace any
+}
