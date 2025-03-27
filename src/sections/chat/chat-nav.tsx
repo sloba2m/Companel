@@ -132,6 +132,7 @@ export function ChatNav({
   const onFilterChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
 
+    params.delete('conversationId');
     params.set('status', value);
     router.push(`${paths.navigation.inboxBase}?${params.toString()}`);
   };

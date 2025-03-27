@@ -69,7 +69,7 @@ export function ChatRoomSingle({ contact }: Props) {
       <Avatar alt={contact?.name} sx={{ width: 48, height: 48 }}>
         {initials}
       </Avatar>
-      <Typography variant="subtitle1">{contact?.name}</Typography>
+      <Typography variant="subtitle1">{formData?.name}</Typography>
       <IconButton>
         <Iconify icon="ic:baseline-settings" />
       </IconButton>
@@ -122,8 +122,8 @@ export function ChatRoomSingle({ contact }: Props) {
         </>
       ) : (
         <>
-          <ListItemText primary="Phone number" secondary={contact?.phoneNumber} />
-          <ListItemText primary="Email" secondary={contact?.email} />
+          <ListItemText primary="Phone number" secondary={formData.phoneNumber} />
+          <ListItemText primary="Email" secondary={formData.email} />
         </>
       )}
     </Stack>

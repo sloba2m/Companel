@@ -1,6 +1,8 @@
 import type { Contact } from 'src/types/contacts';
 import type { IChatConversation } from 'src/types/chat';
 
+import { useEffect } from 'react';
+
 import Drawer from '@mui/material/Drawer';
 import { Stack, useTheme } from '@mui/material';
 
@@ -26,14 +28,20 @@ type Props = {
 export function ChatRoom({ collapseNav, contact, messages, loading }: Props) {
   const theme = useTheme();
 
-  const { collapseDesktop, openMobile, onCloseMobile } = collapseNav;
+  const { collapseDesktop, openMobile, onCloseMobile, onCollapseDesktop } = collapseNav;
+
+  useEffect(() => {
+    if (contact?.id) return;
+    onCollapseDesktop();
+    onCloseMobile();
+  }, [contact, onCollapseDesktop, onCloseMobile]);
 
   const renderContent = loading ? (
     <ChatRoomSkeleton />
   ) : (
     <Scrollbar>
       <div>
-        <ChatRoomSingle contact={contact} />
+        <ChatRoomSingle key={contact?.id} contact={contact} />
       </div>
     </Scrollbar>
   );
