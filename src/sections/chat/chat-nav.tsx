@@ -1,5 +1,5 @@
+import type { IChatParticipant } from 'src/types/chat';
 import type { ConversationData } from 'src/actions/chat';
-import type { IChatParticipant, IChatConversations } from 'src/types/chat';
 
 import { useState, useEffect, useCallback } from 'react';
 
@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hooks';
+import { useRouter, useSearchParams } from 'src/routes/hooks';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
@@ -53,24 +53,21 @@ type Props = {
   selectedConversationId: string;
   selectedInboxes: string[];
   collapseNav: UseNavCollapseReturn;
-  conversations: IChatConversations;
   conversationData?: ConversationData;
-  selectedFilter: StatusFilters;
-  setSelectedFilter: React.Dispatch<React.SetStateAction<StatusFilters>>;
+  selectedFilter?: StatusFilters;
 };
 
 export function ChatNav({
   loading,
   selectedInboxes,
-  conversations,
   collapseNav,
   selectedConversationId,
   conversationData,
   selectedFilter,
-  setSelectedFilter,
 }: Props) {
   const theme = useTheme();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const mdUp = useResponsive('up', 'md');
 
   const { openMobile, onCloseMobile, onCloseDesktop } = collapseNav;
@@ -111,20 +108,32 @@ export function ChatNav({
     (result: IChatParticipant) => {
       handleClickAwaySearch();
 
-      router.push(`${paths.navigation.inbox}?id=${result.id}`);
+      router.push(`${paths.navigation.inboxBase}?id=${result.id}`);
     },
     [handleClickAwaySearch, router]
   );
 
   const handleInboxChange = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.delete('id');
+
     const newInboxes = selectedInboxes.includes(value)
       ? selectedInboxes.filter((item) => item !== value)
       : [...selectedInboxes, value];
 
-    console.log('ovde');
-    const queryParams = newInboxes.map((id) => `id=${id}`).join('&');
+    newInboxes.forEach((id) => {
+      params.append('id', id);
+    });
 
-    router.push(`${paths.navigation.inbox}?${queryParams}`);
+    router.push(`${paths.navigation.inboxBase}?${params.toString()}`);
+  };
+
+  const onFilterChange = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.set('status', value);
+    router.push(`${paths.navigation.inboxBase}?${params.toString()}`);
   };
 
   const renderLoading = <ChatNavItemSkeleton />;
@@ -196,7 +205,7 @@ export function ChatNav({
       <Box sx={{ display: 'flex', flexWrap: 'wrap-reverse' }}>
         <CustomTabs
           value={selectedFilter}
-          onChange={(_e, value) => setSelectedFilter(value)}
+          onChange={(_e, value) => onFilterChange(value)}
           variant="fullWidth"
           sx={{ flexGrow: 1 }}
         >

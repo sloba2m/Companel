@@ -10,13 +10,11 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 
 import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hooks';
+import { useRouter, useSearchParams } from 'src/routes/hooks';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
 import { fDate } from 'src/utils/format-time';
-
-import { clickConversation } from 'src/actions/chat';
 
 import { Iconify } from 'src/components/iconify';
 
@@ -38,20 +36,21 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
   const mdUp = useResponsive('up', 'md');
 
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const handleClickConversation = useCallback(async () => {
     try {
       if (!mdUp) {
         onCloseMobile();
       }
+      const params = new URLSearchParams(searchParams.toString());
 
-      await clickConversation(conversation.id);
-
-      router.push(`${paths.navigation.inbox}?id=${conversation.id}`);
+      params.set('conversationId', conversation.id);
+      router.push(`${paths.navigation.inboxBase}?${params.toString()}`);
     } catch (error) {
       console.error(error);
     }
-  }, [conversation.id, mdUp, onCloseMobile, router]);
+  }, [conversation.id, mdUp, onCloseMobile, router, searchParams]);
 
   const assignedStatus: AssignedStatus = useMemo(() => {
     if (conversation.status === ConversationStatus.RESOLVED) {

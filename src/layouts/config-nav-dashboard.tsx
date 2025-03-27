@@ -12,7 +12,11 @@ export const navData = [
         path: paths.navigation.dashboard,
         icon: <Iconify icon="ic:twotone-dashboard" />,
       },
-      { title: 'Inbox', path: paths.navigation.inbox, icon: <Iconify icon="ic:twotone-inbox" /> },
+      {
+        title: 'Inbox',
+        path: paths.navigation.inbox,
+        icon: <Iconify icon="ic:twotone-inbox" />,
+      },
       {
         title: 'Contacts',
         path: paths.navigation.contacts,

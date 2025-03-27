@@ -1,9 +1,8 @@
 import type { IChatParticipant } from 'src/types/chat';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
-import { paths } from 'src/routes/paths';
-import { useRouter, useSearchParams } from 'src/routes/hooks';
+import { useSearchParams } from 'src/routes/hooks';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
@@ -22,19 +21,19 @@ import { EmptyContent } from 'src/components/empty-content';
 import { useMockedUser } from 'src/auth/hooks';
 
 import { Layout } from '../layout';
+import { ChatNav } from '../chat-nav';
 import { ChatRoom } from '../chat-room';
-import { ChatNav, StatusFilters } from '../chat-nav';
 import { ChatMessageList } from '../chat-message-list';
 import { ChatMessageInput } from '../chat-message-input';
 import { ChatHeaderDetail } from '../chat-header-detail';
 import { ChatHeaderCompose } from '../chat-header-compose';
 import { useCollapseNav } from '../hooks/use-collapse-nav';
 
+import type { StatusFilters } from '../chat-nav';
+
 // ----------------------------------------------------------------------
 
 export function ChatView() {
-  const router = useRouter();
-
   const { user } = useMockedUser();
 
   const { contacts } = useGetContactsOld();
@@ -43,28 +42,18 @@ export function ChatView() {
 
   const selectedConversationId = searchParams.get('conversationId') || '';
   const selectedInboxes = searchParams.getAll('id');
+  const selectedStatus = searchParams.get('status') as StatusFilters;
 
   const [recipients, setRecipients] = useState<IChatParticipant[]>([]);
 
-  // const [selectedInboxes, setSelectedInboxes] = useState<string[]>([]);
-  const [selectedFilter, setSelectedFilter] = useState<StatusFilters>(StatusFilters.ALL);
-
-  // const handleInboxChange = (value: string) => {
-  //   setSelectedInboxes((prev) =>
-  //     prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
-  //   );
-  // };
-
-  const { conversations, conversationsLoading } = useGetConversationsOld();
+  const { conversationsLoading } = useGetConversationsOld();
 
   const { data: conversationsData } = useGetConversations(
-    { inboxId: selectedInboxes[0] ? selectedInboxes[0] : '', filter: selectedFilter },
+    { inboxId: selectedInboxes[0] ? selectedInboxes[0] : '', filter: selectedStatus },
     { enabled: !!selectedInboxes.length }
   );
 
-  const { conversation, conversationError, conversationLoading } = useGetConversation(
-    `${selectedConversationId}`
-  );
+  const { conversation, conversationLoading } = useGetConversation(`${selectedConversationId}`);
 
   const contact = conversationsData?.items.find(
     (item) => item.id === selectedConversationId
@@ -77,12 +66,6 @@ export function ChatView() {
   const roomNav = useCollapseNav();
 
   const conversationsNav = useCollapseNav();
-
-  useEffect(() => {
-    if (conversationError || !selectedConversationId) {
-      router.push(paths.navigation.inbox);
-    }
-  }, [conversationError, router, selectedConversationId]);
 
   const handleAddRecipients = useCallback((selected: IChatParticipant[]) => {
     setRecipients(selected);
@@ -125,14 +108,12 @@ export function ChatView() {
           ),
           nav: (
             <ChatNav
-              conversations={conversations}
               loading={conversationsLoading}
               selectedInboxes={selectedInboxes}
               selectedConversationId={selectedConversationId}
               collapseNav={conversationsNav}
               conversationData={conversationsData}
-              selectedFilter={selectedFilter}
-              setSelectedFilter={setSelectedFilter}
+              selectedFilter={selectedStatus}
             />
           ),
           main: (
