@@ -1,6 +1,8 @@
 import type { Tag } from 'src/types/tags';
+import type { SyntheticEvent } from 'react';
 import type { Conversation } from 'src/types/chat';
 import type { ContactPayload } from 'src/types/contacts';
+import type { AutocompleteChangeReason, AutocompleteChangeDetails } from '@mui/material';
 
 import { useState } from 'react';
 
@@ -74,38 +76,71 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
     onEditFalse();
   };
 
-  const onTagAdd = (tag?: Tag) => {
+  const handleTagAdd = (tag?: Tag) => {
     if (!tag) return;
     addTagMutation(
       { conversationId: conversation.id, tagId: tag.id },
       {
-        onError: (_err, variables) =>
-          setSelectedTags((prev) => prev.filter((t) => t.id !== variables.tagId)),
-      }
-    );
-  };
-
-  const onTagRemove = (tag?: Tag) => {
-    if (!tag) return;
-    removeTagMutation(
-      { conversationId: conversation.id, tagId: tag.id },
-      {
         onError: (_err, variables) => {
-          const fTag = allTags.find((t) => t.id === variables.tagId);
-          if (fTag) setSelectedTags((prev) => [...prev, fTag]);
+          setSelectedTags((prev) => prev.filter((t) => t.id !== variables.tagId));
         },
       }
     );
   };
 
-  const onCreateTag = (tag?: string) => {
+  const handleTagRemove = (tag?: Tag) => {
     if (!tag) return;
-    createTag(tag, {
-      onSuccess: (data: Tag) => {
-        setSelectedTags((prev) => prev.map((t) => (t.id === tag ? data : t)));
-        onTagAdd(data);
+    removeTagMutation(
+      { conversationId: conversation.id, tagId: tag.id },
+      {
+        onError: (_err, variables) => {
+          const fallbackTag = allTags.find((t) => t.id === variables.tagId);
+          if (fallbackTag) {
+            setSelectedTags((prev) => [...prev, fallbackTag]);
+          }
+        },
+      }
+    );
+  };
+
+  const handleTagCreate = (tagName?: string) => {
+    if (!tagName) return;
+    createTag(tagName, {
+      onSuccess: (newTag: Tag) => {
+        setSelectedTags((prev) => prev.map((t) => (t.id === tagName ? newTag : t)));
+        handleTagAdd(newTag);
       },
     });
+  };
+
+  const handleTagChange = (
+    _event: SyntheticEvent<Element, Event>,
+    _value: (string | Tag)[],
+    reason: AutocompleteChangeReason,
+    details?: AutocompleteChangeDetails<Tag> | undefined
+  ) => {
+    const option = details?.option;
+    if (!option) return;
+
+    if (reason === 'selectOption' && typeof option !== 'string') {
+      setSelectedTags((prev) => [...prev, option]);
+      handleTagAdd(option);
+    }
+
+    if (reason === 'removeOption' && typeof option !== 'string') {
+      setSelectedTags((prev) => prev.filter((t) => t.id !== option.id));
+      handleTagRemove(option);
+    }
+
+    if (reason === 'createOption' && typeof option === 'string') {
+      const tempTag: Tag = {
+        id: option,
+        name: option,
+        createdAt: option,
+      };
+      setSelectedTags((prev) => [...prev, tempTag]);
+      handleTagCreate(option);
+    }
   };
 
   const renderInfo = (
@@ -185,49 +220,24 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
       <Collapse in={collapseTag.value}>
         <Autocomplete
           multiple
+          freeSolo
+          disableClearable
           options={allTags.filter(
             (tag) => !selectedTags.some((selected) => selected.id === tag.id)
           )}
           value={selectedTags}
-          freeSolo
-          disableClearable
-          sx={{ m: 2 }}
           getOptionLabel={(option) => (typeof option === 'string' ? option : option.name)}
           renderTags={(value: readonly Tag[], getTagProps) =>
-            value.map((option: Tag, index: number) => {
+            value.map((option, index) => {
               const { key, ...tagProps } = getTagProps({ index });
               return (
-                <Chip variant="outlined" size="small" label={option.name} key={key} {...tagProps} />
+                <Chip key={key} variant="outlined" size="small" label={option.name} {...tagProps} />
               );
             })
           }
           renderInput={(params) => <TextField {...params} placeholder="Add Tags" size="small" />}
-          onChange={(_e, _value, reason, details) => {
-            if (reason === 'selectOption') {
-              const newTag = details?.option;
-              if (newTag) {
-                setSelectedTags((prev) => [...prev, newTag]);
-                onTagAdd(newTag);
-              }
-            }
-            if (reason === 'removeOption') {
-              const removedTag = details?.option;
-              if (removedTag) {
-                setSelectedTags((prev) => prev.filter((tag) => tag.id !== removedTag.id));
-                onTagRemove(removedTag);
-              }
-            }
-            if (reason === 'createOption') {
-              const newTag = details?.option as unknown as string;
-              if (newTag) {
-                setSelectedTags((prev) => [
-                  ...prev,
-                  { id: newTag, createdAt: newTag, name: newTag },
-                ]);
-                onCreateTag(newTag);
-              }
-            }
-          }}
+          onChange={handleTagChange}
+          sx={{ m: 2 }}
         />
       </Collapse>
 
