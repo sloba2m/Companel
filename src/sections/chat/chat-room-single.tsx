@@ -1,7 +1,7 @@
 import type { Tag } from 'src/types/tags';
 import type { SyntheticEvent } from 'react';
-import type { Conversation } from 'src/types/chat';
 import type { ContactPayload } from 'src/types/contacts';
+import { Conversation, ConversationStatus } from 'src/types/chat';
 import type { AutocompleteChangeReason, AutocompleteChangeDetails } from '@mui/material';
 
 import { useState } from 'react';
@@ -25,15 +25,23 @@ import {
   ListItemButton,
 } from '@mui/material';
 
+import { paths } from 'src/routes/paths';
+import { useRouter } from 'src/routes/hooks';
+
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { useCreateTag } from 'src/actions/tags';
 import { useUpdateContact } from 'src/actions/contacts';
-import { useAddTagToConversation, useRemoveTagFromConversation } from 'src/actions/chat';
+import {
+  useGetConversations,
+  useAddTagToConversation,
+  useRemoveTagFromConversation,
+} from 'src/actions/chat';
 
 import { Iconify } from 'src/components/iconify';
 
 import { CollapseButton } from './styles';
+import { StatusFilters } from './chat-nav';
 
 // ----------------------------------------------------------------------
 
@@ -45,6 +53,7 @@ type Props = {
 export function ChatRoomSingle({ conversation, allTags }: Props) {
   const [selectedTags, setSelectedTags] = useState<Tag[]>(conversation.tags);
   const theme = useTheme();
+  const router = useRouter();
   const collapseTag = useBoolean(true);
   const collapseConv = useBoolean(true);
   const { value: isEdit, onTrue: onEditTrue, onFalse: onEditFalse } = useBoolean(false);
@@ -69,6 +78,14 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
   const { mutate: addTagMutation } = useAddTagToConversation();
   const { mutate: removeTagMutation } = useRemoveTagFromConversation();
   const { mutate: createTag } = useCreateTag();
+  const { data: allContactConversations } = useGetConversations({
+    contactId: contact?.id,
+    filter: StatusFilters.ALL,
+  });
+
+  const previousConversations = allContactConversations?.items.filter(
+    (conv) => conv.id !== conversation.id
+  );
 
   const onSave = () => {
     if (!contact) return;
@@ -249,30 +266,27 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
         <Box sx={{ bgcolor: 'background.paper' }}>
           <nav aria-label="main mailbox folders">
             <List>
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <Iconify
-                      icon="ic:baseline-chat"
-                      width={16}
-                      sx={{ color: theme.vars.palette.grey[600] }}
-                    />
-                  </ListItemIcon>
-                  <ListItemText primary="Conversation 1" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <Iconify
-                      icon="ic:baseline-chat"
-                      width={16}
-                      sx={{ color: theme.vars.palette.grey[600] }}
-                    />
-                  </ListItemIcon>
-                  <ListItemText primary="Conversation 2" />
-                </ListItemButton>
-              </ListItem>
+              {previousConversations?.map((conv) => (
+                <ListItem
+                  disablePadding
+                  onClick={() => {
+                    router.push(
+                      `${paths.navigation.inboxBase}?status=${conv.status === ConversationStatus.RESOLVED ? 'closed' : 'all'}&id=${conv.inboxId}&conversationId=${conv.id}`
+                    );
+                  }}
+                >
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <Iconify
+                        icon="ic:baseline-chat"
+                        width={16}
+                        sx={{ color: theme.vars.palette.grey[600] }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText primary={conv.subject} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
             </List>
           </nav>
         </Box>

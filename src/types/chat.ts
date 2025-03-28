@@ -53,7 +53,7 @@ export type IChatConversations = {
 export interface Conversation {
   id: string;
   inboxId: string;
-  status: string;
+  status: ConversationStatus;
   subject: string;
   contact: Contact;
   assignee: User | null;

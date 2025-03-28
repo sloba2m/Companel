@@ -246,9 +246,10 @@ export interface ConversationData {
 interface UseGetConversationsParams {
   page?: number;
   size?: number;
-  inboxId: string;
+  inboxId?: string;
   filter: StatusFilters;
   sort?: string;
+  contactId?: string;
 }
 
 export const useGetConversations = (
@@ -257,6 +258,7 @@ export const useGetConversations = (
     size = 10,
     inboxId,
     filter,
+    contactId,
     sort = 'lastContactActivity,desc',
   }: UseGetConversationsParams,
   options?: { enabled?: boolean }
@@ -266,6 +268,7 @@ export const useGetConversations = (
     size,
     inboxId,
     sort,
+    contactId,
   };
 
   switch (filter) {
@@ -286,7 +289,7 @@ export const useGetConversations = (
   }
 
   return useQuery<ConversationData>({
-    queryKey: ['conversations', { page, size, inboxId, filter, sort }],
+    queryKey: ['conversations', { page, size, inboxId, filter, sort, contactId }],
     queryFn: () =>
       fetcher([
         '/v2/conversation',
