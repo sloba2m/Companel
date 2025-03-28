@@ -84,7 +84,7 @@ export function ChatView() {
             <ChatHeaderDetail
               collapseNav={roomNav}
               collapseMenuNav={conversationsNav}
-              contact={conversation?.contact}
+              conversation={conversation}
               loading={messagesLoading}
             />
           ) : (

@@ -1,4 +1,5 @@
-import type { Contact } from 'src/types/contacts';
+import type { User } from 'src/types/users';
+import type { Conversation } from 'src/types/chat';
 import type { SnackbarCloseReason } from '@mui/material';
 
 import { useState, useCallback } from 'react';
@@ -22,6 +23,9 @@ import {
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { useGetUsers } from 'src/actions/users';
+import { useAssignUser } from 'src/actions/chat';
+
 import { Iconify } from 'src/components/iconify';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
@@ -33,17 +37,20 @@ import type { UseNavCollapseReturn } from './hooks/use-collapse-nav';
 
 type Props = {
   loading: boolean;
-  contact?: Contact;
+  conversation?: Conversation;
   collapseNav: UseNavCollapseReturn;
   collapseMenuNav: UseNavCollapseReturn;
 };
 
-export function ChatHeaderDetail({ collapseNav, contact, loading, collapseMenuNav }: Props) {
+export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseMenuNav }: Props) {
   const popover = usePopover();
 
   const lgUp = useResponsive('up', 'lg');
   const smUp = useResponsive('up', 'sm');
   const mdDown = useResponsive('down', 'md');
+
+  const { data: users } = useGetUsers();
+  const { mutate: assignUserMutation } = useAssignUser();
 
   const { collapseDesktop, onCollapseDesktop, onOpenMobile } = collapseNav;
 
@@ -58,10 +65,6 @@ export function ChatHeaderDetail({ collapseNav, contact, loading, collapseMenuNa
 
   const [open, setOpen] = useState(false);
 
-  const handleClick = () => {
-    setOpen(true);
-  };
-
   const handleClose = (event: React.SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
     if (reason === 'clickaway') {
       return;
@@ -69,6 +72,12 @@ export function ChatHeaderDetail({ collapseNav, contact, loading, collapseMenuNa
 
     setOpen(false);
   };
+
+  if (loading || !conversation) {
+    return <ChatHeaderSkeleton />;
+  }
+
+  const { contact } = conversation;
 
   const initials = contact?.name
     .split(' ')
@@ -82,9 +91,10 @@ export function ChatHeaderDetail({ collapseNav, contact, loading, collapseMenuNa
     </Stack>
   );
 
-  if (loading) {
-    return <ChatHeaderSkeleton />;
-  }
+  const assignUser = (user: User) => {
+    setOpen(true);
+    assignUserMutation({ conversationId: conversation?.id, action: 'assign', userId: user.id });
+  };
 
   return (
     <>
@@ -124,25 +134,31 @@ export function ChatHeaderDetail({ collapseNav, contact, loading, collapseMenuNa
       >
         <Autocomplete
           sx={{ minWidth: '200px' }}
-          options={['One guy', 'Other guy']}
+          options={users ?? []}
           size="small"
           disableCloseOnSelect
-          // getOptionLabel={(option) => option.title}
+          value={conversation.assignee}
+          getOptionLabel={(option) => option.fullName}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
           renderInput={(params) => <TextField {...params} label="Assign" margin="none" />}
           // renderOption={(props, option) => (
           //   <li {...props} key={option.title}>
           //     {option.title}
           //   </li>
           // )}
-          onChange={() => handleClick()}
+          onChange={(_e, _v, reason, details) => {
+            if (!details?.option) return;
+            if (reason === 'selectOption') assignUser(details.option);
+          }}
           renderOption={(props, option, { selected }) => {
+            console.log(selected);
             // eslint-disable-next-line react/prop-types
             const { key, ...optionProps } = props;
 
             return (
               <li key={key} {...optionProps}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                  {option}
+                  {option.fullName}
                   {selected && <Iconify icon="mdi:check" />}
                 </Box>
               </li>

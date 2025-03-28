@@ -341,3 +341,23 @@ export const useRemoveTagFromConversation = () => {
     },
   });
 };
+
+interface AssignUserInput {
+  conversationId: string;
+  userId: string;
+  action: 'assign' | 'unassign';
+}
+
+export const useAssignUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: AssignUserInput) =>
+      mutationFetcher('post', `/conversation/${payload.conversationId}:${payload.action}`, {
+        userId: payload.userId,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['conversations'] });
+    },
+  });
+};
