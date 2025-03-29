@@ -98,10 +98,7 @@ export function NavigationLayout({ sx, children, data }: NavigationLayoutProps) 
               cssVars={navColorVars.section}
               langs={[
                 { value: 'en', label: 'English', countryCode: 'GB' },
-                { value: 'fr', label: 'French', countryCode: 'FR' },
-                { value: 'vi', label: 'Vietnamese', countryCode: 'VN' },
-                { value: 'cn', label: 'Chinese', countryCode: 'CN' },
-                { value: 'ar', label: 'Arabic', countryCode: 'SA' },
+                { value: 'se', label: 'Svenska', countryCode: 'SE' },
               ]}
             />
           )

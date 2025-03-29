@@ -1,6 +1,7 @@
 import type { StatItem } from 'src/components/widget/stat-card';
 
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Card, Grid } from '@mui/material';
 

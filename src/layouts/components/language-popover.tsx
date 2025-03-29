@@ -9,7 +9,8 @@ import IconButton from '@mui/material/IconButton';
 
 import { varHover } from 'src/components/animate';
 import { FlagIcon } from 'src/components/iconify';
-import { usePopover, CustomPopover } from 'src/components/custom-popover';
+import { usePopover, CustomPopover } from 'src/components/custom-popover'; // ✅ putanja do tvoje i18n instance
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -23,17 +24,22 @@ export type LanguagePopoverProps = IconButtonProps & {
 
 export function LanguagePopover({ data = [], sx, ...other }: LanguagePopoverProps) {
   const popover = usePopover();
+  const { i18n } = useTranslation();
 
-  const [locale, setLocale] = useState<string>(data[0].value);
+  const [locale, setLocale] = useState<string>(
+    () => localStorage.getItem('i18nextLng') || data[0].value
+  );
 
   const currentLang = data.find((lang) => lang.value === locale);
 
   const handleChangeLang = useCallback(
     (newLang: string) => {
       setLocale(newLang);
+      i18n.changeLanguage(newLang);
+      localStorage.setItem('i18nextLng', newLang);
       popover.onClose();
     },
-    [popover]
+    [popover, i18n]
   );
 
   return (
