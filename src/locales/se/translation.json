@@ -21,6 +21,15 @@
     "templates": "Mallar",
     "tags": "Taggar"
   },
+  "common": {
+    "search": "Söka",
+    "actions": "Åtgärder",
+    "rowsPerPage": "Rader per sida",
+    "create": "Skapa",
+    "close": "Stäng",
+    "areYouSure": "Är du säker?",
+    "edit": "Redigera"
+  },
   "infoBox": {
     "title": "Info"
   },

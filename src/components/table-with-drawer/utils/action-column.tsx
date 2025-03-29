@@ -1,5 +1,7 @@
 import type { GridColDef, GridValidRowModel } from '@mui/x-data-grid';
 
+import i18next from 'i18next';
+
 import { IconButton } from '@mui/material';
 
 import { Iconify } from '../../iconify';
@@ -10,7 +12,7 @@ export function getActionColumn<T extends GridValidRowModel>(
 ): GridColDef<T> {
   return {
     field: 'actions',
-    headerName: 'Actions',
+    headerName: i18next.t('common.actions'),
     width: 100,
     sortable: false,
     align: 'right',

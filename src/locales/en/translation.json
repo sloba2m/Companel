@@ -21,6 +21,15 @@
     "templates": "Templates",
     "tags": "Tags"
   },
+  "common": {
+    "search": "Search",
+    "actions": "Actions",
+    "rowsPerPage": "Rows per page",
+    "create": "Create",
+    "close": "Close",
+    "areYouSure": "Are you sure?",
+    "edit": "Edit"
+  },
   "infoBox": {
     "title": "Info"
   },

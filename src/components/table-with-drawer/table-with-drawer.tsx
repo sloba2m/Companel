@@ -7,6 +7,8 @@ import type {
   GridCallbackDetails,
 } from '@mui/x-data-grid';
 
+import { useTranslation } from 'react-i18next';
+
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, Card, Stack, Button, Drawer, TextField, Container, Typography } from '@mui/material';
 
@@ -46,6 +48,7 @@ export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
   onPaginationModelChange,
   onSearch,
 }: TableWithDrawerProps<RowData>) => {
+  const { t } = useTranslation();
   const mdUp = useResponsive('up', 'md');
   const lgUp = useResponsive('up', 'lg');
 
@@ -81,7 +84,7 @@ export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
             tableDrawer.isOpenDrawer ? tableDrawer.onCloseDrawer() : tableDrawer.onOpenDrawer()
           }
         >
-          {tableDrawer.isOpenDrawer ? 'Close' : 'Create'}
+          {tableDrawer.isOpenDrawer ? t('common.close') : t('common.create')}
         </Button>
       </Box>
       <Card sx={{ display: 'flex', flexGrow: 1, ml: isInSubMenu && lgUp ? '87px' : 0 }}>
@@ -101,7 +104,7 @@ export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
             {onSearch && (
               <TextField
                 size="small"
-                placeholder={`Search ${entity.toLowerCase()}`}
+                placeholder={`${t('common.search')} ${entity.toLowerCase()}`}
                 sx={{ width: mdUp ? '400px' : '100%' }}
                 onChange={(e) => debouncedSearch(e.target.value)}
               />
@@ -124,6 +127,11 @@ export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
             paginationMode={paginationModel ? 'server' : 'client'}
             paginationModel={paginationModel}
             onPaginationModelChange={onPaginationModelChange}
+            slotProps={{
+              pagination: {
+                labelRowsPerPage: t('common.rowsPerPage'),
+              },
+            }}
           />
         </Stack>
 

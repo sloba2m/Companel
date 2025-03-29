@@ -1,6 +1,7 @@
 import type { Contact, ContactPayload } from 'src/types/contacts';
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Button, TextField, Typography } from '@mui/material';
 
@@ -10,6 +11,8 @@ interface ContactDrawerProps {
 }
 
 export const ContactDrawer = ({ editData, onSave }: ContactDrawerProps) => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState<ContactPayload>({
     name: '',
     phoneNumber: '',
@@ -30,21 +33,23 @@ export const ContactDrawer = ({ editData, onSave }: ContactDrawerProps) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
-      <Typography variant="subtitle1">{editData ? 'Edit' : 'Create'} contact</Typography>
+      <Typography variant="subtitle1">
+        {editData ? t('common.edit') : t('common.create')} contact
+      </Typography>
       <TextField
-        label="Name"
+        label={t('contacts.name')}
         size="small"
         value={formData.name ?? ''}
         onChange={handleChange('name')}
       />
       <TextField
-        label="Phone"
+        label={t('contacts.phoneNumber')}
         size="small"
         value={formData.phoneNumber ?? ''}
         onChange={handleChange('phoneNumber')}
       />
       <TextField
-        label="Email"
+        label={t('contacts.phoneNumber')}
         size="small"
         type="email"
         value={formData.email ?? ''}
@@ -56,7 +61,7 @@ export const ContactDrawer = ({ editData, onSave }: ContactDrawerProps) => {
         size="small"
         onClick={() => onSave(formData, editData?.id)}
       >
-        Save
+        {t('contact.save')}
       </Button>
     </Box>
   );

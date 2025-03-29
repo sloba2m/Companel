@@ -3,6 +3,7 @@ import type { Contact, ContactPayload } from 'src/types/contacts';
 
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 import { usePagination } from 'src/hooks/use-pagination';
 import { useTableDrawer } from 'src/hooks/use-table-drawer';
@@ -27,6 +28,7 @@ import {
 const metadata = { title: `Contacts` };
 
 export default function Page() {
+  const { t } = useTranslation();
   const [search, setSearch] = useState('');
 
   const { paginationModel, setPaginationModel } = usePagination();
@@ -48,20 +50,20 @@ export default function Page() {
   const columns: GridColDef<Contact>[] = [
     {
       field: 'name',
-      headerName: 'Name',
+      headerName: t('contacts.name'),
       width: 160,
       sortable: false,
       ...firstColumnMargin,
     },
     {
       field: 'phoneNumber',
-      headerName: 'Phone number',
+      headerName: t('contacts.phoneNumber'),
       width: 160,
       sortable: false,
     },
     {
       field: 'email',
-      headerName: 'Email',
+      headerName: t('contacts.email'),
       width: 230,
       sortable: false,
       flex: 1,
@@ -83,7 +85,7 @@ export default function Page() {
 
       <TableWithDrawer
         columns={columns}
-        entity="Contacts"
+        entity={t('navigation.contacts')}
         rows={contactsData?.content ?? []}
         drawerContent={<ContactDrawer editData={editData} onSave={onSave} />}
         onSearch={(val) => setSearch(val)}
