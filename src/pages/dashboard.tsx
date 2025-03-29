@@ -27,14 +27,23 @@ export const _bookingsOverview = [...Array(3)].map((_, index) => ({
   value: _mock.number.percent(index + 5),
 }));
 
+interface TestT {
+  test: string;
+}
+
 export default function Page() {
+  const { t } = useTranslation();
   const { data: conversationData } = useGetConversationDashboardData();
   const { data: usersData } = useGetUsersDashboardData();
 
   const conversationStats: StatItem[] = [
-    { title: 'Queue size', total: conversationData?.countTotal, icon: 'mdi:human-queue' },
     {
-      title: 'Average time in queue',
+      title: t('dashboard.conversationOverview.queueSize'),
+      total: conversationData?.countTotal,
+      icon: 'mdi:human-queue',
+    },
+    {
+      title: t('dashboard.conversationOverview.averageTimeInQueue'),
       total: formatSeconds(conversationData?.timeAverageWaiting ?? 0),
       icon: 'mdi:access-time',
       sx: { bgcolor: 'info.dark', [`& .${svgColorClasses.root}`]: { color: 'info.light' } },
@@ -43,13 +52,13 @@ export default function Page() {
 
   const userStats: StatItem[] = [
     {
-      title: 'Total',
+      title: t('dashboard.userOverview.countUsers'),
       total: usersData?.countUsers,
       icon: 'mdi:users-group',
       sx: { bgcolor: 'info.darker', [`& .${svgColorClasses.root}`]: { color: 'info.light' } },
     },
     {
-      title: 'Online',
+      title: t('dashboard.userOverview.onlineUsers'),
       total: usersData?.countUsersOnline,
       icon: 'mdi:account-online',
       flipIcon: true,
@@ -65,8 +74,11 @@ export default function Page() {
 
       <DashboardContent maxWidth="xl">
         <Grid container spacing={3} justifyContent="center">
-          <StatCard headerTitle="Conversations" data={conversationStats} />
-          <StatCard headerTitle="Users" data={userStats} />
+          <StatCard
+            headerTitle={t('dashboard.conversationOverview.title')}
+            data={conversationStats}
+          />
+          <StatCard headerTitle={t('dashboard.userOverview.title')} data={userStats} />
         </Grid>
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>

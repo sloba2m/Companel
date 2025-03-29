@@ -1,3 +1,237 @@
 {
-  "Welcome to React": "Welcome to React and react-i18next"
+  "dashboard": {
+    "userOverview": {
+      "title": "Users",
+      "countUsers": "Total",
+      "onlineUsers": "Online"
+    },
+    "conversationOverview": {
+      "title": "Conversations",
+      "queueSize": "Queue size",
+      "averageTimeInQueue": "Average time in queue"
+    }
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "inbox": "Inbox",
+    "contacts": "Contacts",
+    "customers": "Customers",
+    "settings": "Settings",
+    "users": "Users",
+    "templates": "Templates",
+    "tags": "Tags"
+  },
+  "infoBox": {
+    "title": "Info"
+  },
+  "templates": {
+    "create": "Create template",
+    "update": "Update template",
+    "deleteLogoConfirm": "Are you sure you want to remove logo?",
+    "fields": {
+      "name": "Name",
+      "template": "Template",
+      "logo": "Logo"
+    },
+    "greeting": "Greeting",
+    "signature": "Signature",
+    "name": "Template",
+    "info": {
+      "header": "Available directives for dynamic fields",
+      "name": "Use <strong>[name]</strong> to substitue for the contacts name",
+      "message": "Use <strong>[message]</strong> to substitute for the agent message",
+      "me": "Use <strong>[me]</strong> to substitute for the agents name",
+      "logo": "Use <strong>[logo]</strong> to substitute for the uploaded logo"
+    }
+  },
+  "confirm": {
+    "yes": "Yes",
+    "no": "No"
+  },
+  "conversations": {
+    "createForm": {
+      "inbox": "Inbox",
+      "to": "To",
+      "contactName": "Name",
+      "subject": "Subject"
+    },
+    "assignee": "Assignee",
+    "assignTo": "Assign to...",
+    "assignToMe": "Assign to me",
+    "unAssignConfirm": "Are you sure you want remove <strong>{name}</strong> as assignee?",
+    "removeTagConfirm": "Are you sure you want to remove <strong>{tag}</strong>?",
+    "menuLabels": {
+      "all": "All",
+      "myConversations": "Mine",
+      "unhandled": "Unhandled",
+      "closed": "Closed"
+    },
+    "previous": {
+      "conversations": "Previous Conversations",
+      "events": "Event History",
+      "contactInfo": "Contact Information",
+      "customer": "Customer"
+    },
+    "messageType": {
+      "reply": "Message",
+      "note": "Private Note"
+    },
+    "messageSendButton": "Send",
+    "resolve": {
+      "resolve": "Resolve",
+      "resolved": "Resolved",
+      "resolveAffirmation": "Are you sure you want to resolve this chat?",
+      "cancel": "Cancel"
+    },
+    "events": {
+      "created": "Created",
+      "updated": "Updated",
+      "deleted": "Deleted",
+      "assigned": "Assigned",
+      "unassigned": "Un-assigned",
+      "reassigned": "Re-assigned",
+      "statusUpdate": "Status updated"
+    }
+  },
+  "conversation": {
+    "status": {
+      "label": "Status",
+      "open": "Open",
+      "resolved": "Resolved"
+    },
+    "assigneeIdLabel": "Assigned to",
+    "performedByAgent": "Performed by:"
+  },
+  "pagination": {
+    "ofLabel": "of"
+  },
+  "message": {
+    "attachmentLabel": "Attachments"
+  },
+  "skeleton": {
+    "loading": "Loading..."
+  },
+  "contacts": {
+    "name": "Name",
+    "phoneNumber": "Phone Number",
+    "email": "Email"
+  },
+  "contact": {
+    "create": "Create contact",
+    "name": "Name",
+    "phoneNumber": "Phone Number",
+    "email": "Email",
+    "save": "Save",
+    "contactInfo": "Contact Info",
+    "statistics": "Statistics",
+    "neverSeen": "No activity",
+    "lastActivity": "Last seen <strong>{activity}</strong>",
+    "numberOfOpenConversations": "<strong>{number}</strong> open conversations",
+    "numberOfConversations": "<strong>{number}</strong> total conversations"
+  },
+  "customers": {
+    "name": "Name",
+    "phoneNumber": "Phone Number",
+    "domain": "Domain",
+    "customCustomerId": "Custom Customer Id",
+    "email": "Email"
+  },
+  "customer": {
+    "create": "Create customer",
+    "name": "Name",
+    "phoneNumber": "Phone Number",
+    "email": "Email",
+    "domain": "Domain",
+    "customCustomerId": "Custom Customer Id",
+    "save": "Save",
+    "customerInfo": "Customer Info",
+    "statistics": "Statistics",
+    "neverSeen": "No activity",
+    "lastActivity": "Last seen <strong>{activity}</strong>",
+    "numberOfOpenConversations": "<strong>{number}</strong> open conversations",
+    "numberOfConversations": "<strong>{number}</strong> total conversations"
+  },
+  "inbox": {
+    "inboxInfo": "Inbox",
+    "create": "Create inbox",
+    "update": "Update inbox",
+    "name": "Name",
+    "email": "Email",
+    "websiteUrl": "Website Url",
+    "save": "Save",
+    "fields": {
+      "emailTemplate": "Template",
+      "typeLabel": "Type",
+      "typeOptions": {
+        "email": "Email",
+        "widget": "Widget"
+      },
+      "clientSecretLabel": "Client secret",
+      "tenantIdLabel": "Tenant id",
+      "clientIdLabel": "Client id",
+      "imapAddressLabel": "Imap Address",
+      "imapEnabledLabel": "Imap Enabled",
+      "imapPortLabel": "Imap Port",
+      "imapLoginLabel": "Imap Login",
+      "imapPasswordLabel": "Imap Password",
+      "imapEnableSslLabel": "Imap Enable Ssl",
+      "smtpEnabledLabel": "Smtp Enabled",
+      "smtpAddressLabel": "Smtp Address",
+      "smtpPortLabel": "Smtp Port",
+      "smtpLoginLabel": "Smtp Login",
+      "smtpPasswordLabel": "Smtp Password",
+      "smtpDomainLabel": "Smtp Domain",
+      "smtpEnableStarttlsAutoLabel": "Smtp Enable Start tls Auto",
+      "smtpAuthenticationLabel": "Smtp Authentication",
+      "smtpOpensslVerifyModeLabel": "Smtp Openssl Verify Mode",
+      "smtpEnableSslTlsLabel": "Smtp Enable Ssl Tls",
+      "providerConfigLabel": "Provider Config",
+      "providerLabel": "Provider",
+      "greetingLabel": "Greeting",
+      "signatureLabel": "Signature",
+      "createdAtLabel": "Created At",
+      "updatedAtLabel": "Updated At"
+    }
+  },
+  "user": {
+    "create": "Create user",
+    "update": "Update user",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "save": "Save",
+    "userInfo": "User Info"
+  },
+  "settingsSubMenu": {
+    "title": "Settings",
+    "users": "Users",
+    "account": "Account",
+    "inbox": "Inbox",
+    "channel": "Channel",
+    "templates": "Templates",
+    "tags": "Tags"
+  },
+  "tags": {
+    "create": "Create tag",
+    "addTag": "Add tag",
+    "fields": {
+      "name": "Name"
+    },
+    "save": "Save",
+    "update": "Update tag"
+  },
+  "conversationsColumns": {
+    "inbox": "Inbox",
+    "conversations": "Conversations"
+  },
+  "userStatus": "Available",
+  "notifications": {
+    "name": "Notifications",
+    "viewMore": "View more",
+    "none": "No notifications",
+    "types": {
+      "conversationAssigned": "<strong>{name}</strong> assigned you the conversation {subject}",
+      "messageInConversation": "You've received a new message from <strong>{name}</strong>"
+    }
+  }
 }

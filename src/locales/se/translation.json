@@ -1,3 +1,238 @@
 {
-  "Welcome to React": "Bienvenue à React et react-i18next"
+  "dashboard": {
+    "userOverview": {
+      "title": "Användare",
+      "countUsers": "Totalt",
+      "onlineUsers": "Online"
+    },
+    "conversationOverview": {
+      "title": "Konversationer",
+      "queueSize": "Köstorlek",
+      "averageTimeInQueue": "Genomsnittlig tid i kö"
+    }
+  },
+  "navigation": {
+    "dashboard": "Översikt",
+    "inbox": "Inkorg",
+    "contacts": "Kontakter",
+    "customers": "Kunder",
+    "settings": "Inställningar",
+    "users": "Användare",
+    "templates": "Mallar",
+    "tags": "Taggar"
+  },
+  "infoBox": {
+    "title": "Info"
+  },
+  "confirm": {
+    "yes": "Ja",
+    "no": "Nej"
+  },
+  "conversations": {
+    "createForm": {
+      "inbox": "Inkorg",
+      "to": "Till",
+      "contactName": "Namn",
+      "subject": "Ämne"
+    },
+    "assignee": "Agent",
+    "assignTo": "Tilldela till...",
+    "assignToMe": "Tilldela till mig",
+    "unAssignConfirm": "Är du säker på att du vill ta bort {name} som agent?",
+    "removeTagConfirm": "Vill du ta bort taggen <strong>{tag}</strong>?",
+    "menuLabels": {
+      "all": "Alla",
+      "myConversations": "Mina",
+      "unhandled": "Ohanterade",
+      "closed": "Stängda"
+    },
+    "previous": {
+      "conversations": "Konversationer",
+      "events": "Händelser",
+      "contactInfo": "Kontaktinformation",
+      "customer": "Kund"
+    },
+    "messageType": {
+      "reply": "Meddelande",
+      "note": "Privat anteckning"
+    },
+    "messageSendButton": "Skicka",
+    "resolve": {
+      "resolve": "Stäng",
+      "resolved": "Stängd",
+      "resolveAffirmation": "Är du säker på att du vill stänga den här konversationen?",
+      "cancel": "Avbryt"
+    },
+    "events": {
+      "created": "Skapad",
+      "updated": "Uppdaterad",
+      "deleted": "Borttagen",
+      "assigned": "Tilldelad",
+      "unassigned": "Borttag av tilldelad",
+      "reassigned": "Överlåten",
+      "statusUpdate": "Status uppdaterad"
+    }
+  },
+  "conversation": {
+    "status": {
+      "label": "Status",
+      "open": "Öppen",
+      "resolved": "Stängd"
+    },
+    "assigneeIdLabel": "Tilldelad till:",
+    "performedByAgent": "Utfört av:"
+  },
+  "pagination": {
+    "ofLabel": "av"
+  },
+  "message": {
+    "attachmentLabel": "Filer"
+  },
+  "skeleton": {
+    "loading": "Laddar..."
+  },
+  "contacts": {
+    "name": "Namn",
+    "phoneNumber": "Telefonnummer",
+    "email": "Email"
+  },
+  "contact": {
+    "create": "Skapa kontakt",
+    "name": "Namn",
+    "phoneNumber": "Telefonnummer",
+    "email": "Email",
+    "save": "Spara",
+    "contactInfo": "Kontaktinformation",
+    "statistics": "Statistik",
+    "neverSeen": "Saknar aktivitet",
+    "lastActivity": "Senast aktiv <strong>{activity}</strong>",
+    "numberOfOpenConversations": "<strong>{number}</strong> öppna ärenden",
+    "numberOfConversations": "<strong>{number}</strong> ärenden totalt"
+  },
+  "customers": {
+    "name": "Namn",
+    "phoneNumber": "Telefonnummer",
+    "domain": "Domain",
+    "customCustomerId": "Eget Kund id",
+    "email": "Email"
+  },
+  "customer": {
+    "create": "Skapa kund",
+    "name": "Namn",
+    "phoneNumber": "Telefonnummer",
+    "email": "Email",
+    "domain": "Domän",
+    "customCustomerId": "Eget Kund id",
+    "save": "Spara",
+    "customerInfo": "Kundinformation",
+    "statistics": "Statistik",
+    "neverSeen": "Saknar aktivitet",
+    "lastActivity": "Senast aktiv <strong>{activity}</strong>",
+    "numberOfOpenConversations": "<strong>{number}</strong> öppna ärenden",
+    "numberOfConversations": "<strong>{number}</strong> ärenden totalt"
+  },
+  "tags": {
+    "create": "Skapa tag",
+    "addTag": "Lägg till",
+    "fields": {
+      "name": "Namn"
+    },
+    "save": "Spara",
+    "update": "Uppdatera"
+  },
+  "templates": {
+    "create": "Skapa mall",
+    "update": "Uppdatera mall",
+    "deleteLogoConfirm": "Är du säker på att du vill ta bort logotyp?",
+    "fields": {
+      "name": "Namn",
+      "template": "Mall",
+      "logo": "Logotyp"
+    },
+    "greeting": "Hälsningsfras",
+    "signature": "Signatur",
+    "name": "Mall",
+    "info": {
+      "header": "Tillgängliga direktiv för dynamiska fält",
+      "name": "Använd <strong>[name]</strong> för att infoga kundens namn",
+      "message": "Använd <strong>[message]</strong> för att infoga agentens meddelande",
+      "me": "Använd <strong>[me]</strong> för att infoga agentens namn",
+      "logo": "Använd <strong>[logo]</strong> för att infoga den uppladdade logotypen"
+    }
+  },
+  "inbox": {
+    "inboxInfo": "Inkorg",
+    "create": "Skapa inkorg",
+    "update": "Uppdatera inkorg",
+    "name": "Namn",
+    "email": "Email",
+    "websiteUrl": "Webbplats-URL",
+    "save": "Spara",
+    "fields": {
+      "emailTemplate": "Mall",
+      "typeLabel": "Typ",
+      "typeOptions": {
+        "email": "Email",
+        "widget": "Widget"
+      },
+      "clientSecretLabel": "Client secret",
+      "tenantIdLabel": "Tenant id",
+      "clientIdLabel": "Client id",
+      "imapAddressLabel": "Imap-adress",
+      "imapEnabledLabel": "Imap aktiverad",
+      "imapPortLabel": "Imap-port",
+      "imapLoginLabel": "Imap-inloggning",
+      "imapPasswordLabel": "Imap-lösenord",
+      "imapEnableSslLabel": "Imap aktivera ssl",
+      "smtpEnabledLabel": "Smtp aktiverad",
+      "smtpAddressLabel": "Smtp-adress",
+      "smtpPortLabel": "Smtp-port",
+      "smtpLoginLabel": "Smtp-inloggning",
+      "smtpPasswordLabel": "Smtp-lösenord",
+      "smtpDomainLabel": "Smtp-domän",
+      "smtpEnableStarttlsAutoLabel": "Smtp aktivera starttls auto",
+      "smtpAuthenticationLabel": "Smtp-autentisering",
+      "smtpOpensslVerifyModeLabel": "Smtp openssl verifiering",
+      "smtpEnableSslTlsLabel": "Smtp aktivera ssl tls",
+      "providerConfigLabel": "Leverantörskonfiguration",
+      "providerLabel": "Leverantör",
+      "greetingLabel": "Hälsningsfras",
+      "signatureLabel": "Signatur",
+      "createdAtLabel": "Skapad",
+      "updatedAtLabel": "Uppdaterad"
+    }
+  },
+  "user": {
+    "create": "Skapa användare",
+    "update": "Uppdatera användare",
+    "firstName": "Förnamn",
+    "lastName": "Efternamn",
+    "email": "Email",
+    "save": "Spara",
+    "userInfo": "Användarinformation"
+  },
+  "settingsSubMenu": {
+    "title": "Inställningar",
+    "users": "Användare",
+    "account": "Konto",
+    "inbox": "Inkorg",
+    "channel": "Kanal",
+    "templates": "Mallar",
+    "tags": "Tags"
+  },
+  "conversationsColumns": {
+    "inbox": "Inkorg",
+    "conversations": "Konversationer"
+  },
+  "userStatus": "Tillgänglig",
+  "notifications": {
+    "name": "Notiser",
+    "viewMore": "Visa fler",
+    "none": "Inga notiser",
+    "types": {
+      "conversationAssigned": "<strong>{name}</strong> tilldelade dig konversation {subject}",
+      "messageInConversation": "Du har fått ett nytt meddelande av <strong>{name}</strong>",
+      "conversationUnAssigned": "<strong>{name}</strong> tog bort dig som ansvarig för konversation {subject}"
+    }
+  }
 }
