@@ -3,6 +3,7 @@ import type { Customer, CustomerPayload } from 'src/types/customers';
 
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 import { usePagination } from 'src/hooks/use-pagination';
 import { useTableDrawer } from 'src/hooks/use-table-drawer';
@@ -27,6 +28,7 @@ import {
 const metadata = { title: `Customers` };
 
 export default function Page() {
+  const { t } = useTranslation();
   const [search, setSearch] = useState('');
 
   const { paginationModel, setPaginationModel } = usePagination();
@@ -48,32 +50,32 @@ export default function Page() {
   const columns: GridColDef<Customer>[] = [
     {
       field: 'name',
-      headerName: 'Name',
+      headerName: t('customer.name'),
       width: 160,
       sortable: false,
       ...firstColumnMargin,
     },
     {
       field: 'customCustomerId',
-      headerName: 'Custom Customer ID',
+      headerName: t('customer.customCustomerId'),
       width: 160,
       sortable: false,
     },
     {
       field: 'phoneNumber',
-      headerName: 'Phone number',
+      headerName: t('customer.phoneNumber'),
       width: 160,
       sortable: false,
     },
     {
       field: 'email',
-      headerName: 'Email',
+      headerName: t('customer.email'),
       width: 230,
       sortable: false,
     },
     {
       field: 'domain',
-      headerName: 'Domain',
+      headerName: t('customer.domain'),
       width: 230,
       sortable: false,
       flex: 1,
@@ -96,7 +98,7 @@ export default function Page() {
       <TableWithDrawer
         columns={columns}
         rows={customersData?.content ?? []}
-        entity="Customers"
+        entity={t('navigation.customers')}
         drawerContent={<CustomerDrawer editData={editData} onSave={onSave} />}
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}

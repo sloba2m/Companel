@@ -106,7 +106,7 @@
     "email": "Email"
   },
   "contact": {
-    "create": "Skapa kontakt",
+    "create": "Kontakt",
     "name": "Namn",
     "phoneNumber": "Telefonnummer",
     "email": "Email",
@@ -126,7 +126,7 @@
     "email": "Email"
   },
   "customer": {
-    "create": "Skapa kund",
+    "create": "Kund",
     "name": "Namn",
     "phoneNumber": "Telefonnummer",
     "email": "Email",

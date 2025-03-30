@@ -1,6 +1,7 @@
 import type { Customer, CustomerPayload } from 'src/types/customers';
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Button, TextField, Typography } from '@mui/material';
 
@@ -10,6 +11,8 @@ interface CustomerDrawerProps {
 }
 
 export const CustomerDrawer = ({ editData, onSave }: CustomerDrawerProps) => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState<CustomerPayload>({
     name: '',
     customCustomerId: '',
@@ -32,29 +35,36 @@ export const CustomerDrawer = ({ editData, onSave }: CustomerDrawerProps) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
-      <Typography variant="subtitle1">{editData ? 'Edit' : 'Create'} customer</Typography>
-      <TextField label="Name" size="small" value={formData.name} onChange={handleChange('name')} />
+      <Typography variant="subtitle1">
+        {editData ? t('common.edit') : t('common.create')} {t('customer.create')}
+      </Typography>
       <TextField
-        label="Custom Customer ID"
+        label={t('customer.name')}
+        size="small"
+        value={formData.name}
+        onChange={handleChange('name')}
+      />
+      <TextField
+        label={t('customer.customCustomerId')}
         size="small"
         value={formData.customCustomerId}
         onChange={handleChange('customCustomerId')}
       />
       <TextField
-        label="Phone"
+        label={t('customer.phoneNumber')}
         size="small"
         value={formData.phoneNumber}
         onChange={handleChange('phoneNumber')}
       />
       <TextField
-        label="Email"
+        label={t('customer.email')}
         size="small"
         type="email"
         value={formData.email}
         onChange={handleChange('email')}
       />
       <TextField
-        label="Domain"
+        label={t('customer.domain')}
         size="small"
         value={formData.domain}
         onChange={handleChange('domain')}
@@ -65,7 +75,7 @@ export const CustomerDrawer = ({ editData, onSave }: CustomerDrawerProps) => {
         size="small"
         onClick={() => onSave(formData, editData?.id)}
       >
-        Save
+        {t('customer.save')}
       </Button>
     </Box>
   );

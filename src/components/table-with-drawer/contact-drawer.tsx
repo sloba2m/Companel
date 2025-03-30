@@ -34,7 +34,7 @@ export const ContactDrawer = ({ editData, onSave }: ContactDrawerProps) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
       <Typography variant="subtitle1">
-        {editData ? t('common.edit') : t('common.create')} contact
+        {editData ? t('common.edit') : t('common.create')} {t('contact.create')}
       </Typography>
       <TextField
         label={t('contacts.name')}

@@ -126,7 +126,7 @@
     "email": "Email"
   },
   "contact": {
-    "create": "Create contact",
+    "create": "Contact",
     "name": "Name",
     "phoneNumber": "Phone Number",
     "email": "Email",
@@ -146,7 +146,7 @@
     "email": "Email"
   },
   "customer": {
-    "create": "Create customer",
+    "create": "Customer",
     "name": "Name",
     "phoneNumber": "Phone Number",
     "email": "Email",
