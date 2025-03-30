@@ -2,6 +2,7 @@ import type { Template, TemplatePayload } from 'src/types/templates';
 
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 import { type GridColDef } from '@mui/x-data-grid';
 
@@ -29,6 +30,7 @@ import {
 const metadata = { title: `Templates settings - ${CONFIG.site.name}` };
 
 export default function Page() {
+  const { t } = useTranslation();
   const [search, setSearch] = useState('');
 
   const { data: templatesData } = useGetTemplates();
@@ -47,23 +49,23 @@ export default function Page() {
   const columns: GridColDef<Template>[] = [
     {
       field: 'name',
-      headerName: 'Name',
+      headerName: t('templates.name'),
       width: 160,
       sortable: false,
       ...firstColumnMargin,
     },
     {
       field: 'template',
-      headerName: 'Template',
+      headerName: t('templates.fields.template'),
       width: 230,
       sortable: false,
     },
     {
       field: 'logo',
-      headerName: 'Logo',
+      headerName: t('templates.fields.logo'),
       width: 160,
       sortable: false,
-      renderCell: (params) => <>{params.row.logoUrl ? 'Yes' : 'No'}</>,
+      renderCell: (params) => <>{params.row.logoUrl ? t('confirm.yes') : t('confirm.no')}</>,
       flex: 1,
     },
     getActionColumn(handleEdit, handleDelete),
@@ -95,7 +97,7 @@ export default function Page() {
       </Helmet>
 
       <TableWithDrawer
-        entity="Templates"
+        entity={t('navigation.templates')}
         columns={columns}
         rows={filteredTemplates ?? []}
         drawerContent={<TemplatesDrawer editData={editData} onSave={onSave} key={editData?.id} />}

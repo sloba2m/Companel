@@ -51,7 +51,8 @@
       "message": "Use <strong>[message]</strong> to substitute for the agent message",
       "me": "Use <strong>[me]</strong> to substitute for the agents name",
       "logo": "Use <strong>[logo]</strong> to substitute for the uploaded logo"
-    }
+    },
+    "uploadLogo": "Upload logo"
   },
   "confirm": {
     "yes": "Yes",

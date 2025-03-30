@@ -1,6 +1,8 @@
 import type { Template, TemplatePayload } from 'src/types/templates';
 
+import parse from 'html-react-parser';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Stack, Alert, Button, TextField, Typography, AlertTitle } from '@mui/material';
 
@@ -14,6 +16,8 @@ interface TemplatesDrawerProps {
 }
 
 export const TemplatesDrawer = ({ editData, onSave }: TemplatesDrawerProps) => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState<TemplatePayload>({
     name: '',
     template: '',
@@ -38,32 +42,31 @@ export const TemplatesDrawer = ({ editData, onSave }: TemplatesDrawerProps) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
-      <Typography variant="subtitle1">{editData ? 'Edit' : 'Create'} template</Typography>
+      <Typography variant="subtitle1">
+        {editData ? t('common.edit') : t('common.create')} {t('templates.fields.template')}
+      </Typography>
 
-      <TextField label="Name" size="small" value={formData.name} onChange={handleChange('name')} />
+      <TextField
+        label={t('templates.fields.name')}
+        size="small"
+        value={formData.name}
+        onChange={handleChange('name')}
+      />
 
       <Alert severity="info">
-        <AlertTitle>Available directives for dynamic fields</AlertTitle>
+        <AlertTitle>{t('templates.info.header')}</AlertTitle>
         <Box component="ul" sx={{ pl: 2, listStyleType: 'disc' }}>
-          <li>
-            Use <strong>[name]</strong> to substitute for the contact&apos;s name
-          </li>
-          <li>
-            Use <strong>[message]</strong> to substitute for the agent message
-          </li>
-          <li>
-            Use <strong>[me]</strong> to substitute for the agent&apos;s name
-          </li>
-          <li>
-            Use <strong>[logo]</strong> to substitute for the uploaded logo
-          </li>
+          <li>{parse(t('templates.info.name'))}</li>
+          <li>{parse(t('templates.info.message'))}</li>
+          <li>{parse(t('templates.info.me'))}</li>
+          <li>{parse(t('templates.info.logo'))}</li>
         </Box>
       </Alert>
 
       <Editor
         sx={{ minHeight: 400 }}
         value={formData.template}
-        placeholder="Create template..."
+        placeholder={`${t('templates.create')}...`}
         onChange={(value) => setFormData((prev) => ({ ...prev, template: value }))}
       />
 
@@ -72,7 +75,7 @@ export const TemplatesDrawer = ({ editData, onSave }: TemplatesDrawerProps) => {
           placeholder={
             <Stack spacing={0.5} alignItems="center">
               <Iconify icon="eva:cloud-upload-fill" width={40} />
-              <Typography variant="body2">Upload logo</Typography>
+              <Typography variant="body2">{t('templates.uploadLogo')}</Typography>
             </Stack>
           }
           sx={{ py: 1, flexGrow: 1, height: 'auto' }}
@@ -103,7 +106,7 @@ export const TemplatesDrawer = ({ editData, onSave }: TemplatesDrawerProps) => {
         size="small"
         onClick={() => onSave(formData, editData?.id)}
       >
-        Save
+        {t('inbox.save')}
       </Button>
     </Box>
   );

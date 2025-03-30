@@ -167,7 +167,8 @@
       "message": "Använd <strong>[message]</strong> för att infoga agentens meddelande",
       "me": "Använd <strong>[me]</strong> för att infoga agentens namn",
       "logo": "Använd <strong>[logo]</strong> för att infoga den uppladdade logotypen"
-    }
+    },
+    "uploadLogo": "Ladda upp logotyp"
   },
   "inbox": {
     "inboxInfo": "Inkorg",
