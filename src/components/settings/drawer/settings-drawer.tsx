@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
@@ -35,6 +37,7 @@ export function SettingsDrawer({
   hideDirection,
   hideColorScheme,
 }: SettingsDrawerProps) {
+  const { t } = useTranslation();
   const theme = useTheme();
 
   const settings = useSettingsContext();
@@ -44,7 +47,7 @@ export function SettingsDrawer({
   const renderHead = (
     <Box display="flex" alignItems="center" sx={{ py: 2, pr: 1, pl: 2.5 }}>
       <Typography variant="h6" sx={{ flexGrow: 1 }}>
-        Settings
+        {t('settingsSubMenu.title')}
       </Typography>
 
       <FullScreenButton />
@@ -59,7 +62,7 @@ export function SettingsDrawer({
 
   const renderMode = (
     <BaseOption
-      label="Dark mode"
+      label={t('settingsSubMenu.darkMode')}
       icon="moon"
       selected={settings.colorScheme === 'dark'}
       onClick={() => {

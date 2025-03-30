@@ -228,7 +228,9 @@
     "inbox": "Inkorg",
     "channel": "Kanal",
     "templates": "Mallar",
-    "tags": "Tags"
+    "tags": "Tags",
+    "logOut": "Logga ut",
+    "darkMode": "Mörkt läge"
   },
   "conversationsColumns": {
     "inbox": "Inkorg",

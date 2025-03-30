@@ -219,7 +219,9 @@
     "inbox": "Inbox",
     "channel": "Channel",
     "templates": "Templates",
-    "tags": "Tags"
+    "tags": "Tags",
+    "logOut": "Log out",
+    "darkMode": "Dark mode"
   },
   "tags": {
     "create": "Tag",

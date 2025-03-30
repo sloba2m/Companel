@@ -1,6 +1,8 @@
 import type { SxProps } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 
+import { useTranslation } from 'react-i18next';
+
 import { Menu, Avatar, MenuList, MenuItem, useTheme, IconButton } from '@mui/material';
 
 import { Iconify } from 'src/components/iconify';
@@ -12,6 +14,7 @@ interface AvatarMenuProps {
 }
 
 export const AvatarMenu = ({ sx }: AvatarMenuProps) => {
+  const { t } = useTranslation();
   const popover = usePopover();
   const settings = useSettingsContext();
   const theme = useTheme();
@@ -36,11 +39,11 @@ export const AvatarMenu = ({ sx }: AvatarMenuProps) => {
             }}
           >
             <Iconify icon="ic:baseline-settings" sx={{ mr: 1 }} />
-            Settings
+            {t('settingsSubMenu.title')}
           </MenuItem>
           <MenuItem key="log out">
             <Iconify icon="ic:baseline-log-out" sx={{ mr: 1 }} />
-            Log out
+            {t('settingsSubMenu.logOut')}
           </MenuItem>
         </MenuList>
       </Menu>
