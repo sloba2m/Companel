@@ -222,7 +222,7 @@
     "tags": "Tags"
   },
   "tags": {
-    "create": "Create tag",
+    "create": "Tag",
     "addTag": "Add tag",
     "fields": {
       "name": "Name"

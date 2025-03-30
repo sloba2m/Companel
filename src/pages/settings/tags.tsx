@@ -2,6 +2,7 @@ import type { Tag } from 'src/types/tags';
 
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 import { type GridColDef } from '@mui/x-data-grid';
 
@@ -19,6 +20,8 @@ import { TagsDrawer, TableWithDrawer, firstColumnMargin } from 'src/components/t
 const metadata = { title: `Tags settings - ${CONFIG.site.name}` };
 
 export default function Page() {
+  const { t } = useTranslation();
+
   const [search, setSearch] = useState('');
 
   const { data: tagsData } = useGetTags();
@@ -38,7 +41,7 @@ export default function Page() {
   const columns: GridColDef<Tag>[] = [
     {
       field: 'name',
-      headerName: 'Name',
+      headerName: t('tags.fields.name'),
       width: 160,
       sortable: false,
       flex: 1,
@@ -59,7 +62,7 @@ export default function Page() {
 
       <TableWithDrawer
         columns={columns}
-        entity="Tags"
+        entity={t('navigation.tags')}
         rows={filteredTags ?? []}
         drawerContent={<TagsDrawer editData={editData} onSave={onSave} />}
         onSearch={(val) => setSearch(val)}

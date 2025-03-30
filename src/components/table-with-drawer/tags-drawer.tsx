@@ -1,6 +1,7 @@
 import type { Tag } from 'src/types/tags';
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Button, TextField, Typography } from '@mui/material';
 
@@ -10,6 +11,8 @@ interface TagsDrawerProps {
 }
 
 export const TagsDrawer = ({ editData, onSave }: TagsDrawerProps) => {
+  const { t } = useTranslation();
+
   const [name, setName] = useState<string>('');
 
   useEffect(() => {
@@ -20,15 +23,22 @@ export const TagsDrawer = ({ editData, onSave }: TagsDrawerProps) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
-      <Typography variant="subtitle1">{editData ? 'Edit' : 'Create'} tag</Typography>
-      <TextField label="Name" size="small" value={name} onChange={(e) => setName(e.target.value)} />
+      <Typography variant="subtitle1">
+        {editData ? t('common.edit') : t('common.create')} {t('tags.create')}
+      </Typography>
+      <TextField
+        label={t('tags.fields.name')}
+        size="small"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
       <Button
         variant="soft"
         color="primary"
         size="small"
         onClick={() => onSave(name, editData?.id)}
       >
-        Save
+        {t('tags.save')}
       </Button>
     </Box>
   );

@@ -141,7 +141,7 @@
     "numberOfConversations": "<strong>{number}</strong> ärenden totalt"
   },
   "tags": {
-    "create": "Skapa tag",
+    "create": "Tag",
     "addTag": "Lägg till",
     "fields": {
       "name": "Namn"
