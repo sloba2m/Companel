@@ -1,37 +1,61 @@
-import type { IChatParticipant } from 'src/types/chat';
-
 // import { useMemo, useState } from 'react';
 
 import { Tab, Tabs, Card, Stack, Button, Divider, IconButton } from '@mui/material';
 
 // import { today } from 'src/utils/format-time';
 
+import { useState } from 'react';
+
 import { useTabs } from 'src/routes/hooks/use-tabs';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { useSendMessage } from 'src/actions/chat';
+
 import { Editor } from 'src/components/editor';
 import { Iconify } from 'src/components/iconify';
+
+import { MessageType } from 'src/types/chat';
 
 // import { useMockedUser } from 'src/auth/hooks';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  disabled: boolean;
-  recipients: IChatParticipant[];
-  selectedConversationId: string;
-  onAddRecipients: (recipients: IChatParticipant[]) => void;
+  lastMessageId?: string;
+  conversationId: string;
 };
 
-export function ChatMessageInput({
-  disabled,
-  recipients,
-  onAddRecipients,
-  selectedConversationId,
-}: Props) {
+export function ChatMessageInput({ lastMessageId, conversationId }: Props) {
   const basicTabs = useTabs('Message');
   const isTablet = useResponsive('between', 'sm', 'md');
+
+  const [messageInput, setMessageInput] = useState('');
+  const [noteInput, setNoteInput] = useState('');
+
+  const { mutate: sendMessage } = useSendMessage();
+
+  const isNote = basicTabs.value === 'Note';
+
+  const handleSendmessage = () => {
+    sendMessage(
+      {
+        conversationId,
+        data: {
+          attachments: [],
+          content: isNote ? noteInput : messageInput,
+          messageType: isNote ? MessageType.NOTE : MessageType.OUTGOING,
+          replyToMessageId: lastMessageId,
+        },
+      },
+      {
+        onSuccess: () => {
+          if (isNote) setNoteInput('');
+          else setMessageInput('');
+        },
+      }
+    );
+  };
 
   // const router = useRouter();
 
@@ -120,8 +144,20 @@ export function ChatMessageInput({
         <Tab key="Note" value="Note" label="Note" />
       </Tabs>
       <Divider />
-      {basicTabs.value === 'Message' && <Editor sx={{ maxHeight: 720, borderTop: 'none' }} />}
-      {basicTabs.value === 'Note' && <Editor sx={{ maxHeight: 720, borderTop: 'none' }} />}
+      {basicTabs.value === 'Message' && (
+        <Editor
+          sx={{ maxHeight: 720, borderTop: 'none' }}
+          value={messageInput}
+          onChange={(val) => setMessageInput(val)}
+        />
+      )}
+      {basicTabs.value === 'Note' && (
+        <Editor
+          sx={{ maxHeight: 720, borderTop: 'none' }}
+          value={noteInput}
+          onChange={(val) => setNoteInput(val)}
+        />
+      )}
       <Stack direction="row" sx={{ justifyContent: 'space-between', p: 1 }}>
         <IconButton size="small">
           <Iconify icon="ic:baseline-attach-file" />
@@ -131,6 +167,7 @@ export function ChatMessageInput({
           color="primary"
           size="small"
           endIcon={<Iconify icon="mdi:send" />}
+          onClick={handleSendmessage}
         >
           Send
         </Button>

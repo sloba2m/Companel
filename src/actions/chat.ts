@@ -1,6 +1,7 @@
 import type { StatusFilters } from 'src/sections/chat/chat-nav';
 import type {
   Message,
+  MessageType,
   IChatMessage,
   Conversation,
   IChatParticipant,
@@ -358,6 +359,28 @@ export const useAssignUser = () => {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['conversations'] });
+    },
+  });
+};
+
+interface SendMessageInput {
+  conversationId: string;
+  data: {
+    attachments: any[];
+    content: string;
+    messageType: MessageType;
+    replyToMessageId?: string;
+  };
+}
+
+export const useSendMessage = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: SendMessageInput) =>
+      mutationFetcher('post', `/conversation/${payload.conversationId}/message`, payload.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['messages'] });
     },
   });
 };

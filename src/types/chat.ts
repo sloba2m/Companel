@@ -77,6 +77,12 @@ export enum AssignedStatus {
   ASSIGNED = 'ASSIGNED',
 }
 
+export enum MessageType {
+  OUTGOING = 'OUTGOING',
+  NOTE = 'NOTE',
+  INCOMING = 'INCOMING',
+}
+
 export interface Message {
   id: string;
   conversationId: string;

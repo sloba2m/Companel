@@ -59,6 +59,8 @@ export function ChatView() {
     setRecipients(selected);
   }, []);
 
+  const reversedMessages = messages?.items?.slice().reverse() ?? [];
+
   return (
     <DashboardContent
       maxWidth={false}
@@ -108,7 +110,7 @@ export function ChatView() {
             <>
               {selectedConversationId ? (
                 <ChatMessageList
-                  messages={messages?.items?.slice().reverse() ?? []}
+                  messages={reversedMessages}
                   contact={conversation?.contact}
                   loading={messagesLoading}
                 />
@@ -121,10 +123,12 @@ export function ChatView() {
               )}
 
               <ChatMessageInput
-                recipients={recipients}
-                onAddRecipients={handleAddRecipients}
-                selectedConversationId={selectedConversationId}
-                disabled={!recipients.length && !selectedConversationId}
+                conversationId={selectedConversationId}
+                lastMessageId={
+                  reversedMessages.length
+                    ? reversedMessages[reversedMessages.length - 1].id
+                    : undefined
+                }
               />
             </>
           ),
