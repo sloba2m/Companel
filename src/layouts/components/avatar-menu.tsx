@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 
 import { Menu, Avatar, MenuList, MenuItem, useTheme, IconButton } from '@mui/material';
 
+import getKeycloak from 'src/utils/keycloakService';
+
 import { Iconify } from 'src/components/iconify';
 import { usePopover } from 'src/components/custom-popover';
 import { useSettingsContext } from 'src/components/settings';
@@ -18,6 +20,13 @@ export const AvatarMenu = ({ sx }: AvatarMenuProps) => {
   const popover = usePopover();
   const settings = useSettingsContext();
   const theme = useTheme();
+  const keycloak = getKeycloak();
+
+  const onLogout = () => {
+    keycloak.logout({
+      redirectUri: import.meta.env.VITE_APP_DOMAIN,
+    });
+  };
 
   return (
     <>
@@ -41,7 +50,7 @@ export const AvatarMenu = ({ sx }: AvatarMenuProps) => {
             <Iconify icon="ic:baseline-settings" sx={{ mr: 1 }} />
             {t('settingsSubMenu.title')}
           </MenuItem>
-          <MenuItem key="log out">
+          <MenuItem key="log out" onClick={onLogout}>
             <Iconify icon="ic:baseline-log-out" sx={{ mr: 1 }} />
             {t('settingsSubMenu.logOut')}
           </MenuItem>
