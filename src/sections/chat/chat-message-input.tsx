@@ -51,8 +51,9 @@ export function ChatMessageInput({ lastMessageId, conversationId }: Props) {
       },
       {
         onSuccess: () => {
-          if (isNote) setNoteInput('');
-          else setMessageInput('');
+          if (isNote) {
+            setNoteInput('');
+          } else setMessageInput('');
         },
       }
     );
@@ -156,6 +157,7 @@ export function ChatMessageInput({ lastMessageId, conversationId }: Props) {
       <Divider />
       {basicTabs.value === 'Message' && (
         <Editor
+          key="message"
           sx={{ maxHeight: 720, borderTop: 'none' }}
           value={messageInput}
           onChange={(val) => setMessageInput(val)}
@@ -163,6 +165,7 @@ export function ChatMessageInput({ lastMessageId, conversationId }: Props) {
       )}
       {basicTabs.value === 'Note' && (
         <Editor
+          key="note"
           sx={{ maxHeight: 720, borderTop: 'none' }}
           value={noteInput}
           onChange={(val) => setNoteInput(val)}
