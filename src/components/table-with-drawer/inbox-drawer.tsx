@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import type { Inbox, InboxPayload, EmailProvider } from 'src/types/inbox';
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   Box,
@@ -23,6 +24,8 @@ interface InboxDrawerProps {
 const typeOptions: EmailProvider[] = ['MICROSOFT_OAUTH', 'MICROSOFT_BASIC'];
 
 export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState<InboxPayload>({
     name: '',
     email: '',
@@ -76,7 +79,9 @@ export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
-      <Typography variant="subtitle1">{editData ? 'Edit' : 'Create'} inbox</Typography>
+      <Typography variant="subtitle1">
+        {editData ? t('common.edit') : t('common.create')} {t('inbox.inboxInfo')}
+      </Typography>
 
       <TwoColumnBox>
         <Autocomplete
@@ -87,32 +92,37 @@ export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
           disableClearable
           onChange={(_e, val) => setFormData((prev) => ({ ...prev, provider: val }))}
           renderInput={(params) => (
-            <TextField {...params} label="Type" margin="none" size="small" />
+            <TextField {...params} label={t('inbox.fields.typeLabel')} margin="none" size="small" />
           )}
         />
         <Autocomplete
           fullWidth
           options={templatesData ?? []}
           getOptionLabel={(option) => option.name}
-          value={templatesData?.find((t) => t.id === formData.emailTemplateId) ?? null}
+          value={templatesData?.find((te) => te.id === formData.emailTemplateId) ?? null}
           onChange={(_e, val) =>
             setFormData((prev) => ({ ...prev, emailTemplateId: val?.id ?? null }))
           }
           renderInput={(params) => (
-            <TextField {...params} label="Template" margin="none" size="small" />
+            <TextField
+              {...params}
+              label={t('inbox.fields.emailTemplate')}
+              margin="none"
+              size="small"
+            />
           )}
         />
       </TwoColumnBox>
 
       <TwoColumnBox>
         <TextField
-          label="Name"
+          label={t('inbox.name')}
           size="small"
           value={formData.name ?? ''}
           onChange={handleChange('name')}
         />
         <TextField
-          label="Email"
+          label={t('inbox.email')}
           size="small"
           value={formData.email ?? ''}
           onChange={handleChange('email')}
@@ -122,19 +132,19 @@ export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
       {formData.provider === 'MICROSOFT_OAUTH' ? (
         <>
           <TextField
-            label="Tenant ID"
+            label={t('inbox.fields.tenantIdLabel')}
             size="small"
             value={formData.tenantId ?? ''}
             onChange={handleChange('tenantId')}
           />
           <TextField
-            label="Client ID"
+            label={t('inbox.fields.clientIdLabel')}
             size="small"
             value={formData.clientId ?? ''}
             onChange={handleChange('clientId')}
           />
           <TextField
-            label="Client secret"
+            label={t('inbox.fields.clientSecretLabel')}
             size="small"
             value={formData.clientSecret ?? ''}
             onChange={handleChange('clientSecret')}
@@ -144,13 +154,13 @@ export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
         <>
           <TwoColumnBox>
             <TextField
-              label="Imap Address"
+              label={t('inbox.fields.imapAddressLabel')}
               size="small"
               value={formData.imapAddress ?? ''}
               onChange={handleChange('imapAddress')}
             />
             <TextField
-              label="Imap Port"
+              label={t('inbox.fields.imapPortLabel')}
               type="number"
               size="small"
               value={formData.imapPort ?? ''}
@@ -159,13 +169,13 @@ export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
           </TwoColumnBox>
           <TwoColumnBox>
             <TextField
-              label="Imap Login"
+              label={t('inbox.fields.imapLoginLabel')}
               size="small"
               value={formData.imapLogin ?? ''}
               onChange={handleChange('imapLogin')}
             />
             <TextField
-              label="Imap Password"
+              label={t('inbox.fields.imapPasswordLabel')}
               type="password"
               size="small"
               value={formData.imapPassword ?? ''}
@@ -180,7 +190,7 @@ export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
                   onChange={handleCheckboxChange('imapEnabled')}
                 />
               }
-              label="Imap Enabled"
+              label={t('inbox.fields.imapEnabledLabel')}
               sx={{ flexBasis: '50%' }}
             />
             <FormControlLabel
@@ -190,18 +200,18 @@ export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
                   onChange={handleCheckboxChange('imapEnableSsl')}
                 />
               }
-              label="Imap Enable Ssl"
+              label={t('inbox.fields.imapEnableSslLabel')}
             />
           </TwoColumnBox>
           <TwoColumnBox>
             <TextField
-              label="Smtp Address"
+              label={t('inbox.fields.smtpAddressLabel')}
               size="small"
               value={formData.smtpAddress ?? ''}
               onChange={handleChange('smtpAddress')}
             />
             <TextField
-              label="Smtp Port"
+              label={t('inbox.fields.smtpPortLabel')}
               type="number"
               size="small"
               value={formData.smtpPort ?? ''}
@@ -210,13 +220,13 @@ export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
           </TwoColumnBox>
           <TwoColumnBox>
             <TextField
-              label="Smtp Login"
+              label={t('inbox.fields.smtpLoginLabel')}
               size="small"
               value={formData.smtpLogin ?? ''}
               onChange={handleChange('smtpLogin')}
             />
             <TextField
-              label="Smtp Password"
+              label={t('inbox.fields.smtpAddressLabel')}
               type="password"
               size="small"
               value={formData.smtpPassword ?? ''}
@@ -225,13 +235,13 @@ export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
           </TwoColumnBox>
           <TwoColumnBox>
             <TextField
-              label="Smtp Domain"
+              label={t('inbox.fields.smtpDomainLabel')}
               size="small"
               value={formData.smtpDomain ?? ''}
               onChange={handleChange('smtpDomain')}
             />
             <TextField
-              label="Smtp Authentication"
+              label={t('inbox.fields.smtpAuthenticationLabel')}
               size="small"
               value={formData.smtpAuthentication ?? ''}
               onChange={handleChange('smtpAuthentication')}
@@ -245,7 +255,7 @@ export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
                   onChange={handleCheckboxChange('smtpEnableSslTls')}
                 />
               }
-              label="Smtp Enable Ssl Tls"
+              label={t('inbox.fields.smtpEnableSslTlsLabel')}
               sx={{ flexBasis: '50%' }}
             />
             <FormControlLabel
@@ -255,7 +265,7 @@ export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
                   onChange={handleCheckboxChange('smtpEnabled')}
                 />
               }
-              label="Smtp Enabled"
+              label={t('inbox.fields.smtpEnabledLabel')}
             />
           </TwoColumnBox>
           <TwoColumnBox>
@@ -266,10 +276,10 @@ export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
                   onChange={handleCheckboxChange('smtpEnableStarttlsAuto')}
                 />
               }
-              label="Smtp Enable Start tls Auto"
+              label={t('inbox.fields.smtpEnableStarttlsAutoLabel')}
             />
             <TextField
-              label="Smtp Openssl Verify Mode"
+              label={t('inbox.fields.smtpOpensslVerifyModeLabel')}
               size="small"
               value={formData.smtpOpensslVerifyMode ?? ''}
               onChange={handleChange('smtpOpensslVerifyMode')}
@@ -277,12 +287,17 @@ export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
           </TwoColumnBox>
           <TwoColumnBox>
             <TextField
-              label="Provider Config"
+              label={t('inbox.fields.providerConfigLabel')}
               size="small"
               value={formData.providerConfig ?? ''}
               onChange={handleChange('providerConfig')}
             />
-            <TextField label="Provider" size="small" disabled value={formData.provider ?? ''} />
+            <TextField
+              label={t('inbox.fields.providerLabel')}
+              size="small"
+              disabled
+              value={formData.provider ?? ''}
+            />
           </TwoColumnBox>
         </>
       )}
@@ -293,7 +308,7 @@ export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
         size="small"
         onClick={() => onSave(formData, editData?.externalId)}
       >
-        Save
+        {t('inbox.save')}
       </Button>
     </Box>
   );

@@ -3,6 +3,7 @@ import type { Inbox, InboxPayload } from 'src/types/inbox';
 
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 import { type GridColDef } from '@mui/x-data-grid';
 
@@ -25,6 +26,7 @@ const metadata = { title: `Inbox settings - ${CONFIG.site.name}` };
 type InboxWithId = Inbox & WithId;
 
 export default function Page() {
+  const { t } = useTranslation();
   const [search, setSearch] = useState('');
 
   const { paginationModel, setPaginationModel } = usePagination();
@@ -55,27 +57,27 @@ export default function Page() {
   const columns: GridColDef<InboxWithId>[] = [
     {
       field: 'name',
-      headerName: 'Name',
+      headerName: t('inbox.name'),
       width: 160,
       sortable: false,
       ...firstColumnMargin,
     },
     {
       field: 'template',
-      headerName: 'Template',
+      headerName: t('inbox.fields.emailTemplate'),
       width: 230,
       sortable: false,
     },
     {
       field: 'createdAt',
-      headerName: 'Created At',
+      headerName: t('inbox.fields.createdAtLabel'),
       width: 230,
       sortable: false,
       renderCell: (params) => fDate(params.row.createdAt),
     },
     {
       field: 'updatedAt',
-      headerName: 'Updated At',
+      headerName: t('inbox.fields.updatedAtLabel'),
       width: 230,
       sortable: false,
       renderCell: (params) => fDate(params.row.updatedAt),
@@ -99,7 +101,7 @@ export default function Page() {
       <TableWithDrawer
         columns={columns}
         rows={filteredInboxes}
-        entity="Inbox"
+        entity={t('navigation.inbox')}
         drawerContent={<InboxDrawer editData={editData} onSave={onSave} />}
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}

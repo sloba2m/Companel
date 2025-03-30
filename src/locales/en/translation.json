@@ -162,7 +162,7 @@
   },
   "inbox": {
     "inboxInfo": "Inbox",
-    "create": "Create inbox",
+    "create": "Create nbox",
     "update": "Update inbox",
     "name": "Name",
     "email": "Email",
