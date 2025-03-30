@@ -1,6 +1,7 @@
 import type { User, UserPayload } from 'src/types/users';
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   Box,
@@ -22,6 +23,8 @@ interface UsersDrawerProps {
 }
 
 export const UsersDrawer = ({ editData, onSave }: UsersDrawerProps) => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState<UserPayload>({
     firstName: '',
     lastName: '',
@@ -56,24 +59,26 @@ export const UsersDrawer = ({ editData, onSave }: UsersDrawerProps) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
-      <Typography variant="subtitle1">{editData ? 'Edit' : 'Create'} user</Typography>
+      <Typography variant="subtitle1">
+        {editData ? t('common.edit') : t('common.create')} {t('user.create')}
+      </Typography>
 
       <TextField
-        label="First name"
+        label={t('user.firstName')}
         size="small"
         value={formData.firstName}
         onChange={handleChange('firstName')}
       />
 
       <TextField
-        label="Last name"
+        label={t('user.lastName')}
         size="small"
         value={formData.lastName}
         onChange={handleChange('lastName')}
       />
 
       <TextField
-        label="Email"
+        label={t('user.email')}
         size="small"
         type="email"
         value={formData.email}
@@ -111,7 +116,7 @@ export const UsersDrawer = ({ editData, onSave }: UsersDrawerProps) => {
         size="small"
         onClick={() => onSave(formData, editData?.id)}
       >
-        Save
+        {t('user.save')}
       </Button>
     </Box>
   );

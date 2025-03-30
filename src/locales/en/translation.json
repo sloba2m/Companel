@@ -203,7 +203,7 @@
     }
   },
   "user": {
-    "create": "Create user",
+    "create": "User",
     "update": "Update user",
     "firstName": "First name",
     "lastName": "Last name",

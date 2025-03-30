@@ -2,6 +2,7 @@ import type { User, UserPayload } from 'src/types/users';
 
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 import { Box } from '@mui/material';
 import { type GridColDef } from '@mui/x-data-grid';
@@ -20,6 +21,7 @@ import { getActionColumn } from 'src/components/table-with-drawer/utils/action-c
 const metadata = { title: `Users settings - ${CONFIG.site.name}` };
 
 export default function Page() {
+  const { t } = useTranslation();
   const [search, setSearch] = useState('');
 
   const { data: usersData, isLoading } = useGetUsers();
@@ -45,7 +47,7 @@ export default function Page() {
   const columns: GridColDef<User>[] = [
     {
       field: 'firstName',
-      headerName: 'First Name',
+      headerName: t('user.firstName'),
       width: 160,
       sortable: false,
       renderHeader: (param) => <Box sx={{ ml: 1 }}>{param.colDef.headerName}</Box>,
@@ -53,13 +55,13 @@ export default function Page() {
     },
     {
       field: 'lastName',
-      headerName: 'Last Name',
+      headerName: t('user.lastName'),
       width: 160,
       sortable: false,
     },
     {
       field: 'email',
-      headerName: 'Email',
+      headerName: t('user.email'),
       width: 230,
       sortable: false,
       flex: 1,
@@ -74,7 +76,7 @@ export default function Page() {
       </Helmet>
 
       <TableWithDrawer
-        entity="Users"
+        entity={t('navigation.users')}
         columns={columns}
         rows={filteredUsers ?? []}
         drawerContent={<UsersDrawer key={editData?.id} editData={editData} onSave={onSave} />}
