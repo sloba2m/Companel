@@ -4,13 +4,13 @@ import { Tab, Tabs, Card, Stack, Button, Divider, IconButton } from '@mui/materi
 
 // import { today } from 'src/utils/format-time';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useTabs } from 'src/routes/hooks/use-tabs';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import { useSendMessage } from 'src/actions/chat';
+import { useSendMessage, useGenerateTemplate } from 'src/actions/chat';
 
 import { Editor } from 'src/components/editor';
 import { Iconify } from 'src/components/iconify';
@@ -34,6 +34,7 @@ export function ChatMessageInput({ lastMessageId, conversationId }: Props) {
   const [noteInput, setNoteInput] = useState('');
 
   const { mutate: sendMessage } = useSendMessage();
+  const { mutate: generateTemplate } = useGenerateTemplate();
 
   const isNote = basicTabs.value === 'Note';
 
@@ -56,6 +57,15 @@ export function ChatMessageInput({ lastMessageId, conversationId }: Props) {
       }
     );
   };
+
+  useEffect(() => {
+    generateTemplate(conversationId, {
+      onSuccess: (data: { content: string }) => {
+        // console.log(data.content);
+        setMessageInput(data.content);
+      },
+    });
+  }, [conversationId, generateTemplate]);
 
   // const router = useRouter();
 

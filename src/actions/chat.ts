@@ -384,3 +384,9 @@ export const useSendMessage = () => {
     },
   });
 };
+
+export const useGenerateTemplate = () =>
+  useMutation({
+    mutationFn: (conversationId: string) =>
+      mutationFetcher('post', `/conversation/${conversationId}:generate-template-response`, {}),
+  });

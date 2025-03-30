@@ -5,6 +5,7 @@ import { varAlpha } from 'src/theme/styles';
 
 import { editorClasses } from './classes';
 import { LinkBlock } from './components/link-block';
+import { ImageBlock } from './components/image-block';
 import { ToolbarItem } from './components/toolbar-item';
 import { HeadingBlock } from './components/heading-block';
 
@@ -128,6 +129,7 @@ export function Toolbar({ editor, fullItem, fullScreen, onToggleFullScreen }: Ed
       {/* Link - Image */}
       <Stack direction="row" spacing={0.5}>
         <LinkBlock editor={editor} />
+        <ImageBlock editor={editor} />
       </Stack>
 
       {/* Undo - Redo */}

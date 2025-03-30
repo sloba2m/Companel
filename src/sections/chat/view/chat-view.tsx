@@ -123,6 +123,7 @@ export function ChatView() {
               )}
 
               <ChatMessageInput
+                key={selectedConversationId}
                 conversationId={selectedConversationId}
                 lastMessageId={
                   reversedMessages.length
