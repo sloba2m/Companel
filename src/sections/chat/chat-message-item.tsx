@@ -1,4 +1,3 @@
-import type { User } from 'src/types/users';
 import type { Message } from 'src/types/chat';
 import type { Contact } from 'src/types/contacts';
 
@@ -13,6 +12,8 @@ import Typography from '@mui/material/Typography';
 
 import { fDateTime } from 'src/utils/format-time';
 
+import { useGetMeCached } from 'src/actions/account';
+
 import { Iconify } from 'src/components/iconify';
 
 import { useMessage } from './hooks/use-message';
@@ -26,16 +27,7 @@ type Props = {
 };
 
 export function ChatMessageItem({ message, contact, onOpenLightbox }: Props) {
-  // const { user } = useMockedUser();
-
-  const user: User = {
-    id: '3aa02f71-539e-4fbd-8191-718b398af9ef',
-    authId: '8ba33e21-49b8-4f7c-abc8-0f059ecad7db',
-    firstName: 'Slobo',
-    lastName: 'Developer',
-    fullName: 'Slobo Developer',
-    email: 'freelancerslobodan@gmail.com',
-  };
+  const user = useGetMeCached();
 
   const theme = useTheme();
 

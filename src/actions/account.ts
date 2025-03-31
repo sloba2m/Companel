@@ -1,4 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import type { User } from 'src/types/users';
+
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { fetcher } from 'src/utils/axios';
 
@@ -25,3 +27,14 @@ export const useGetWorkspaceData = () =>
     queryKey: ['account-workspace'],
     queryFn: () => fetcher('/account/workspace'),
   });
+
+export const useGetMe = () =>
+  useQuery<User>({
+    queryKey: ['me'],
+    queryFn: () => fetcher('/me'),
+  });
+
+export const useGetMeCached = () => {
+  const queryClient = useQueryClient();
+  return queryClient.getQueryData<User>(['me']);
+};

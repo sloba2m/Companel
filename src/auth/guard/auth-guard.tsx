@@ -4,6 +4,8 @@ import { usePathname } from 'src/routes/hooks';
 
 import getKeycloak from 'src/utils/keycloakService';
 
+import { useGetMe } from 'src/actions/account';
+
 import { SplashScreen } from 'src/components/loading-screen';
 
 type Props = {
@@ -14,6 +16,7 @@ export function AuthGuard({ children }: Props) {
   const pathname = usePathname();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const keycloak = getKeycloak();
+  useGetMe();
 
   useEffect(() => {
     const initKeycloak = async () => {
