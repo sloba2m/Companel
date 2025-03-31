@@ -197,7 +197,7 @@ export function ChatNav({
           }}
         />
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton>
+          <IconButton onClick={() => router.push(paths.navigation.inbox)}>
             <Iconify icon="ic:baseline-add" width={24} />
           </IconButton>
         </Box>

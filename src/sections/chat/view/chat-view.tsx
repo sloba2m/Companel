@@ -1,6 +1,7 @@
 import type { IChatParticipant } from 'src/types/chat';
+import type { WorkspaceInbox } from 'src/actions/account';
 
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 
 import { useSearchParams } from 'src/routes/hooks';
 
@@ -26,6 +27,14 @@ import { useCollapseNav } from '../hooks/use-collapse-nav';
 import type { StatusFilters } from '../chat-nav';
 
 // ----------------------------------------------------------------------
+
+type ComposeFormState = {
+  inbox?: WorkspaceInbox;
+  to: string;
+  cc: string;
+  name: string;
+  subject: string;
+};
 
 export function ChatView() {
   const { user } = useMockedUser();
@@ -59,15 +68,27 @@ export function ChatView() {
 
   const conversationsNav = useCollapseNav();
 
-  const handleAddRecipients = useCallback((selected: IChatParticipant[]) => {
-    setRecipients(selected);
-  }, []);
-
   const reversedMessages =
     messages?.pages
       .flatMap((page) => page.items)
       .slice()
       .reverse() ?? [];
+
+  const [formState, setFormState] = useState<ComposeFormState>({
+    inbox: undefined,
+    to: '',
+    cc: '',
+    name: '',
+    subject: '',
+  });
+
+  const handleChange = (field: keyof ComposeFormState, value: any) => {
+    setFormState((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleOpenMobile = () => {
+    // mobile toggle logic
+  };
 
   return (
     <DashboardContent
@@ -98,11 +119,7 @@ export function ChatView() {
               loading={messagesLoading}
             />
           ) : (
-            <ChatHeaderCompose
-              contacts={contacts}
-              onAddRecipients={handleAddRecipients}
-              onOpenMobile={conversationsNav.onOpenMobile}
-            />
+            <ChatHeaderCompose onOpenMobile={conversationsNav.onOpenMobile} />
           ),
           nav: (
             <ChatNav

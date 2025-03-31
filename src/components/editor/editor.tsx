@@ -119,7 +119,7 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
             sx={{
               ...sx,
               '.ProseMirror': {
-                maxHeight: 300,
+                height: 250,
                 overflowY: 'auto',
               },
             }}

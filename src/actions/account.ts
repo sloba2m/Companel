@@ -9,7 +9,7 @@ interface Category {
   number: number;
 }
 
-interface Inbox {
+export interface WorkspaceInbox {
   id: string;
   name: string;
   channelType: 'EMAIL' | 'WIDGET';
@@ -18,7 +18,7 @@ interface Inbox {
 
 interface WorkspaceData {
   name: string;
-  inboxes: Inbox[];
+  inboxes: WorkspaceInbox[];
   categories: Category[];
 }
 
