@@ -46,7 +46,7 @@ export const paths = {
     root: ROOTS.INDEX,
     dashboard: `${ROOTS.INDEX}/dashboard`,
     inboxBase: `${ROOTS.INDEX}/inbox`,
-    inbox: `${ROOTS.INDEX}/inbox?status=all`,
+    inbox: `${ROOTS.INDEX}/inbox?status=all&channel=all`,
     contacts: `${ROOTS.INDEX}/contacts`,
     customers: `${ROOTS.INDEX}/customers`,
     settings: {

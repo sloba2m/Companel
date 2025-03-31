@@ -5,6 +5,8 @@ import { useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-q
 
 import { fetcher, mutationFetcher } from 'src/utils/axios';
 
+import { ChannelFilters } from 'src/sections/chat/chat-nav';
+
 interface LinksInfo {
   self: string;
   next: string;
@@ -16,13 +18,14 @@ export interface ConversationData {
 }
 
 interface UseGetConversationsParams {
-  inboxIds?: string[]; // promenjeno sa inboxId
+  inboxIds?: string[];
   filter: StatusFilters;
+  channelType: ChannelFilters;
   contactId?: string;
 }
 
 export const useGetConversations = (
-  { inboxIds, filter, contactId }: UseGetConversationsParams,
+  { inboxIds, filter, contactId, channelType }: UseGetConversationsParams,
   options?: { enabled?: boolean }
 ) => {
   const params: Record<string, any> = {
@@ -50,8 +53,14 @@ export const useGetConversations = (
       break;
   }
 
+  console.log(channelType);
+
+  if (channelType !== ChannelFilters.ALL) {
+    params.channelType = channelType;
+  }
+
   return useInfiniteQuery<ConversationData>({
-    queryKey: ['conversations', { inboxIds, filter, contactId }],
+    queryKey: ['conversations', { inboxIds, filter, contactId, channelType }],
     queryFn: async ({ pageParam }) => {
       const url =
         typeof pageParam === 'string' && pageParam !== '' ? pageParam : '/v2/conversation';

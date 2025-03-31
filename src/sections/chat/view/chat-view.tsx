@@ -21,7 +21,7 @@ import { ChatHeaderDetail } from '../chat-header-detail';
 import { ChatHeaderCompose } from '../chat-header-compose';
 import { useCollapseNav } from '../hooks/use-collapse-nav';
 
-import type { StatusFilters } from '../chat-nav';
+import type { StatusFilters, ChannelFilters } from '../chat-nav';
 
 // ----------------------------------------------------------------------
 
@@ -39,13 +39,14 @@ export function ChatView() {
   const selectedConversationId = searchParams.get('conversationId') || '';
   const selectedInboxes = searchParams.getAll('id');
   const selectedStatus = searchParams.get('status') as StatusFilters;
+  const selectedChannel = searchParams.get('channel') as ChannelFilters;
 
   const {
     data: conversationsData,
     isLoading: conversationsLoading,
     fetchNextPage: fetchNextConversationsPage,
   } = useGetConversations(
-    { inboxIds: selectedInboxes, filter: selectedStatus },
+    { inboxIds: selectedInboxes, filter: selectedStatus, channelType: selectedChannel },
     { enabled: !!selectedInboxes.length }
   );
 
@@ -153,6 +154,7 @@ export function ChatView() {
               collapseNav={conversationsNav}
               conversations={conversations}
               selectedFilter={selectedStatus}
+              selectedChannel={selectedChannel}
               fetchNextPage={fetchNextConversationsPage}
             />
           ),

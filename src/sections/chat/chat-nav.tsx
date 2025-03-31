@@ -54,6 +54,12 @@ export enum StatusFilters {
   CLOSED = 'closed',
 }
 
+export enum ChannelFilters {
+  ALL = 'all',
+  EMAIL = 'EMAIL',
+  WIDGET = 'WIDGET',
+}
+
 type Props = {
   loading: boolean;
   selectedConversationId: string;
@@ -64,6 +70,7 @@ type Props = {
     options?: FetchNextPageOptions
   ) => Promise<InfiniteQueryObserverResult<InfiniteData<ConversationData, unknown>, Error>>;
   selectedFilter?: StatusFilters;
+  selectedChannel?: ChannelFilters;
 };
 
 export function ChatNav({
@@ -73,6 +80,7 @@ export function ChatNav({
   selectedConversationId,
   conversations,
   selectedFilter,
+  selectedChannel,
   fetchNextPage,
 }: Props) {
   const theme = useTheme();
@@ -147,6 +155,14 @@ export function ChatNav({
     router.push(`${paths.navigation.inboxBase}?${params.toString()}`);
   };
 
+  const onChannelChange = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.delete('conversationId');
+    params.set('channel', value);
+    router.push(`${paths.navigation.inboxBase}?${params.toString()}`);
+  };
+
   const renderLoading = <ChatNavItemSkeleton />;
 
   const renderList = (
@@ -172,7 +188,6 @@ export function ChatNav({
     />
   );
 
-  const [selectedSocial, setSelectedSocial] = useState('all');
   const [isOpen, setOpen] = useState<null | HTMLElement>(null);
 
   const handleOpen = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -262,19 +277,21 @@ export function ChatNav({
       <Divider />
 
       <CustomTabs
-        value={selectedSocial}
-        onChange={(_e, value) => setSelectedSocial(value)}
+        value={selectedChannel}
+        onChange={(_e, value) => onChannelChange(value)}
         variant="fullWidth"
       >
-        <Tab key="all" value="all" label="All" />
-        <Tab key="facebook" value="facebook" icon={<Iconify width={24} icon="logos:facebook" />} />
-        <Tab key="gmail" value="gmail" icon={<Iconify width={24} icon="logos:google-gmail" />} />
+        <Tab key={ChannelFilters.ALL} value={ChannelFilters.ALL} label="All" />
         <Tab
-          key="whatsapp"
-          value="whatsapp"
-          icon={<Iconify width={24} icon="logos:whatsapp-icon" />}
+          key={ChannelFilters.WIDGET}
+          value={ChannelFilters.WIDGET}
+          icon={<Iconify width={24} icon="ic:round-widgets" />}
         />
-        <Tab key="telegram" value="telegram" icon={<Iconify width={24} icon="logos:telegram" />} />
+        <Tab
+          key={ChannelFilters.EMAIL}
+          value={ChannelFilters.EMAIL}
+          icon={<Iconify width={24} icon="logos:google-gmail" />}
+        />
       </CustomTabs>
       <Divider />
 
