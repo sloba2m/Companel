@@ -1,10 +1,10 @@
 import type { Tag } from 'src/types/tags';
 import type { SyntheticEvent } from 'react';
+import type { Conversation } from 'src/types/chat';
 import type { ContactPayload } from 'src/types/contacts';
-import { Conversation, ConversationStatus } from 'src/types/chat';
 import type { AutocompleteChangeReason, AutocompleteChangeDetails } from '@mui/material';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
@@ -39,6 +39,8 @@ import {
 } from 'src/actions/chat';
 
 import { Iconify } from 'src/components/iconify';
+
+import { ConversationStatus } from 'src/types/chat';
 
 import { CollapseButton } from './styles';
 import { StatusFilters } from './chat-nav';
@@ -83,8 +85,12 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
     filter: StatusFilters.ALL,
   });
 
-  const previousConversations = allContactConversations?.items.filter(
-    (conv) => conv.id !== conversation.id
+  const previousConversations = useMemo(
+    () =>
+      allContactConversations?.pages
+        .flatMap((page) => page.items)
+        .filter((conv) => conv.id !== conversation.id),
+    [allContactConversations, conversation.id]
   );
 
   const onSave = () => {

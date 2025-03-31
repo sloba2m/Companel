@@ -1,7 +1,7 @@
 import type { StatusFilters } from 'src/sections/chat/chat-nav';
 import type { Message, MessageType, Conversation } from 'src/types/chat';
 
-import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
+import { useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 
 import { fetcher, mutationFetcher } from 'src/utils/axios';
 
@@ -16,30 +16,17 @@ export interface ConversationData {
 }
 
 interface UseGetConversationsParams {
-  page?: number;
-  size?: number;
   inboxId?: string;
   filter: StatusFilters;
-  sort?: string;
   contactId?: string;
 }
 
 export const useGetConversations = (
-  {
-    page = 0,
-    size = 10,
-    inboxId,
-    filter,
-    contactId,
-    sort = 'lastContactActivity,desc',
-  }: UseGetConversationsParams,
+  { inboxId, filter, contactId }: UseGetConversationsParams,
   options?: { enabled?: boolean }
 ) => {
   const params: Record<string, any> = {
-    page,
-    size,
     inboxId,
-    sort,
     contactId,
   };
 
@@ -60,15 +47,16 @@ export const useGetConversations = (
       break;
   }
 
-  return useQuery<ConversationData>({
-    queryKey: ['conversations', { page, size, inboxId, filter, sort, contactId }],
-    queryFn: () =>
-      fetcher([
-        '/v2/conversation',
-        {
-          params,
-        },
-      ]),
+  return useInfiniteQuery<ConversationData>({
+    queryKey: ['conversations', { inboxId, filter, contactId }],
+    queryFn: async ({ pageParam }) => {
+      const url =
+        typeof pageParam === 'string' && pageParam !== '' ? pageParam : '/v2/conversation';
+
+      return fetcher([url, { params }]);
+    },
+    initialPageParam: '',
+    getNextPageParam: (lastPage) => lastPage.links?.next ?? undefined,
     enabled: options?.enabled !== false,
   });
 };

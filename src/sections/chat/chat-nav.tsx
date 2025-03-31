@@ -1,5 +1,10 @@
-import type { IChatParticipant } from 'src/types/chat';
 import type { ConversationData } from 'src/actions/chat';
+import type { Conversation, IChatParticipant } from 'src/types/chat';
+import type {
+  InfiniteData,
+  FetchNextPageOptions,
+  InfiniteQueryObserverResult,
+} from '@tanstack/react-query';
 
 import { useState, useEffect, useCallback } from 'react';
 
@@ -32,6 +37,7 @@ import { CustomTabs } from 'src/components/custom-tabs';
 
 import { ChatNavItem } from './chat-nav-item';
 import { ChatNavItemSkeleton } from './chat-skeleton';
+import { useChatNavScroll } from './hooks/use-chat-nav-scroll';
 import { ChatNavSearchResults } from './chat-nav-search-results';
 
 import type { UseNavCollapseReturn } from './hooks/use-collapse-nav';
@@ -53,7 +59,10 @@ type Props = {
   selectedConversationId: string;
   selectedInboxes: string[];
   collapseNav: UseNavCollapseReturn;
-  conversationData?: ConversationData;
+  conversations: Conversation[];
+  fetchNextPage: (
+    options?: FetchNextPageOptions
+  ) => Promise<InfiniteQueryObserverResult<InfiniteData<ConversationData, unknown>, Error>>;
   selectedFilter?: StatusFilters;
 };
 
@@ -62,8 +71,9 @@ export function ChatNav({
   selectedInboxes,
   collapseNav,
   selectedConversationId,
-  conversationData,
+  conversations,
   selectedFilter,
+  fetchNextPage,
 }: Props) {
   const theme = useTheme();
   const router = useRouter();
@@ -142,7 +152,7 @@ export function ChatNav({
   const renderList = (
     <nav>
       <Box component="ul">
-        {conversationData?.items.map((conversation) => (
+        {conversations.map((conversation) => (
           <ChatNavItem
             key={conversation.id}
             conversation={conversation}
@@ -172,6 +182,11 @@ export function ChatNav({
   const handleClose = useCallback(() => {
     setOpen(null);
   }, []);
+
+  const handleReachedTop = useCallback(() => {
+    fetchNextPage();
+  }, [fetchNextPage]);
+  const { conversationsEndRef } = useChatNavScroll(conversations, handleReachedTop);
 
   const renderContent = (
     <>
@@ -266,7 +281,7 @@ export function ChatNav({
       {loading ? (
         renderLoading
       ) : (
-        <Scrollbar sx={{ pb: 1 }}>
+        <Scrollbar sx={{ pb: 1 }} ref={conversationsEndRef}>
           {/* {searchContacts.query && !!conversations.allIds.length ? renderListResults : renderList} */}
           {renderList}
         </Scrollbar>

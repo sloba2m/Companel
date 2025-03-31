@@ -40,12 +40,21 @@ export function ChatView() {
   const selectedInboxes = searchParams.getAll('id');
   const selectedStatus = searchParams.get('status') as StatusFilters;
 
-  const { data: conversationsData, isLoading: conversationsLoading } = useGetConversations(
+  const {
+    data: conversationsData,
+    isLoading: conversationsLoading,
+    fetchNextPage: fetchNextConversationsPage,
+  } = useGetConversations(
     { inboxId: selectedInboxes[0] ? selectedInboxes[0] : '', filter: selectedStatus },
     { enabled: !!selectedInboxes.length }
   );
 
-  const conversation = conversationsData?.items.find((item) => item.id === selectedConversationId);
+  const conversations = useMemo(
+    () => conversationsData?.pages.flatMap((page) => page.items) ?? [],
+    [conversationsData]
+  );
+
+  const conversation = conversations.find((item) => item.id === selectedConversationId);
 
   const {
     data: messages,
@@ -142,8 +151,9 @@ export function ChatView() {
               selectedInboxes={selectedInboxes}
               selectedConversationId={selectedConversationId}
               collapseNav={conversationsNav}
-              conversationData={conversationsData}
+              conversations={conversations}
               selectedFilter={selectedStatus}
+              fetchNextPage={fetchNextConversationsPage}
             />
           ),
           main: (
