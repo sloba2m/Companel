@@ -1,6 +1,6 @@
 import type { WorkspaceInbox } from 'src/actions/account';
 
-import { useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
 import { useSearchParams } from 'src/routes/hooks';
 
@@ -8,7 +8,7 @@ import { useResponsive } from 'src/hooks/use-responsive';
 
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
-import { useGetMessages, useGetConversations } from 'src/actions/chat';
+import { useGetMessages, useReadMessage, useGetConversations } from 'src/actions/chat';
 
 import { EmptyContent } from 'src/components/empty-content';
 
@@ -53,17 +53,22 @@ export function ChatView() {
     fetchNextPage,
   } = useGetMessages(selectedConversationId);
 
+  const { mutate: readMessageMutation } = useReadMessage();
+
   const isTablet = useResponsive('between', 'sm', 'lg');
 
   const roomNav = useCollapseNav();
 
   const conversationsNav = useCollapseNav();
 
-  const reversedMessages =
-    messages?.pages
-      .flatMap((page) => page.items)
-      .slice()
-      .reverse() ?? [];
+  const reversedMessages = useMemo(
+    () =>
+      messages?.pages
+        .flatMap((page) => page.items)
+        .slice()
+        .reverse() ?? [],
+    [messages]
+  );
 
   const [composeFormState, setComposeFormState] = useState<ComposeFormState>({
     inbox: undefined,
@@ -86,6 +91,15 @@ export function ChatView() {
       subject: '',
     });
   };
+
+  useEffect(() => {
+    if (conversation && reversedMessages.length && conversation.unreadMessages > 0) {
+      readMessageMutation({
+        conversationId: conversation.id,
+        messageId: reversedMessages[reversedMessages.length - 1].id,
+      });
+    }
+  }, [conversation, readMessageMutation, reversedMessages]);
 
   return (
     <DashboardContent

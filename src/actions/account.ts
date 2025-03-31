@@ -33,5 +33,3 @@ export const useGetMe = () =>
     queryKey: ['me'],
     queryFn: () => fetcher('/me'),
   });
-
-export const useGetMeCached = () => useQuery<User>({ queryKey: ['me'] });
