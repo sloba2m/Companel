@@ -97,7 +97,7 @@ export interface Message {
   createdBy: string;
   read: boolean | null;
   user: User | null;
-  attachments: any[]; // replace any
+  attachments: any[];
 }
 
 export enum RevisionType {
@@ -120,4 +120,15 @@ export interface Event {
   performedByFullName: string;
   revisionType: RevisionType;
   revisionTimestamp: string;
+}
+
+export interface Attachment {
+  fileName: string;
+  id: string;
+  fileType: string | null;
+  contentType: string;
+  url: string;
+  contentLength: number | null;
+  coordinatesLat: number;
+  coordinatesLong: number;
 }

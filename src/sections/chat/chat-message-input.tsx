@@ -47,6 +47,8 @@ export function ChatMessageInput({
   const [messageInput, setMessageInput] = useState('');
   const [noteInput, setNoteInput] = useState('');
 
+  const [attachments, setAttachments] = useState<string[]>([]);
+
   const { mutate: sendMessage } = useSendMessage();
   const { mutate: generateTemplate } = useGenerateTemplate();
   const { mutate: createConversation } = useCreateConversation();
@@ -209,6 +211,7 @@ export function ChatMessageInput({
           sx={{ maxHeight: 720, borderTop: 'none' }}
           value={messageInput}
           onChange={(val) => setMessageInput(val)}
+          conversationId={conversationId}
         />
       )}
       {basicTabs.value === 'Note' && (
@@ -217,6 +220,7 @@ export function ChatMessageInput({
           sx={{ maxHeight: 720, borderTop: 'none' }}
           value={noteInput}
           onChange={(val) => setNoteInput(val)}
+          conversationId={conversationId}
         />
       )}
       <Stack direction="row" sx={{ justifyContent: 'space-between', p: 1 }}>

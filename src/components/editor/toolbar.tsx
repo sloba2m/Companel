@@ -17,7 +17,13 @@ import type { EditorToolbarProps } from './types';
  * https://remixicon.com
  */
 
-export function Toolbar({ editor, fullItem, fullScreen, onToggleFullScreen }: EditorToolbarProps) {
+export function Toolbar({
+  editor,
+  fullItem,
+  fullScreen,
+  onToggleFullScreen,
+  onUpload,
+}: EditorToolbarProps) {
   if (!editor) {
     return null;
   }
@@ -129,7 +135,7 @@ export function Toolbar({ editor, fullItem, fullScreen, onToggleFullScreen }: Ed
       {/* Link - Image */}
       <Stack direction="row" spacing={0.5}>
         <LinkBlock editor={editor} />
-        <ImageBlock editor={editor} />
+        {onUpload && <ImageBlock editor={editor} onUpload={onUpload} />}
       </Stack>
 
       {/* Undo - Redo */}

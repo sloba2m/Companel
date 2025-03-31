@@ -1,5 +1,5 @@
 import type { StatusFilters } from 'src/sections/chat/chat-nav';
-import type { Event, Message, MessageType, Conversation } from 'src/types/chat';
+import type { Event, Message, Attachment, MessageType, Conversation } from 'src/types/chat';
 
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 
@@ -144,7 +144,7 @@ export const useAssignUser = () => {
 interface SendMessageInput {
   conversationId: string;
   data: {
-    attachments: any[];
+    attachments: string[];
     content: string;
     messageType: MessageType;
     replyToMessageId?: string;
@@ -228,4 +228,29 @@ export const useGetEventHistory = (coversationId: string) =>
     queryKey: ['revision', { coversationId }],
     queryFn: () => fetcher(`/conversation/${coversationId}/revision`),
     enabled: coversationId !== '',
+  });
+
+interface AttachmentPayload {
+  conversationId: string;
+  file: File;
+}
+
+export const useUploadAttachment = () =>
+  useMutation({
+    mutationFn: (payload: AttachmentPayload) => {
+      const formData = new FormData();
+      formData.append('file', payload.file);
+
+      return mutationFetcher<Attachment>(
+        'post',
+        `/conversation/${payload.conversationId}/attachment`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Accept: 'application/json, text/plain, */*',
+          },
+        }
+      );
+    },
   });

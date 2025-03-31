@@ -1,19 +1,27 @@
+import type { Editor } from '@tiptap/react';
+
 import { useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Popover from '@mui/material/Popover';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+
+import { Iconify } from 'src/components/iconify';
+import { UploadBox } from 'src/components/upload-box';
 
 import { editorClasses } from '../classes';
 import { ToolbarItem } from './toolbar-item';
 
-import type { EditorToolbarProps } from '../types';
-
 // ----------------------------------------------------------------------
 
-export function ImageBlock({ editor }: Pick<EditorToolbarProps, 'editor'>) {
+interface Props {
+  editor: Editor | null;
+  onUpload: (file: File) => void;
+}
+
+export function ImageBlock({ editor, onUpload }: Props) {
+  const { t } = useTranslation();
   const [url, setUrl] = useState('');
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -58,22 +66,32 @@ export function ImageBlock({ editor }: Pick<EditorToolbarProps, 'editor'>) {
         slotProps={{ paper: { sx: { p: 2.5 } } }}
       >
         <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          URL
+          Upload
         </Typography>
 
         <Stack direction="row" alignItems="center" spacing={1}>
-          <TextField
-            size="small"
-            placeholder="Enter URL here..."
-            value={url}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setUrl(event.target.value);
+          <UploadBox
+            placeholder={
+              <Stack spacing={0.5} alignItems="center">
+                <Iconify icon="eva:cloud-upload-fill" width={40} />
+              </Stack>
+            }
+            sx={{ py: 1, flexGrow: 1, height: 'auto', minWidth: '200px' }}
+            maxSize={5 * 1024 * 1024}
+            accept={{
+              'image/svg+xml': ['.svg'],
+              'image/png': ['.png'],
+              'image/jpeg': ['.jpg', '.jpeg'],
+              'image/gif': ['.gif'],
             }}
-            sx={{ width: 240 }}
+            multiple={false}
+            onDrop={(acceptedFiles) => {
+              if (acceptedFiles.length > 0) {
+                const file = acceptedFiles[0];
+                onUpload(file);
+              }
+            }}
           />
-          <Button variant="contained" onClick={handleUpdateUrl}>
-            Apply
-          </Button>
         </Stack>
       </Popover>
     </>

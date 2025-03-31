@@ -11,6 +11,8 @@ import Portal from '@mui/material/Portal';
 import Backdrop from '@mui/material/Backdrop';
 import FormHelperText from '@mui/material/FormHelperText';
 
+import { useUploadAttachment } from 'src/actions/chat';
+
 import { Toolbar } from './toolbar';
 import { StyledRoot } from './styles';
 import { editorClasses } from './classes';
@@ -28,6 +30,7 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
       slotProps,
       helperText,
       resetValue,
+      conversationId,
       editable = true,
       fullItem = false,
       value: content = '',
@@ -41,6 +44,8 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
     const handleToggleFullScreen = useCallback(() => {
       setFullScreen((prev) => !prev);
     }, []);
+
+    const { mutate: uploadMutation } = useUploadAttachment();
 
     const editor = useEditor({
       content,
@@ -101,6 +106,18 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
       }
     }, [fullScreen]);
 
+    const handleUpload = (file: File) => {
+      if (!conversationId) return;
+      uploadMutation(
+        { file, conversationId },
+        {
+          onSuccess: (data) => {
+            editor?.chain().focus().setImage({ src: data.url }).run();
+          },
+        }
+      );
+    };
+
     return (
       <Portal disablePortal={!fullScreen}>
         {fullScreen && <Backdrop open sx={{ zIndex: (theme) => theme.zIndex.modal - 1 }} />}
@@ -128,6 +145,7 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
               editor={editor}
               fullItem={fullItem}
               fullScreen={fullScreen}
+              onUpload={handleUpload}
               onToggleFullScreen={handleToggleFullScreen}
             />
             <EditorContent

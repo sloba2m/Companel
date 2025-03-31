@@ -15,12 +15,14 @@ export type EditorProps = Partial<EditorOptions> & {
   slotProps?: {
     wrap: SxProps<Theme>;
   };
+  conversationId?: string;
 };
 
 export type EditorToolbarProps = {
   fullScreen: boolean;
   editor: Editor | null;
   onToggleFullScreen: () => void;
+  onUpload?: (file: File) => void;
   fullItem?: EditorProps['fullItem'];
 };
 
