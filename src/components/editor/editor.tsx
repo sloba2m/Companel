@@ -60,7 +60,9 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
           placeholder,
           emptyEditorClass: editorClasses.content.placeholder,
         }),
-        ImageExtension.configure({ HTMLAttributes: { class: editorClasses.content.image } }),
+        ImageExtension.configure({
+          HTMLAttributes: { class: editorClasses.content.image, style: 'width: auto' },
+        }),
         TextAlignExtension.configure({ types: ['heading', 'paragraph'] }),
         LinkExtension.configure({
           autolink: true,
@@ -114,7 +116,13 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
             disabled={!editable}
             fullScreen={fullScreen}
             className={editorClasses.root}
-            sx={sx}
+            sx={{
+              ...sx,
+              '.ProseMirror': {
+                maxHeight: 300,
+                overflowY: 'auto',
+              },
+            }}
           >
             <Toolbar
               editor={editor}

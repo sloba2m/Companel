@@ -1,3 +1,4 @@
+import type { User } from 'src/types/users';
 import type { Message } from 'src/types/chat';
 import type { Contact } from 'src/types/contacts';
 
@@ -12,8 +13,6 @@ import Typography from '@mui/material/Typography';
 
 import { fDateTime } from 'src/utils/format-time';
 
-import { useGetMeCached } from 'src/actions/account';
-
 import { Iconify } from 'src/components/iconify';
 
 import { useMessage } from './hooks/use-message';
@@ -24,11 +23,10 @@ type Props = {
   message: Message;
   contact?: Contact;
   onOpenLightbox: (value: string) => void;
+  user: User;
 };
 
-export function ChatMessageItem({ message, contact, onOpenLightbox }: Props) {
-  const user = useGetMeCached();
-
+export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Props) {
   const theme = useTheme();
 
   const { me, senderDetails, hasImage } = useMessage({

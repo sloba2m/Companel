@@ -62,8 +62,19 @@ export function ChatMessageInput({ lastMessageId, conversationId }: Props) {
   useEffect(() => {
     generateTemplate(conversationId, {
       onSuccess: (data: { content: string }) => {
-        // console.log(data.content);
-        setMessageInput(data.content);
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(data.content, 'text/html');
+
+        const images = doc.querySelectorAll('img');
+        images.forEach((img) => {
+          const parent = img.parentElement;
+          if (parent?.tagName === 'P' && parent.childNodes.length === 1) {
+            parent.replaceWith(img);
+          }
+        });
+
+        const cleanedHtml = doc.body.innerHTML;
+        setMessageInput(cleanedHtml);
       },
     });
   }, [conversationId, generateTemplate]);

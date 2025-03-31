@@ -6,6 +6,8 @@ import { useCallback } from 'react';
 import Stack from '@mui/material/Stack';
 import LinearProgress from '@mui/material/LinearProgress';
 
+import { useGetMeCached } from 'src/actions/account';
+
 import { Scrollbar } from 'src/components/scrollbar';
 
 import { ChatMessageItem } from './chat-message-item';
@@ -21,6 +23,8 @@ type Props = {
 };
 
 export function ChatMessageList({ messages = [], contact, loading, fetchNextPage }: Props) {
+  const { data: user, isLoading } = useGetMeCached();
+
   const handleReachedTop = useCallback(() => {
     fetchNextPage();
   }, [fetchNextPage]);
@@ -33,7 +37,7 @@ export function ChatMessageList({ messages = [], contact, loading, fetchNextPage
 
   // const lightbox = useLightBox(slides);
 
-  if (loading) {
+  if (loading || isLoading || !user) {
     return (
       <Stack sx={{ flex: '1 1 auto', position: 'relative' }}>
         <LinearProgress
@@ -63,6 +67,7 @@ export function ChatMessageList({ messages = [], contact, loading, fetchNextPage
         {messages.map((message, i) => (
           <ChatMessageItem
             key={message.id}
+            user={user}
             message={message}
             contact={contact}
             // onOpenLightbox={() => lightbox.onOpen(message.body)}
