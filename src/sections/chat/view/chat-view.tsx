@@ -1,4 +1,3 @@
-import type { IChatParticipant } from 'src/types/chat';
 import type { WorkspaceInbox } from 'src/actions/account';
 
 import { useState } from 'react';
@@ -9,11 +8,9 @@ import { useResponsive } from 'src/hooks/use-responsive';
 
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
-import { useGetMessages, useGetContactsOld, useGetConversations } from 'src/actions/chat';
+import { useGetMessages, useGetConversations } from 'src/actions/chat';
 
 import { EmptyContent } from 'src/components/empty-content';
-
-import { useMockedUser } from 'src/auth/hooks';
 
 import { Layout } from '../layout';
 import { ChatNav } from '../chat-nav';
@@ -37,17 +34,11 @@ export type ComposeFormState = {
 };
 
 export function ChatView() {
-  const { user } = useMockedUser();
-
-  const { contacts } = useGetContactsOld();
-
   const searchParams = useSearchParams();
 
   const selectedConversationId = searchParams.get('conversationId') || '';
   const selectedInboxes = searchParams.getAll('id');
   const selectedStatus = searchParams.get('status') as StatusFilters;
-
-  const [recipients, setRecipients] = useState<IChatParticipant[]>([]);
 
   const { data: conversationsData, isLoading: conversationsLoading } = useGetConversations(
     { inboxId: selectedInboxes[0] ? selectedInboxes[0] : '', filter: selectedStatus },
