@@ -1,7 +1,5 @@
 import type { WorkspaceInbox } from 'src/actions/account';
 
-import { useState } from 'react';
-
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import TextField from '@mui/material/TextField';
@@ -29,7 +27,6 @@ type Props = {
 };
 
 export function ChatHeaderCompose({ onOpenMobile, onChange, values }: Props) {
-  const [selectedInbox, setSelectedInbox] = useState<WorkspaceInbox>();
   const mdDown = useResponsive('down', 'md');
 
   const { data: workspaceData } = useGetWorkspaceData();
@@ -51,31 +48,21 @@ export function ChatHeaderCompose({ onOpenMobile, onChange, values }: Props) {
       )}
       <Box sx={{ display: 'flex', gap: 2, width: '100%', mt: 0.7 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 2 }}>
-          <Typography variant="subtitle2" sx={{ color: 'text.primary', my: 1.1 }}>
-            Inbox:
-          </Typography>
-          <Typography variant="subtitle2" sx={{ color: 'text.primary', my: 1.1 }}>
-            To:
-          </Typography>
-          <Typography variant="subtitle2" sx={{ color: 'text.primary', my: 1.1 }}>
-            Cc:
-          </Typography>
-          <Typography variant="subtitle2" sx={{ color: 'text.primary', my: 1.1 }}>
-            Name:
-          </Typography>
-          <Typography variant="subtitle2" sx={{ color: 'text.primary', my: 1.1 }}>
-            Subject:
-          </Typography>
+          {['Inbox:', 'To:', 'Cc:', 'Name:', 'Subject:'].map((label) => (
+            <Typography key={label} variant="subtitle2" sx={{ color: 'text.primary', my: 1.1 }}>
+              {label}
+            </Typography>
+          ))}
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 2 }}>
           <Autocomplete
             fullWidth
             options={workspaceData?.inboxes ?? []}
-            value={selectedInbox}
+            value={values.inbox}
             disableClearable
             getOptionLabel={(option) => option.name}
             isOptionEqualToValue={(option, value) => option.id === value.id}
-            onChange={(_e, val) => setSelectedInbox(val)}
+            onChange={(_, val) => onChange('inbox', val)}
             renderInput={(params) => (
               <TextField {...params} label="Inbox" margin="none" size="small" />
             )}
@@ -83,20 +70,30 @@ export function ChatHeaderCompose({ onOpenMobile, onChange, values }: Props) {
           <TextField
             placeholder="+ Recipients"
             size="small"
+            value={values.to}
+            onChange={(e) => onChange('to', e.target.value)}
             sx={{ minWidth: mdDown ? 240 : 400, flexGrow: { xs: 1, md: 'unset' } }}
           />
           <TextField
             placeholder="+ Recipients"
             size="small"
+            value={values.cc}
+            onChange={(e) => onChange('cc', e.target.value)}
             sx={{ minWidth: mdDown ? 240 : 400, flexGrow: { xs: 1, md: 'unset' } }}
           />
           <TextField
             placeholder="Name"
             size="small"
+            value={values.name}
+            onChange={(e) => onChange('name', e.target.value)}
             sx={{ minWidth: mdDown ? 240 : 400, flexGrow: { xs: 1, md: 'unset' } }}
           />
-
-          <TextField size="small" placeholder="Add Subject" />
+          <TextField
+            size="small"
+            placeholder="Add Subject"
+            value={values.subject}
+            onChange={(e) => onChange('subject', e.target.value)}
+          />
         </Box>
       </Box>
     </>

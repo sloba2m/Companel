@@ -28,7 +28,7 @@ import type { StatusFilters } from '../chat-nav';
 
 // ----------------------------------------------------------------------
 
-type ComposeFormState = {
+export type ComposeFormState = {
   inbox?: WorkspaceInbox;
   to: string;
   cc: string;
@@ -74,7 +74,7 @@ export function ChatView() {
       .slice()
       .reverse() ?? [];
 
-  const [formState, setFormState] = useState<ComposeFormState>({
+  const [composeFormState, setComposeFormState] = useState<ComposeFormState>({
     inbox: undefined,
     to: '',
     cc: '',
@@ -82,12 +82,18 @@ export function ChatView() {
     subject: '',
   });
 
-  const handleChange = (field: keyof ComposeFormState, value: any) => {
-    setFormState((prev) => ({ ...prev, [field]: value }));
+  const handleComposeChange = (field: keyof ComposeFormState, value: any) => {
+    setComposeFormState((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleOpenMobile = () => {
-    // mobile toggle logic
+  const resetComposeState = () => {
+    setComposeFormState({
+      inbox: undefined,
+      to: '',
+      cc: '',
+      name: '',
+      subject: '',
+    });
   };
 
   return (
@@ -119,7 +125,11 @@ export function ChatView() {
               loading={messagesLoading}
             />
           ) : (
-            <ChatHeaderCompose onOpenMobile={conversationsNav.onOpenMobile} />
+            <ChatHeaderCompose
+              onOpenMobile={conversationsNav.onOpenMobile}
+              onChange={handleComposeChange}
+              values={composeFormState}
+            />
           ),
           nav: (
             <ChatNav
@@ -150,6 +160,8 @@ export function ChatView() {
 
               <ChatMessageInput
                 key={selectedConversationId}
+                resetComposeState={resetComposeState}
+                composeFormState={composeFormState}
                 conversationId={selectedConversationId}
                 lastMessageId={
                   reversedMessages.length

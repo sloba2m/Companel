@@ -4,18 +4,24 @@ import { Tab, Tabs, Card, Stack, Button, Divider, IconButton } from '@mui/materi
 
 // import { today } from 'src/utils/format-time';
 
+import type { Message } from 'src/types/chat';
+
 import { useState, useEffect } from 'react';
 
+import { paths } from 'src/routes/paths';
+import { useRouter } from 'src/routes/hooks';
 import { useTabs } from 'src/routes/hooks/use-tabs';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import { useSendMessage, useGenerateTemplate } from 'src/actions/chat';
+import { useSendMessage, useGenerateTemplate, useCreateConversation } from 'src/actions/chat';
 
 import { Editor } from 'src/components/editor';
 import { Iconify } from 'src/components/iconify';
 
 import { MessageType } from 'src/types/chat';
+
+import type { ComposeFormState } from './view';
 
 // import { useMockedUser } from 'src/auth/hooks';
 
@@ -24,9 +30,17 @@ import { MessageType } from 'src/types/chat';
 type Props = {
   lastMessageId?: string;
   conversationId: string;
+  composeFormState: ComposeFormState;
+  resetComposeState: () => void;
 };
 
-export function ChatMessageInput({ lastMessageId, conversationId }: Props) {
+export function ChatMessageInput({
+  lastMessageId,
+  conversationId,
+  composeFormState,
+  resetComposeState,
+}: Props) {
+  const router = useRouter();
   const basicTabs = useTabs('Message');
   const isTablet = useResponsive('between', 'sm', 'md');
 
@@ -35,10 +49,33 @@ export function ChatMessageInput({ lastMessageId, conversationId }: Props) {
 
   const { mutate: sendMessage } = useSendMessage();
   const { mutate: generateTemplate } = useGenerateTemplate();
+  const { mutate: createConversation } = useCreateConversation();
 
   const isNote = basicTabs.value === 'Note';
 
   const handleSendmessage = () => {
+    const inboxId = composeFormState.inbox?.id;
+
+    if (!conversationId && inboxId) {
+      createConversation(
+        {
+          attachments: [],
+          content: messageInput,
+          email: composeFormState.to,
+          inboxId,
+          name: composeFormState.name,
+          subject: composeFormState.subject,
+        },
+        {
+          onSuccess: (data: Message) => {
+            router.push(
+              `${paths.navigation.inboxBase}?status=all&id=${inboxId}&conversationId=${data.conversationId}`
+            );
+            resetComposeState();
+          },
+        }
+      );
+    }
     sendMessage(
       {
         conversationId,

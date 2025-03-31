@@ -398,3 +398,24 @@ export const useGenerateTemplate = () =>
     mutationFn: (conversationId: string) =>
       mutationFetcher('post', `/conversation/${conversationId}:generate-template-response`, {}),
   });
+
+interface CreateConversationInput {
+  attachments: any[];
+  content: string;
+  email: string;
+  inboxId: string;
+  name: string;
+  subject: string;
+}
+
+export const useCreateConversation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: CreateConversationInput) =>
+      mutationFetcher('post', `/conversation`, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['messages'] });
+    },
+  });
+};
