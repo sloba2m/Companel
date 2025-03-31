@@ -1,12 +1,22 @@
 // import { useMemo, useState } from 'react';
 
-import { Tab, Tabs, Card, Stack, Button, Divider, IconButton } from '@mui/material';
+import {
+  Tab,
+  Box,
+  Tabs,
+  Card,
+  Stack,
+  Button,
+  Divider,
+  IconButton,
+  Typography,
+} from '@mui/material';
 
 // import { today } from 'src/utils/format-time';
 
-import type { Message } from 'src/types/chat';
+import type { Message, Attachment } from 'src/types/chat';
 
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -14,7 +24,12 @@ import { useTabs } from 'src/routes/hooks/use-tabs';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import { useSendMessage, useGenerateTemplate, useCreateConversation } from 'src/actions/chat';
+import {
+  useSendMessage,
+  useGenerateTemplate,
+  useUploadAttachment,
+  useCreateConversation,
+} from 'src/actions/chat';
 
 import { Editor } from 'src/components/editor';
 import { Iconify } from 'src/components/iconify';
@@ -47,21 +62,42 @@ export function ChatMessageInput({
   const [messageInput, setMessageInput] = useState('');
   const [noteInput, setNoteInput] = useState('');
 
-  const [attachments, setAttachments] = useState<string[]>([]);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
 
   const { mutate: sendMessage } = useSendMessage();
   const { mutate: generateTemplate } = useGenerateTemplate();
   const { mutate: createConversation } = useCreateConversation();
+  const { mutate: uploadMutation } = useUploadAttachment();
 
   const isNote = basicTabs.value === 'Note';
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const onAttachClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (file) {
+      uploadMutation(
+        { conversationId, file },
+        { onSuccess: (data) => setAttachments((prev) => [...prev, data]) }
+      );
+    }
+
+    event.target.value = '';
+  };
+
   const handleSendmessage = () => {
     const inboxId = composeFormState.inbox?.id;
+    const parsedAttachments = attachments.map((att) => att.id);
 
     if (!conversationId && inboxId) {
       createConversation(
         {
-          attachments: [],
+          attachments: parsedAttachments,
           content: messageInput,
           email: composeFormState.to,
           inboxId,
@@ -82,7 +118,7 @@ export function ChatMessageInput({
       {
         conversationId,
         data: {
-          attachments: [],
+          attachments: parsedAttachments,
           content: isNote ? noteInput : messageInput,
           messageType: isNote ? MessageType.NOTE : MessageType.OUTGOING,
           replyToMessageId: lastMessageId,
@@ -118,86 +154,6 @@ export function ChatMessageInput({
     });
   }, [conversationId, generateTemplate]);
 
-  // const router = useRouter();
-
-  // const { user } = useMockedUser();
-
-  // const fileRef = useRef<HTMLInputElement>(null);
-
-  // const [message] = useState('');
-
-  // const myContact = useMemo(
-  //   () => ({
-  //     id: `${user?.id}`,
-  //     role: `${user?.role}`,
-  //     email: `${user?.email}`,
-  //     address: `${user?.address}`,
-  //     name: `${user?.displayName}`,
-  //     lastActivity: today(),
-  //     avatarUrl: `${user?.photoURL}`,
-  //     phoneNumber: `${user?.phoneNumber}`,
-  //     status: 'online' as 'online' | 'offline' | 'alway' | 'busy',
-  //   }),
-  //   [user]
-  // );
-
-  // const messageData = useMemo(
-  //   () => ({
-  //     id: uuidv4(),
-  //     attachments: [],
-  //     body: message,
-  //     contentType: 'text',
-  //     createdAt: fSub({ minutes: 1 }),
-  //     senderId: myContact.id,
-  //   }),
-  //   [message, myContact.id]
-  // );
-
-  // const conversationData = useMemo(
-  //   () => ({
-  //     id: uuidv4(),
-  //     messages: [messageData],
-  //     participants: [...recipients, myContact],
-  //     type: recipients.length > 1 ? 'GROUP' : 'ONE_TO_ONE',
-  //     unreadCount: 0,
-  //   }),
-  //   [messageData, myContact, recipients]
-  // );
-
-  // const handleAttach = useCallback(() => {
-  //   if (fileRef.current) {
-  //     fileRef.current.click();
-  //   }
-  // }, []);
-
-  // const handleChangeMessage = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setMessage(event.target.value);
-  // }, []);
-
-  // const handleSendMessage = useCallback(
-  //   async (event: React.KeyboardEvent<HTMLInputElement>) => {
-  //     try {
-  //       if (event.key === 'Enter') {
-  //         if (message) {
-  //           if (selectedConversationId) {
-  //             await sendMessage(selectedConversationId, messageData);
-  //           } else {
-  //             const res = await createConversation(conversationData);
-
-  //             router.push(`${paths.navigation.inbox}?id=${res.conversation.id}`);
-
-  //             onAddRecipients([]);
-  //           }
-  //         }
-  //         setMessage('');
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   },
-  //   [conversationData, message, messageData, onAddRecipients, router, selectedConversationId]
-  // );
-
   return (
     <Card sx={{ flexShrink: 0, borderBottomLeftRadius: isTablet ? '8px' : 0 }}>
       <Tabs value={basicTabs.value} onChange={basicTabs.onChange} sx={{ mx: 2 }}>
@@ -224,9 +180,32 @@ export function ChatMessageInput({
         />
       )}
       <Stack direction="row" sx={{ justifyContent: 'space-between', p: 1 }}>
-        <IconButton size="small">
-          <Iconify icon="ic:baseline-attach-file" />
-        </IconButton>
+        <Box sx={{ display: 'flex', ml: 1, gap: 1 }}>
+          <IconButton size="small" onClick={onAttachClick}>
+            <Iconify icon="ic:baseline-attach-file" />
+          </IconButton>
+          <input
+            type="file"
+            accept="*/*"
+            style={{ display: 'none' }}
+            ref={fileInputRef}
+            onChange={handleFileChange}
+          />
+          {attachments.map((att) => (
+            <Box
+              sx={(theme) => ({
+                display: 'flex',
+                gap: 1,
+                alignItems: 'center',
+                px: 1,
+                backgroundColor: theme.vars.palette.background.default,
+                borderRadius: 1,
+              })}
+            >
+              <Typography variant="body2">{att.fileName}</Typography>
+            </Box>
+          ))}
+        </Box>
         <Button
           variant="contained"
           color="primary"
