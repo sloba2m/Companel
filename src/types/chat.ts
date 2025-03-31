@@ -99,3 +99,25 @@ export interface Message {
   user: User | null;
   attachments: any[]; // replace any
 }
+
+export enum RevisionType {
+  UPDATED = 'UPDATED',
+  DELETED = 'DELETED',
+  CREATED = 'CREATED',
+  ASSIGNED = 'ASSIGNED',
+  UNASSIGNED = 'UNASSIGNED',
+  REASSIGNED = 'REASSIGNED',
+  STATUS_UPDATE = 'STATUS_UPDATE',
+}
+
+export interface Event {
+  status: string;
+  assigneeId: string;
+  assigneeEmail: string;
+  assigneeFullName: string;
+  performedById: string;
+  performedByEmail: string;
+  performedByFullName: string;
+  revisionType: RevisionType;
+  revisionTimestamp: string;
+}

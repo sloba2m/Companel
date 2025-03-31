@@ -8,7 +8,12 @@ import { useResponsive } from 'src/hooks/use-responsive';
 
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
-import { useGetMessages, useReadMessage, useGetConversations } from 'src/actions/chat';
+import {
+  useGetMessages,
+  useReadMessage,
+  useGetEventHistory,
+  useGetConversations,
+} from 'src/actions/chat';
 
 import { EmptyContent } from 'src/components/empty-content';
 
@@ -62,6 +67,8 @@ export function ChatView() {
     isLoading: messagesLoading,
     fetchNextPage,
   } = useGetMessages(selectedConversationId);
+
+  const { data: eventHistoryData } = useGetEventHistory(selectedConversationId);
 
   const { mutate: readMessageMutation } = useReadMessage();
 
@@ -162,8 +169,10 @@ export function ChatView() {
             <>
               {selectedConversationId ? (
                 <ChatMessageList
+                  key={`${selectedConversationId}MessageList`}
                   fetchNextPage={fetchNextPage}
                   messages={reversedMessages}
+                  events={eventHistoryData ?? []}
                   contact={conversation?.contact}
                   loading={messagesLoading}
                 />

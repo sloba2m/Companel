@@ -1,7 +1,7 @@
 import type { StatusFilters } from 'src/sections/chat/chat-nav';
-import type { Message, MessageType, Conversation } from 'src/types/chat';
+import type { Event, Message, MessageType, Conversation } from 'src/types/chat';
 
-import { useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 
 import { fetcher, mutationFetcher } from 'src/utils/axios';
 
@@ -52,8 +52,6 @@ export const useGetConversations = (
       console.warn(`Unknown filter type: ${filter}`);
       break;
   }
-
-  console.log(channelType);
 
   if (channelType !== ChannelFilters.ALL) {
     params.channelType = channelType;
@@ -138,6 +136,7 @@ export const useAssignUser = () => {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['conversations'] });
+      queryClient.invalidateQueries({ queryKey: ['revision'] });
     },
   });
 };
@@ -219,6 +218,14 @@ export const useResolveConversation = () => {
       mutationFetcher('post', `/conversation/${conversationId}:resolve`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['conversations'] });
+      queryClient.invalidateQueries({ queryKey: ['revision'] });
     },
   });
 };
+
+export const useGetEventHistory = (coversationId: string) =>
+  useQuery<Event[]>({
+    queryKey: ['revision', { coversationId }],
+    queryFn: () => fetcher(`/conversation/${coversationId}/revision`),
+    enabled: coversationId !== '',
+  });
