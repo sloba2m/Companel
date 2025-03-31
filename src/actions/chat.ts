@@ -10,7 +10,7 @@ import type {
 
 import { mutate } from 'swr';
 import { useMemo } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 
 import { keyBy } from 'src/utils/helper';
 import axios, { fetcher, endpoints, mutationFetcher } from 'src/utils/axios';
@@ -308,9 +308,17 @@ interface MessagesData {
 }
 
 export const useGetMessages = (conversationId: string) =>
-  useQuery<MessagesData>({
-    queryKey: ['messages', { conversaationId: conversationId }],
-    queryFn: () => fetcher(`/v2/conversation/${conversationId}/message`),
+  useInfiniteQuery<MessagesData>({
+    queryKey: ['messages', conversationId],
+    queryFn: async ({ pageParam }) => {
+      const url =
+        typeof pageParam === 'string' && pageParam !== ''
+          ? pageParam
+          : `/v2/conversation/${conversationId}/message`;
+      return fetcher(url);
+    },
+    initialPageParam: '',
+    getNextPageParam: (lastPage) => lastPage.links?.next ?? undefined,
     enabled: conversationId !== '',
   });
 

@@ -47,7 +47,11 @@ export function ChatView() {
 
   const conversation = conversationsData?.items.find((item) => item.id === selectedConversationId);
 
-  const { data: messages, isLoading: messagesLoading } = useGetMessages(selectedConversationId);
+  const {
+    data: messages,
+    isLoading: messagesLoading,
+    fetchNextPage,
+  } = useGetMessages(selectedConversationId);
 
   const isTablet = useResponsive('between', 'sm', 'lg');
 
@@ -59,7 +63,11 @@ export function ChatView() {
     setRecipients(selected);
   }, []);
 
-  const reversedMessages = messages?.items?.slice().reverse() ?? [];
+  const reversedMessages =
+    messages?.pages
+      .flatMap((page) => page.items)
+      .slice()
+      .reverse() ?? [];
 
   return (
     <DashboardContent
@@ -110,6 +118,7 @@ export function ChatView() {
             <>
               {selectedConversationId ? (
                 <ChatMessageList
+                  fetchNextPage={fetchNextPage}
                   messages={reversedMessages}
                   contact={conversation?.contact}
                   loading={messagesLoading}

@@ -1,6 +1,8 @@
 import type { Message } from 'src/types/chat';
 import type { Contact } from 'src/types/contacts';
 
+import { useCallback } from 'react';
+
 import Stack from '@mui/material/Stack';
 import LinearProgress from '@mui/material/LinearProgress';
 
@@ -15,10 +17,15 @@ type Props = {
   loading: boolean;
   messages: Message[];
   contact?: Contact;
+  fetchNextPage: () => void;
 };
 
-export function ChatMessageList({ messages = [], contact, loading }: Props) {
-  const { messagesEndRef } = useMessagesScroll(messages);
+export function ChatMessageList({ messages = [], contact, loading, fetchNextPage }: Props) {
+  const handleReachedTop = useCallback(() => {
+    fetchNextPage();
+  }, [fetchNextPage]);
+
+  const { messagesEndRef } = useMessagesScroll(messages, handleReachedTop);
 
   // const slides = messages
   //   .filter((message) => message.contentType === 'image')
