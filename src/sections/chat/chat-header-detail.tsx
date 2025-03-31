@@ -21,12 +21,17 @@ import {
   InputAdornment,
 } from '@mui/material';
 
+import { paths } from 'src/routes/paths';
+import { useRouter } from 'src/routes/hooks';
+
+import { useBoolean } from 'src/hooks/use-boolean';
 import { useResponsive } from 'src/hooks/use-responsive';
 
 import { useGetUsers } from 'src/actions/users';
-import { useAssignUser } from 'src/actions/chat';
+import { useAssignUser, useResolveConversation } from 'src/actions/chat';
 
 import { Iconify } from 'src/components/iconify';
+import { YesNoDialog } from 'src/components/Dialog/YesNoDialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
 import { ChatHeaderSkeleton } from './chat-skeleton';
@@ -44,13 +49,17 @@ type Props = {
 
 export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseMenuNav }: Props) {
   const popover = usePopover();
+  const router = useRouter();
 
   const lgUp = useResponsive('up', 'lg');
   const smUp = useResponsive('up', 'sm');
   const mdDown = useResponsive('down', 'md');
 
+  const { value: yesNoOpen, onToggle: onYesNoToggle } = useBoolean(false);
+
   const { data: users } = useGetUsers();
   const { mutate: assignUserMutation } = useAssignUser();
+  const { mutate: resolveMutation } = useResolveConversation();
 
   const { collapseDesktop, onCollapseDesktop, onOpenMobile } = collapseNav;
 
@@ -94,6 +103,15 @@ export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseM
   const assignUser = (user: User) => {
     setOpen(true);
     assignUserMutation({ conversationId: conversation?.id, action: 'assign', userId: user.id });
+  };
+
+  const handleResolveConfirm = () => {
+    if (conversation?.id)
+      resolveMutation(conversation?.id, {
+        onSuccess: () => {
+          router.push(`${paths.navigation.inbox}&id=${conversation.inboxId}`);
+        },
+      });
   };
 
   return (
@@ -166,7 +184,7 @@ export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseM
           }}
         />
 
-        <Button variant="soft" color="primary" size="medium">
+        <Button variant="soft" color="primary" size="medium" onClick={onYesNoToggle}>
           Resolve
         </Button>
 
@@ -228,6 +246,8 @@ export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseM
           User is assigned
         </Alert>
       </Snackbar>
+
+      <YesNoDialog onClose={onYesNoToggle} open={yesNoOpen} onYes={handleResolveConfirm} />
     </>
   );
 }

@@ -198,3 +198,15 @@ export const useReadMessage = () => {
     },
   });
 };
+
+export const useResolveConversation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (conversationId: string) =>
+      mutationFetcher('post', `/conversation/${conversationId}:resolve`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['conversations'] });
+    },
+  });
+};
