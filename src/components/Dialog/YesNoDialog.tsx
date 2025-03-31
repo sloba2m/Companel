@@ -15,7 +15,18 @@ export const YesNoDialog: FC<DialogProps> = ({ onClose, onYes, open }) => {
   const { t } = useTranslation();
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      slotProps={{
+        backdrop: {
+          sx: {
+            backdropFilter: 'blur(5px)',
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+          },
+        },
+      }}
+    >
       <DialogTitle sx={{ textAlign: 'center' }}>{t('common.areYouSure')}</DialogTitle>
 
       <DialogActions>

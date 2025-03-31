@@ -56,12 +56,18 @@ export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseM
   const mdDown = useResponsive('down', 'md');
 
   const { value: yesNoOpen, onToggle: onYesNoToggle } = useBoolean(false);
+  const [onYesCallback, setOnYesCallback] = useState<() => void>(() => () => {});
 
   const { data: users } = useGetUsers();
   const { mutate: assignUserMutation } = useAssignUser();
   const { mutate: resolveMutation } = useResolveConversation();
 
   const { collapseDesktop, onCollapseDesktop, onOpenMobile } = collapseNav;
+
+  const openYesNoDialog = (callback: () => void) => {
+    setOnYesCallback(() => callback);
+    onYesNoToggle();
+  };
 
   const handleToggleNav = useCallback(() => {
     if (lgUp) {
@@ -101,8 +107,38 @@ export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseM
   );
 
   const assignUser = (user: User) => {
-    setOpen(true);
-    assignUserMutation({ conversationId: conversation?.id, action: 'assign', userId: user.id });
+    if (conversation.assignee) {
+      assignUserMutation(
+        {
+          conversationId: conversation?.id,
+          action: 'unassign',
+          userId: conversation.assignee?.id,
+        },
+        {
+          onSuccess: () =>
+            assignUserMutation({
+              conversationId: conversation?.id,
+              action: 'assign',
+              userId: user.id,
+            }),
+        }
+      );
+    } else {
+      assignUserMutation({
+        conversationId: conversation?.id,
+        action: 'assign',
+        userId: user.id,
+      });
+    }
+  };
+
+  const unassignUser = () => {
+    if (!conversation.assignee) return;
+    assignUserMutation({
+      conversationId: conversation?.id,
+      action: 'unassign',
+      userId: conversation.assignee?.id,
+    });
   };
 
   const handleResolveConfirm = () => {
@@ -154,22 +190,18 @@ export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseM
           sx={{ minWidth: '200px' }}
           options={users ?? []}
           size="small"
-          disableCloseOnSelect
           value={conversation.assignee}
           getOptionLabel={(option) => option.fullName}
           isOptionEqualToValue={(option, value) => option.id === value.id}
           renderInput={(params) => <TextField {...params} label="Assign" margin="none" />}
-          // renderOption={(props, option) => (
-          //   <li {...props} key={option.title}>
-          //     {option.title}
-          //   </li>
-          // )}
           onChange={(_e, _v, reason, details) => {
             if (!details?.option) return;
-            if (reason === 'selectOption') assignUser(details.option);
+            if (reason === 'selectOption') openYesNoDialog(() => assignUser(details.option));
+          }}
+          onInputChange={(_e, inputValue, reason) => {
+            if (reason === 'clear') openYesNoDialog(() => unassignUser());
           }}
           renderOption={(props, option, { selected }) => {
-            console.log(selected);
             // eslint-disable-next-line react/prop-types
             const { key, ...optionProps } = props;
 
@@ -184,7 +216,12 @@ export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseM
           }}
         />
 
-        <Button variant="soft" color="primary" size="medium" onClick={onYesNoToggle}>
+        <Button
+          variant="soft"
+          color="primary"
+          size="medium"
+          onClick={() => openYesNoDialog(() => handleResolveConfirm())}
+        >
           Resolve
         </Button>
 
@@ -247,7 +284,14 @@ export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseM
         </Alert>
       </Snackbar>
 
-      <YesNoDialog onClose={onYesNoToggle} open={yesNoOpen} onYes={handleResolveConfirm} />
+      <YesNoDialog
+        onClose={onYesNoToggle}
+        open={yesNoOpen}
+        onYes={() => {
+          onYesCallback();
+          onYesNoToggle();
+        }}
+      />
     </>
   );
 }
