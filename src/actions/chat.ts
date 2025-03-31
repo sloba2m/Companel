@@ -16,19 +16,22 @@ export interface ConversationData {
 }
 
 interface UseGetConversationsParams {
-  inboxId?: string;
+  inboxIds?: string[]; // promenjeno sa inboxId
   filter: StatusFilters;
   contactId?: string;
 }
 
 export const useGetConversations = (
-  { inboxId, filter, contactId }: UseGetConversationsParams,
+  { inboxIds, filter, contactId }: UseGetConversationsParams,
   options?: { enabled?: boolean }
 ) => {
   const params: Record<string, any> = {
-    inboxId,
     contactId,
   };
+
+  if (inboxIds?.length) {
+    params.inboxIds = inboxIds;
+  }
 
   switch (filter) {
     case 'unhandled':
@@ -48,7 +51,7 @@ export const useGetConversations = (
   }
 
   return useInfiniteQuery<ConversationData>({
-    queryKey: ['conversations', { inboxId, filter, contactId }],
+    queryKey: ['conversations', { inboxIds, filter, contactId }],
     queryFn: async ({ pageParam }) => {
       const url =
         typeof pageParam === 'string' && pageParam !== '' ? pageParam : '/v2/conversation';

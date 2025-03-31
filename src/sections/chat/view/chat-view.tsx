@@ -45,7 +45,7 @@ export function ChatView() {
     isLoading: conversationsLoading,
     fetchNextPage: fetchNextConversationsPage,
   } = useGetConversations(
-    { inboxId: selectedInboxes[0] ? selectedInboxes[0] : '', filter: selectedStatus },
+    { inboxIds: selectedInboxes, filter: selectedStatus },
     { enabled: !!selectedInboxes.length }
   );
 

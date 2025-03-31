@@ -1,5 +1,6 @@
 import type { Method, AxiosRequestConfig } from 'axios';
 
+import qs from 'qs';
 import axios from 'axios';
 
 import { CONFIG } from 'src/config-global';
@@ -26,7 +27,6 @@ export const fetcher = async (args: string | [string, AxiosRequestConfig]) => {
     const keycloak = getKeycloak();
 
     await keycloak.updateToken(30);
-
     const { token } = keycloak;
 
     const res = await axiosInstance.get(url, {
@@ -36,6 +36,8 @@ export const fetcher = async (args: string | [string, AxiosRequestConfig]) => {
         ...config?.headers,
         Authorization: `Bearer ${token}`,
       },
+      params: config?.params,
+      paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
     });
 
     return res.data;
