@@ -101,6 +101,38 @@ export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Prop
         ) : (
           parse(content)
         )}
+        {message.attachments.length > 0 && (
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            {message.attachments.map((att) => (
+              <a
+                key={att.fileName}
+                href={att.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'none' }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    gap: 1,
+                    alignItems: 'center',
+                    px: 1,
+                    backgroundColor: theme.vars.palette.background.default,
+                    borderRadius: 1,
+                    color: theme.vars.palette.text.primary,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Iconify
+                    icon="ic:baseline-insert-drive-file"
+                    color={theme.vars.palette.text.primary}
+                  />
+                  <Typography variant="body2">{att.fileName}</Typography>
+                </Box>
+              </a>
+            ))}
+          </Box>
+        )}
       </Stack>
     </Badge>
   );

@@ -54,7 +54,7 @@ export function EmptyContent({
         component="img"
         alt="empty content"
         src={imgUrl ?? `${CONFIG.site.basePath}/assets/icons/empty/ic-content.svg`}
-        sx={{ width: 1, maxWidth: 160, ...slotProps?.img }}
+        sx={{ width: 1, maxWidth: 100, ...slotProps?.img }}
       />
 
       {title && (
