@@ -109,47 +109,33 @@ export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseM
     </Stack>
   );
 
+  const handleAssignUserMutation = (
+    conversationId: string,
+    action: 'assign' | 'unassign',
+    userId: string,
+    onSuccess?: () => void
+  ) => {
+    assignUserMutation({ conversationId, action, userId }, { onSuccess });
+  };
+
   const assignUser = (user: User) => {
-    if (conversation.assignee) {
-      assignUserMutation(
-        {
-          conversationId: conversation?.id,
-          action: 'unassign',
-          userId: conversation.assignee?.id,
-        },
-        {
-          onSuccess: () =>
-            assignUserMutation(
-              {
-                conversationId: conversation?.id,
-                action: 'assign',
-                userId: user.id,
-              },
-              { onSuccess: () => setSnackbar({ message: 'User is assigned', open: true }) }
-            ),
-        }
+    if (!conversation?.id) return;
+
+    const assign = () =>
+      handleAssignUserMutation(conversation.id, 'assign', user.id, () =>
+        setSnackbar({ message: 'User is assigned', open: true })
       );
-    } else {
-      assignUserMutation(
-        {
-          conversationId: conversation?.id,
-          action: 'assign',
-          userId: user.id,
-        },
-        { onSuccess: () => setSnackbar({ message: 'User is assigned', open: true }) }
-      );
-    }
+
+    if (conversation.assignee)
+      handleAssignUserMutation(conversation.id, 'unassign', conversation.assignee.id, assign);
+    else assign();
   };
 
   const unassignUser = () => {
-    if (!conversation.assignee) return;
-    assignUserMutation(
-      {
-        conversationId: conversation?.id,
-        action: 'unassign',
-        userId: conversation.assignee?.id,
-      },
-      { onSuccess: () => setSnackbar({ message: 'User is unassigned', open: true }) }
+    if (!conversation?.id || !conversation.assignee) return;
+
+    handleAssignUserMutation(conversation.id, 'unassign', conversation.assignee.id, () =>
+      setSnackbar({ message: 'User is unassigned', open: true })
     );
   };
 
