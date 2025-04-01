@@ -19,7 +19,6 @@ import type { HeaderSectionProps } from './header-section';
 import type { AccountDrawerProps } from '../components/account-drawer';
 import type { ContactsPopoverProps } from '../components/contacts-popover';
 import type { WorkspacesPopoverProps } from '../components/workspaces-popover';
-import type { NotificationsDrawerProps } from '../components/notifications-drawer';
 
 // ----------------------------------------------------------------------
 
@@ -58,7 +57,6 @@ export type HeaderBaseProps = HeaderSectionProps & {
     langs?: LanguagePopoverProps['data'];
     contacts?: ContactsPopoverProps['data'];
     workspaces?: WorkspacesPopoverProps['data'];
-    notifications?: NotificationsDrawerProps['data'];
   };
   slots?: {
     navMobile?: {
@@ -99,7 +97,6 @@ export function HeaderBase({
     workspaces = true,
     menuButton = true,
     localization = false,
-    notifications = false,
   } = {},
   ...other
 }: HeaderBaseProps) {
@@ -159,10 +156,7 @@ export function HeaderBase({
               {/* -- Language popover -- */}
               {localization && <LanguagePopover data-slot="localization" data={data?.langs} />}
 
-              {/* -- Notifications popover -- */}
-              {notifications && (
-                <NotificationsDrawer data-slot="notifications" data={data?.notifications} />
-              )}
+              <NotificationsDrawer data-slot="notifications" />
 
               {/* -- Settings button -- */}
               {settings && <SettingsButton data-slot="settings" />}

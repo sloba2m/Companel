@@ -3,7 +3,6 @@ import type { IconButtonProps } from '@mui/material/IconButton';
 import { m } from 'framer-motion';
 import { useState, useCallback } from 'react';
 
-import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Badge from '@mui/material/Badge';
@@ -11,21 +10,18 @@ import { useTheme } from '@mui/material';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import SvgIcon from '@mui/material/SvgIcon';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { Label } from 'src/components/label';
+import { useGetNotifications } from 'src/actions/notifications';
+
 import { Iconify } from 'src/components/iconify';
 import { varHover } from 'src/components/animate';
 import { Scrollbar } from 'src/components/scrollbar';
-import { CustomTabs } from 'src/components/custom-tabs';
 
 import { NotificationItem } from './notification-item';
-
-import type { NotificationItemProps } from './notification-item';
 
 // ----------------------------------------------------------------------
 
@@ -37,26 +33,22 @@ const TABS = [
 
 // ----------------------------------------------------------------------
 
-export type NotificationsDrawerProps = IconButtonProps & {
-  data?: NotificationItemProps[];
-};
-
-export function NotificationsDrawer({ data = [], sx, ...other }: NotificationsDrawerProps) {
+export function NotificationsDrawer({ sx, ...other }: IconButtonProps) {
   const drawer = useBoolean();
   const theme = useTheme();
 
   const [currentTab, setCurrentTab] = useState('all');
 
+  const { data: notifications } = useGetNotifications();
+
   const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue);
   }, []);
 
-  const [notifications, setNotifications] = useState(data);
-
-  const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
+  const totalUnRead = (notifications ?? []).filter((item) => item.isRead === false).length;
 
   const handleMarkAllAsRead = () => {
-    setNotifications(notifications.map((notification) => ({ ...notification, isUnRead: false })));
+    // setNotifications(notifications.map((notification) => ({ ...notification, isUnRead: false })));
   };
 
   const renderHead = (
@@ -65,13 +57,13 @@ export function NotificationsDrawer({ data = [], sx, ...other }: NotificationsDr
         Notifications
       </Typography>
 
-      {!!totalUnRead && (
+      {/* {!!totalUnRead && (
         <Tooltip title="Mark all as read">
           <IconButton color="primary" onClick={handleMarkAllAsRead}>
             <Iconify icon="eva:done-all-fill" />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
 
       <IconButton onClick={drawer.onFalse} sx={{ display: { xs: 'inline-flex', sm: 'none' } }}>
         <Iconify icon="mingcute:close-line" />
@@ -81,31 +73,6 @@ export function NotificationsDrawer({ data = [], sx, ...other }: NotificationsDr
         <Iconify icon="solar:settings-bold-duotone" />
       </IconButton>
     </Stack>
-  );
-
-  const renderTabs = (
-    <CustomTabs variant="fullWidth" value={currentTab} onChange={handleChangeTab}>
-      {TABS.map((tab) => (
-        <Tab
-          key={tab.value}
-          iconPosition="end"
-          value={tab.value}
-          label={tab.label}
-          icon={
-            <Label
-              variant={((tab.value === 'all' || tab.value === currentTab) && 'filled') || 'soft'}
-              color={
-                (tab.value === 'unread' && 'info') ||
-                (tab.value === 'archived' && 'success') ||
-                'default'
-              }
-            >
-              {tab.count}
-            </Label>
-          }
-        />
-      ))}
-    </CustomTabs>
   );
 
   const renderList = (
@@ -155,8 +122,6 @@ export function NotificationsDrawer({ data = [], sx, ...other }: NotificationsDr
         PaperProps={{ sx: { width: 1, maxWidth: 420 } }}
       >
         {renderHead}
-
-        {renderTabs}
 
         {renderList}
 

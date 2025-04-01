@@ -242,8 +242,9 @@
     "viewMore": "View more",
     "none": "No notifications",
     "types": {
-      "conversationAssigned": "<strong>{name}</strong> assigned you the conversation {subject}",
-      "messageInConversation": "You've received a new message from <strong>{name}</strong>"
+      "conversationAssigned": "<strong>{{name}}</strong> assigned you the conversation {{subject}}",
+      "messageInConversation": "You've received a new message from <strong>{{name}}</strong>",
+      "conversationUnAssigned": "<strong>{{name}}</strong> removed you as the assignee for conversation {{subject}}"
     }
   }
 }
