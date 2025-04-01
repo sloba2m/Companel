@@ -78,14 +78,17 @@ export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseM
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lgUp]);
 
-  const [open, setOpen] = useState(false);
+  const [snackBar, setSnackbar] = useState({
+    open: false,
+    message: '',
+  });
 
-  const handleClose = (event: React.SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
+  const handleClose = (_event: React.SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
     if (reason === 'clickaway') {
       return;
     }
 
-    setOpen(false);
+    setSnackbar({ message: '', open: false });
   };
 
   if (loading || !conversation) {
@@ -116,29 +119,38 @@ export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseM
         },
         {
           onSuccess: () =>
-            assignUserMutation({
-              conversationId: conversation?.id,
-              action: 'assign',
-              userId: user.id,
-            }),
+            assignUserMutation(
+              {
+                conversationId: conversation?.id,
+                action: 'assign',
+                userId: user.id,
+              },
+              { onSuccess: () => setSnackbar({ message: 'User is assigned', open: true }) }
+            ),
         }
       );
     } else {
-      assignUserMutation({
-        conversationId: conversation?.id,
-        action: 'assign',
-        userId: user.id,
-      });
+      assignUserMutation(
+        {
+          conversationId: conversation?.id,
+          action: 'assign',
+          userId: user.id,
+        },
+        { onSuccess: () => setSnackbar({ message: 'User is assigned', open: true }) }
+      );
     }
   };
 
   const unassignUser = () => {
     if (!conversation.assignee) return;
-    assignUserMutation({
-      conversationId: conversation?.id,
-      action: 'unassign',
-      userId: conversation.assignee?.id,
-    });
+    assignUserMutation(
+      {
+        conversationId: conversation?.id,
+        action: 'unassign',
+        userId: conversation.assignee?.id,
+      },
+      { onSuccess: () => setSnackbar({ message: 'User is unassigned', open: true }) }
+    );
   };
 
   const handleResolveConfirm = () => {
@@ -278,9 +290,9 @@ export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseM
           </MenuItem>
         </MenuList>
       </CustomPopover>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      <Snackbar open={snackBar.open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" variant="filled" sx={{ width: '100%' }}>
-          User is assigned
+          {snackBar.message}
         </Alert>
       </Snackbar>
 
