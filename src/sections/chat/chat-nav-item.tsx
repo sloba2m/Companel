@@ -18,8 +18,6 @@ import { fDate } from 'src/utils/format-time';
 
 import { Iconify } from 'src/components/iconify';
 
-import { useMockedUser } from 'src/auth/hooks';
-
 import { AssignedStatus, ConversationStatus } from 'src/types/chat';
 
 // ----------------------------------------------------------------------
@@ -31,8 +29,6 @@ type Props = {
 };
 
 export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
-  const { user } = useMockedUser();
-
   const mdUp = useResponsive('up', 'md');
 
   const router = useRouter();

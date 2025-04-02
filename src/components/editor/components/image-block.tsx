@@ -1,7 +1,6 @@
 import type { Editor } from '@tiptap/react';
 
-import { useState, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 
 import Stack from '@mui/material/Stack';
 import Popover from '@mui/material/Popover';
@@ -21,8 +20,7 @@ interface Props {
 }
 
 export function ImageBlock({ editor, onUpload }: Props) {
-  const { t } = useTranslation();
-  const [url, setUrl] = useState('');
+  // const [url, setUrl] = useState('');
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -34,13 +32,13 @@ export function ImageBlock({ editor, onUpload }: Props) {
     setAnchorEl(null);
   };
 
-  const handleUpdateUrl = useCallback(() => {
-    handleClosePopover();
+  // const handleUpdateUrl = useCallback(() => {
+  //   handleClosePopover();
 
-    if (anchorEl) {
-      editor?.chain().focus().setImage({ src: url }).run();
-    }
-  }, [anchorEl, editor, url]);
+  //   if (anchorEl) {
+  //     editor?.chain().focus().setImage({ src: url }).run();
+  //   }
+  // }, [anchorEl, editor, url]);
 
   if (!editor) {
     return null;

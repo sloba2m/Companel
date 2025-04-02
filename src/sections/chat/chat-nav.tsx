@@ -1,5 +1,5 @@
+import type { Conversation } from 'src/types/chat';
 import type { ConversationData } from 'src/actions/chat';
-import type { Conversation, IChatParticipant } from 'src/types/chat';
 import type {
   InfiniteData,
   FetchNextPageOptions,
@@ -39,7 +39,6 @@ import { CustomTabs } from 'src/components/custom-tabs';
 import { ChatNavItem } from './chat-nav-item';
 import { ChatNavItemSkeleton } from './chat-skeleton';
 import { useChatNavScroll } from './hooks/use-chat-nav-scroll';
-import { ChatNavSearchResults } from './chat-nav-search-results';
 
 import type { UseNavCollapseReturn } from './hooks/use-collapse-nav';
 
@@ -94,44 +93,11 @@ export function ChatNav({
 
   const { data: workspaceData, isLoading } = useGetWorkspaceData();
 
-  const [searchContacts, setSearchContacts] = useState<{
-    query: string;
-    results: IChatParticipant[];
-  }>({ query: '', results: [] });
-
   useEffect(() => {
     if (!mdUp) {
       onCloseDesktop();
     }
   }, [onCloseDesktop, mdUp]);
-
-  // const handleSearchContacts = useCallback(
-  //   (inputValue: string) => {
-  //     setSearchContacts((prevState) => ({ ...prevState, query: inputValue }));
-
-  //     if (inputValue) {
-  //       const results = contacts.filter((contact) =>
-  //         contact.name.toLowerCase().includes(inputValue)
-  //       );
-
-  //       setSearchContacts((prevState) => ({ ...prevState, results }));
-  //     }
-  //   },
-  //   [contacts]
-  // );
-
-  const handleClickAwaySearch = useCallback(() => {
-    setSearchContacts({ query: '', results: [] });
-  }, []);
-
-  const handleClickResult = useCallback(
-    (result: IChatParticipant) => {
-      handleClickAwaySearch();
-
-      router.push(`${paths.navigation.inboxBase}?id=${result.id}`);
-    },
-    [handleClickAwaySearch, router]
-  );
 
   const handleInboxChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -180,14 +146,6 @@ export function ChatNav({
         ))}
       </Box>
     </nav>
-  );
-
-  const renderListResults = (
-    <ChatNavSearchResults
-      query={searchContacts.query}
-      results={searchContacts.results}
-      onClickResult={handleClickResult}
-    />
   );
 
   const [isOpen, setOpen] = useState<null | HTMLElement>(null);

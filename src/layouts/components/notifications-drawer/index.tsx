@@ -1,7 +1,6 @@
 import type { IconButtonProps } from '@mui/material/IconButton';
 
 import { m } from 'framer-motion';
-import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -25,31 +24,13 @@ import { NotificationItem } from './notification-item';
 
 // ----------------------------------------------------------------------
 
-const TABS = [
-  { value: 'all', label: 'All', count: 22 },
-  { value: 'unread', label: 'Unread', count: 12 },
-  { value: 'archived', label: 'Archived', count: 10 },
-];
-
-// ----------------------------------------------------------------------
-
 export function NotificationsDrawer({ sx, ...other }: IconButtonProps) {
   const drawer = useBoolean();
   const theme = useTheme();
 
-  const [currentTab, setCurrentTab] = useState('all');
-
   const { data: notifications } = useGetNotifications();
 
-  const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
-    setCurrentTab(newValue);
-  }, []);
-
   const totalUnRead = (notifications ?? []).filter((item) => item.isRead === false).length;
-
-  const handleMarkAllAsRead = () => {
-    // setNotifications(notifications.map((notification) => ({ ...notification, isUnRead: false })));
-  };
 
   const renderHead = (
     <Stack direction="row" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1, minHeight: 68 }}>

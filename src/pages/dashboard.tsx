@@ -27,10 +27,6 @@ export const _bookingsOverview = [...Array(3)].map((_, index) => ({
   value: _mock.number.percent(index + 5),
 }));
 
-interface TestT {
-  test: string;
-}
-
 export default function Page() {
   const { t } = useTranslation();
   const { data: conversationData } = useGetConversationDashboardData();
