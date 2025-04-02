@@ -87,7 +87,10 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
           badgeContent={conversation.unreadMessages}
           anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
         >
-          <Iconify width={24} icon="logos:facebook" />
+          <Iconify
+            width={24}
+            icon={conversation.channelType === 'EMAIL' ? 'logos:google-gmail' : 'ic:round-widgets'}
+          />
         </Badge>
 
         <Box

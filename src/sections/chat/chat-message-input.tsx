@@ -135,6 +135,7 @@ export function ChatMessageInput({
   };
 
   useEffect(() => {
+    if (conversationId === '') return;
     generateTemplate(conversationId, {
       onSuccess: (data: { content: string }) => {
         const parser = new DOMParser();

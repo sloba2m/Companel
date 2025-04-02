@@ -53,6 +53,7 @@ export type IChatConversations = {
 export interface Conversation {
   id: string;
   inboxId: string;
+  channelType: 'EMAIL' | 'WIDGET';
   status: ConversationStatus;
   subject: string;
   contact: Contact;
