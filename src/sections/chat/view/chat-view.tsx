@@ -9,6 +9,7 @@ import { useResponsive } from 'src/hooks/use-responsive';
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
 import {
+  useSearchChat,
   useGetMessages,
   useReadMessage,
   useGetEventHistory,
@@ -40,6 +41,7 @@ export type ComposeFormState = {
 
 export function ChatView() {
   const searchParams = useSearchParams();
+  const [chatSearch, setChatSearch] = useState('');
 
   const selectedConversationId = searchParams.get('conversationId') || '';
   const selectedInboxes = searchParams.getAll('id');
@@ -71,6 +73,12 @@ export function ChatView() {
   const { data: eventHistoryData } = useGetEventHistory(selectedConversationId);
 
   const { mutate: readMessageMutation } = useReadMessage();
+  const { data: chatSearchData } = useSearchChat({
+    conversationId: selectedConversationId,
+    query: chatSearch,
+  });
+
+  console.log(chatSearchData);
 
   const isTablet = useResponsive('between', 'sm', 'lg');
 
@@ -78,14 +86,21 @@ export function ChatView() {
 
   const conversationsNav = useCollapseNav();
 
-  const reversedMessages = useMemo(
-    () =>
+  const reversedMessages = useMemo(() => {
+    if (chatSearch !== '' && chatSearchData) {
+      return chatSearchData
+        .map((result) => result.message)
+        .slice()
+        .reverse();
+    }
+
+    return (
       messages?.pages
         .flatMap((page) => page.items)
         .slice()
-        .reverse() ?? [],
-    [messages]
-  );
+        .reverse() ?? []
+    );
+  }, [chatSearch, chatSearchData, messages]);
 
   const [composeFormState, setComposeFormState] = useState<ComposeFormState>({
     inbox: undefined,
@@ -145,6 +160,7 @@ export function ChatView() {
               collapseMenuNav={conversationsNav}
               conversation={conversation}
               loading={messagesLoading}
+              onChatSearch={(val) => setChatSearch(val)}
             />
           ) : (
             <ChatHeaderCompose
@@ -172,7 +188,7 @@ export function ChatView() {
                   key={`${selectedConversationId}MessageList`}
                   fetchNextPage={fetchNextPage}
                   messages={reversedMessages}
-                  events={eventHistoryData ?? []}
+                  events={chatSearch === '' ? eventHistoryData ?? [] : []}
                   contact={conversation?.contact}
                   loading={messagesLoading}
                 />

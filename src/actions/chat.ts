@@ -1,5 +1,12 @@
 import type { StatusFilters } from 'src/sections/chat/chat-nav';
-import type { Event, Message, Attachment, MessageType, Conversation } from 'src/types/chat';
+import type {
+  Event,
+  Message,
+  Attachment,
+  SearchChat,
+  MessageType,
+  Conversation,
+} from 'src/types/chat';
 
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 
@@ -253,4 +260,16 @@ export const useUploadAttachment = () =>
         }
       );
     },
+  });
+
+interface UseSearchChatInput {
+  conversationId: string;
+  query: string;
+}
+
+export const useSearchChat = ({ conversationId, query }: UseSearchChatInput) =>
+  useQuery<SearchChat[]>({
+    queryKey: ['chat-search', { conversationId, query }],
+    queryFn: () => fetcher([`/search/conversation/${conversationId}`, { params: { query } }]),
+    enabled: conversationId !== '' && query !== '',
   });

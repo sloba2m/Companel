@@ -23,6 +23,7 @@ import {
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
+import { useDebouncedCallback } from 'src/routes/hooks/use-debounce';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useResponsive } from 'src/hooks/use-responsive';
@@ -45,9 +46,16 @@ type Props = {
   conversation?: Conversation;
   collapseNav: UseNavCollapseReturn;
   collapseMenuNav: UseNavCollapseReturn;
+  onChatSearch: (value: string) => void;
 };
 
-export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseMenuNav }: Props) {
+export function ChatHeaderDetail({
+  collapseNav,
+  conversation,
+  loading,
+  collapseMenuNav,
+  onChatSearch,
+}: Props) {
   const popover = usePopover();
   const router = useRouter();
 
@@ -90,6 +98,10 @@ export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseM
 
     setSnackbar({ message: '', open: false });
   };
+
+  const debouncedSearch = useDebouncedCallback((value: string) => {
+    onChatSearch(value);
+  }, 300);
 
   if (loading || !conversation) {
     return <ChatHeaderSkeleton />;
@@ -170,6 +182,7 @@ export function ChatHeaderDetail({ collapseNav, conversation, loading, collapseM
         margin="none"
         size="small"
         sx={{ flexGrow: 10 }}
+        onChange={(e) => debouncedSearch(e.target.value)}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

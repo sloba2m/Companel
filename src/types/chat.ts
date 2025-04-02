@@ -133,3 +133,13 @@ export interface Attachment {
   coordinatesLat: number;
   coordinatesLong: number;
 }
+
+interface SearchHighlight {
+  field: string;
+  fragments: string[];
+}
+
+export interface SearchChat {
+  message: Message;
+  highlights: SearchHighlight[];
+}
