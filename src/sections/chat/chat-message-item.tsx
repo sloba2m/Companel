@@ -177,7 +177,14 @@ export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Prop
       sx={{ mb: 5 }}
       key={message.id}
     >
-      {!me && <Avatar alt={fullName} sx={{ width: 32, height: 32, mr: 2 }} />}
+      {!me && (
+        <Avatar alt={fullName} sx={{ width: 32, height: 32, mr: 2 }}>
+          {contact?.name
+            .split(' ')
+            .map((word) => word[0])
+            .join('')}
+        </Avatar>
+      )}
 
       <Stack alignItems={me ? 'flex-end' : 'flex-start'}>
         {renderInfo}
