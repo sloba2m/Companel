@@ -167,6 +167,7 @@ export function ChatMessageInput({
           key="message"
           sx={{ maxHeight: 720, borderTop: 'none' }}
           value={messageInput}
+          resetValue={messageInput === ''}
           onChange={(val) => setMessageInput(val)}
           conversationId={conversationId}
         />
@@ -176,6 +177,7 @@ export function ChatMessageInput({
           key="note"
           sx={{ maxHeight: 720, borderTop: 'none' }}
           value={noteInput}
+          resetValue={noteInput === ''}
           onChange={(val) => setNoteInput(val)}
           conversationId={conversationId}
         />
