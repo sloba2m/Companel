@@ -16,6 +16,7 @@ import {
 
 import type { Message, Attachment } from 'src/types/chat';
 
+import { useTranslation } from 'react-i18next';
 import { useRef, useState, useEffect } from 'react';
 
 import { paths } from 'src/routes/paths';
@@ -55,6 +56,7 @@ export function ChatMessageInput({
   composeFormState,
   resetComposeState,
 }: Props) {
+  const { t } = useTranslation();
   const router = useRouter();
   const basicTabs = useTabs('Message');
   const isTablet = useResponsive('between', 'sm', 'md');
@@ -158,8 +160,8 @@ export function ChatMessageInput({
   return (
     <Card sx={{ flexShrink: 0, borderBottomLeftRadius: isTablet ? '8px' : 0 }}>
       <Tabs value={basicTabs.value} onChange={basicTabs.onChange} sx={{ mx: 2 }}>
-        <Tab key="Message" value="Message" label="Message" />
-        <Tab key="Note" value="Note" label="Note" />
+        <Tab key="Message" value="Message" label={t('conversations.messageType.reply')} />
+        <Tab key="Note" value="Note" label={t('conversations.messageType.note')} />
       </Tabs>
       <Divider />
       {basicTabs.value === 'Message' && (
@@ -170,6 +172,7 @@ export function ChatMessageInput({
           resetValue={messageInput === ''}
           onChange={(val) => setMessageInput(val)}
           conversationId={conversationId}
+          placeholder={t('conversations.new.writeAMessage')}
         />
       )}
       {basicTabs.value === 'Note' && (
@@ -180,6 +183,7 @@ export function ChatMessageInput({
           resetValue={noteInput === ''}
           onChange={(val) => setNoteInput(val)}
           conversationId={conversationId}
+          placeholder={t('conversations.new.writeANote')}
         />
       )}
       <Stack direction="row" sx={{ justifyContent: 'space-between', p: 1 }}>
@@ -216,7 +220,7 @@ export function ChatMessageInput({
           endIcon={<Iconify icon="mdi:send" />}
           onClick={handleSendmessage}
         >
-          Send
+          {t('conversations.messageSendButton')}
         </Button>
       </Stack>
     </Card>

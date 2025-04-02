@@ -1,5 +1,7 @@
 import type { WorkspaceInbox } from 'src/actions/account';
 
+import { useTranslation } from 'react-i18next';
+
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import TextField from '@mui/material/TextField';
@@ -27,6 +29,7 @@ type Props = {
 };
 
 export function ChatHeaderCompose({ onOpenMobile, onChange, values }: Props) {
+  const { t } = useTranslation();
   const mdDown = useResponsive('down', 'md');
 
   const { data: workspaceData } = useGetWorkspaceData();
@@ -48,9 +51,15 @@ export function ChatHeaderCompose({ onOpenMobile, onChange, values }: Props) {
       )}
       <Box sx={{ display: 'flex', gap: 2, width: '100%', mt: 0.7 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 2 }}>
-          {['Inbox:', 'To:', 'Cc:', 'Name:', 'Subject:'].map((label) => (
+          {[
+            t('conversations.createForm.inbox'),
+            t('conversations.createForm.to'),
+            'Cc',
+            t('conversations.createForm.contactName'),
+            t('conversations.createForm.subject'),
+          ].map((label) => (
             <Typography key={label} variant="subtitle2" sx={{ color: 'text.primary', my: 1.1 }}>
-              {label}
+              {label}:
             </Typography>
           ))}
         </Box>
@@ -68,14 +77,14 @@ export function ChatHeaderCompose({ onOpenMobile, onChange, values }: Props) {
             )}
           />
           <TextField
-            placeholder="+ Recipients"
+            placeholder={`+ ${t('conversations.new.recipients')}`}
             size="small"
             value={values.to}
             onChange={(e) => onChange('to', e.target.value)}
             sx={{ minWidth: mdDown ? 240 : 400, flexGrow: { xs: 1, md: 'unset' } }}
           />
           <TextField
-            placeholder="+ Recipients"
+            placeholder={`+ ${t('conversations.new.recipients')}`}
             size="small"
             value={values.cc}
             onChange={(e) => onChange('cc', e.target.value)}

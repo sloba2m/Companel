@@ -6,6 +6,7 @@ import type {
   InfiniteQueryObserverResult,
 } from '@tanstack/react-query';
 
+import { useTranslation } from 'react-i18next';
 import { useState, useEffect, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
@@ -87,6 +88,7 @@ export function ChatNav({
   const router = useRouter();
   const searchParams = useSearchParams();
   const mdUp = useResponsive('up', 'md');
+  const { t } = useTranslation();
 
   const { openMobile, onCloseMobile, onCloseDesktop } = collapseNav;
 
@@ -214,7 +216,7 @@ export function ChatNav({
         }}
       >
         <TextField
-          placeholder="Search Inboxes"
+          placeholder={t('conversations.new.searchInboxes')}
           margin="none"
           size="small"
           sx={{ flexGrow: 1 }}
@@ -240,10 +242,22 @@ export function ChatNav({
           variant="fullWidth"
           sx={{ flexGrow: 1 }}
         >
-          <Tab key="all" value={StatusFilters.ALL} label="All" />
-          <Tab key="unhandled" value={StatusFilters.UNHANDLED} label="Unhandled" />
-          <Tab key="mine" value={StatusFilters.MINE} label="Mine" />
-          <Tab key="closed" value={StatusFilters.CLOSED} label="Closed" />
+          <Tab key="all" value={StatusFilters.ALL} label={t('conversations.menuLabels.all')} />
+          <Tab
+            key="unhandled"
+            value={StatusFilters.UNHANDLED}
+            label={t('conversations.menuLabels.unhandled')}
+          />
+          <Tab
+            key="mine"
+            value={StatusFilters.MINE}
+            label={t('conversations.menuLabels.myConversations')}
+          />
+          <Tab
+            key="closed"
+            value={StatusFilters.CLOSED}
+            label={t('conversations.menuLabels.closed')}
+          />
         </CustomTabs>
         <Box
           sx={{

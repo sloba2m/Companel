@@ -5,6 +5,7 @@ import type { ContactPayload } from 'src/types/contacts';
 import type { AutocompleteChangeReason, AutocompleteChangeDetails } from '@mui/material';
 
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
@@ -43,7 +44,7 @@ import { Iconify } from 'src/components/iconify';
 import { ConversationStatus } from 'src/types/chat';
 
 import { CollapseButton } from './styles';
-import { StatusFilters } from './chat-nav';
+import { StatusFilters, ChannelFilters } from './chat-nav';
 
 // ----------------------------------------------------------------------
 
@@ -53,6 +54,7 @@ type Props = {
 };
 
 export function ChatRoomSingle({ conversation, allTags }: Props) {
+  const { t } = useTranslation();
   const [selectedTags, setSelectedTags] = useState<Tag[]>(conversation.tags);
   const theme = useTheme();
   const router = useRouter();
@@ -83,6 +85,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
   const { data: allContactConversations } = useGetConversations({
     contactId: contact?.id,
     filter: StatusFilters.ALL,
+    channelType: ChannelFilters.ALL,
   });
 
   const previousConversations = useMemo(
@@ -105,7 +108,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
       { conversationId: conversation.id, tagId: tag.id },
       {
         onError: (_err, variables) => {
-          setSelectedTags((prev) => prev.filter((t) => t.id !== variables.tagId));
+          setSelectedTags((prev) => prev.filter((ta) => ta.id !== variables.tagId));
         },
       }
     );
@@ -117,7 +120,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
       { conversationId: conversation.id, tagId: tag.id },
       {
         onError: (_err, variables) => {
-          const fallbackTag = allTags.find((t) => t.id === variables.tagId);
+          const fallbackTag = allTags.find((ta) => ta.id === variables.tagId);
           if (fallbackTag) {
             setSelectedTags((prev) => [...prev, fallbackTag]);
           }
@@ -130,7 +133,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
     if (!tagName) return;
     createTag(tagName, {
       onSuccess: (newTag: Tag) => {
-        setSelectedTags((prev) => prev.map((t) => (t.id === tagName ? newTag : t)));
+        setSelectedTags((prev) => prev.map((ta) => (ta.id === tagName ? newTag : ta)));
         handleTagAdd(newTag);
       },
     });
@@ -151,7 +154,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
     }
 
     if (reason === 'removeOption' && typeof option !== 'string') {
-      setSelectedTags((prev) => prev.filter((t) => t.id !== option.id));
+      setSelectedTags((prev) => prev.filter((ta) => ta.id !== option.id));
       handleTagRemove(option);
     }
 
@@ -181,7 +184,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
   const renderContact = (
     <Stack spacing={2} sx={{ px: 2, py: 2.5 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography>Contact information</Typography>
+        <Typography>{t('conversations.previous.contactInfo')}</Typography>
         {!isEdit && (
           <IconButton onClick={onEditTrue}>
             <Iconify icon="ic:baseline-edit" fontSize="small" />
@@ -192,7 +195,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
         <>
           <TextField
             fullWidth
-            label="Name"
+            label={t('contact.name')}
             size="small"
             value={formData.name ?? ''}
             onChange={handleChange('name')}
@@ -200,7 +203,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
           <TextField
             size="small"
             fullWidth
-            label="Phone number"
+            label={t('contact.phoneNumber')}
             type="tel"
             value={formData.phoneNumber ?? ''}
             onChange={handleChange('phoneNumber')}
@@ -208,24 +211,24 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
           <TextField
             fullWidth
             size="small"
-            label="Email"
+            label={t('contact.email')}
             type="email"
             value={formData.email ?? ''}
             onChange={handleChange('email')}
           />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
             <Button size="small" onClick={onEditFalse}>
-              Cancel
+              {t('conversations.resolve.cancel')}
             </Button>
             <Button size="small" variant="soft" color="primary" onClick={onSave}>
-              Save
+              {t('contact.save')}
             </Button>
           </Box>
         </>
       ) : (
         <>
-          <ListItemText primary="Phone number" secondary={formData.phoneNumber} />
-          <ListItemText primary="Email" secondary={formData.email} />
+          <ListItemText primary={t('contact.phoneNumber')} secondary={formData.phoneNumber} />
+          <ListItemText primary={t('contact.email')} secondary={formData.email} />
         </>
       )}
     </Stack>
@@ -237,7 +240,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
 
       {renderContact}
       <CollapseButton selected={collapseTag.value} onClick={collapseTag.onToggle}>
-        Tags
+        {t('conversations.previous.tags')}
       </CollapseButton>
 
       <Collapse in={collapseTag.value}>
@@ -258,14 +261,16 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
               );
             })
           }
-          renderInput={(params) => <TextField {...params} placeholder="Add Tags" size="small" />}
+          renderInput={(params) => (
+            <TextField {...params} placeholder={t('conversations.previous.addTags')} size="small" />
+          )}
           onChange={handleTagChange}
           sx={{ m: 2 }}
         />
       </Collapse>
 
       <CollapseButton selected={collapseConv.value} onClick={collapseConv.onToggle}>
-        Previous conversation
+        {t('conversations.previous.conversations')}
       </CollapseButton>
 
       <Collapse in={collapseConv.value}>

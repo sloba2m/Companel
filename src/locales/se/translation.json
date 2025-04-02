@@ -59,7 +59,9 @@
       "conversations": "Konversationer",
       "events": "Händelser",
       "contactInfo": "Kontaktinformation",
-      "customer": "Kund"
+      "customer": "Kund",
+      "tags": "Taggar",
+      "addTags": "Lägg till taggar"
     },
     "messageType": {
       "reply": "Meddelande",
@@ -80,6 +82,14 @@
       "unassigned": "Borttag av tilldelad",
       "reassigned": "Överlåten",
       "statusUpdate": "Status uppdaterad"
+    },
+    "new": {
+      "searchInboxes": "Sök i inkorgar",
+      "recipients": "Mottagare",
+      "hello": "Hej!",
+      "writeAMessage": "Skriv ett meddelande...",
+      "writeANote": "Skriv en anteckning...",
+      "searchChat": "Sök i chatten"
     }
   },
   "conversation": {

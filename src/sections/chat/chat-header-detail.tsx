@@ -3,6 +3,7 @@ import type { Conversation } from 'src/types/chat';
 import type { SnackbarCloseReason } from '@mui/material';
 
 import { useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
@@ -35,6 +36,8 @@ import { Iconify } from 'src/components/iconify';
 import { YesNoDialog } from 'src/components/Dialog/YesNoDialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
+import { ConversationStatus } from 'src/types/chat';
+
 import { ChatHeaderSkeleton } from './chat-skeleton';
 
 import type { UseNavCollapseReturn } from './hooks/use-collapse-nav';
@@ -56,6 +59,7 @@ export function ChatHeaderDetail({
   collapseMenuNav,
   onChatSearch,
 }: Props) {
+  const { t } = useTranslation();
   const popover = usePopover();
   const router = useRouter();
 
@@ -160,6 +164,8 @@ export function ChatHeaderDetail({
       });
   };
 
+  const isResolved = conversation.status === ConversationStatus.RESOLVED;
+
   return (
     <>
       {mdDown && (
@@ -178,7 +184,7 @@ export function ChatHeaderDetail({
       {renderSingle}
 
       <TextField
-        placeholder="Search Chat"
+        placeholder={t('conversations.new.searchChat')}
         margin="none"
         size="small"
         sx={{ flexGrow: 10 }}
@@ -204,7 +210,9 @@ export function ChatHeaderDetail({
           value={conversation.assignee}
           getOptionLabel={(option) => option.fullName}
           isOptionEqualToValue={(option, value) => option.id === value.id}
-          renderInput={(params) => <TextField {...params} label="Assign" margin="none" />}
+          renderInput={(params) => (
+            <TextField {...params} label={t('conversations.assignTo')} margin="none" />
+          )}
           onChange={(_e, _v, reason, details) => {
             if (!details?.option) return;
             if (reason === 'selectOption') openYesNoDialog(() => assignUser(details.option));
@@ -231,9 +239,10 @@ export function ChatHeaderDetail({
           variant="soft"
           color="primary"
           size="medium"
+          disabled={isResolved}
           onClick={() => openYesNoDialog(() => handleResolveConfirm())}
         >
-          Resolve
+          {isResolved ? t('conversations.resolve.resolved') : t('conversations.resolve.resolve')}
         </Button>
 
         <Box sx={{ margin: 'auto 0' }}>

@@ -80,7 +80,9 @@
       "conversations": "Previous Conversations",
       "events": "Event History",
       "contactInfo": "Contact Information",
-      "customer": "Customer"
+      "customer": "Customer",
+      "tags": "Tags",
+      "addTags": "Add Tags"
     },
     "messageType": {
       "reply": "Message",
@@ -101,6 +103,14 @@
       "unassigned": "Un-assigned",
       "reassigned": "Re-assigned",
       "statusUpdate": "Status updated"
+    },
+    "new": {
+      "searchInboxes": "Search Inboxes",
+      "recipients": "Recipients",
+      "hello": "Hello!",
+      "writeAMessage": "Write a message...",
+      "writeANote": "Write a note...",
+      "searchChat": "Search chat"
     }
   },
   "conversation": {

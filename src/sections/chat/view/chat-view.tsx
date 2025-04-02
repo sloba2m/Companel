@@ -1,5 +1,6 @@
 import type { WorkspaceInbox } from 'src/actions/account';
 
+import { useTranslation } from 'react-i18next';
 import { useMemo, useState, useEffect } from 'react';
 
 import { useSearchParams } from 'src/routes/hooks';
@@ -40,6 +41,7 @@ export type ComposeFormState = {
 };
 
 export function ChatView() {
+  const { t } = useTranslation();
   const searchParams = useSearchParams();
   const [chatSearch, setChatSearch] = useState('');
 
@@ -195,8 +197,8 @@ export function ChatView() {
               ) : (
                 <EmptyContent
                   imgUrl={`${CONFIG.site.basePath}/assets/icons/empty/ic-chat-active.svg`}
-                  title="Good morning!"
-                  description="Write a message..."
+                  title={t('conversations.new.hello')}
+                  description={t('conversations.new.writeAMessage')}
                 />
               )}
 
