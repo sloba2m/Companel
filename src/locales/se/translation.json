@@ -47,7 +47,7 @@
     "assignee": "Agent",
     "assignTo": "Tilldela till...",
     "assignToMe": "Tilldela till mig",
-    "unAssignConfirm": "Är du säker på att du vill ta bort {name} som agent?",
+    "unAssignConfirm": "Är du säker på att du vill ta bort {{name}} som agent?",
     "removeTagConfirm": "Vill du ta bort taggen <strong>{tag}</strong>?",
     "menuLabels": {
       "all": "Alla",
@@ -252,9 +252,9 @@
     "viewMore": "Visa fler",
     "none": "Inga notiser",
     "types": {
-      "conversationAssigned": "<strong>{name}</strong> tilldelade dig konversation {subject}",
-      "messageInConversation": "Du har fått ett nytt meddelande av <strong>{name}</strong>",
-      "conversationUnAssigned": "<strong>{name}</strong> tog bort dig som ansvarig för konversation {subject}"
+      "conversationAssigned": "<strong>{{name}}</strong> tilldelade dig konversation {{subject}}",
+      "messageInConversation": "Du har fått ett nytt meddelande av <strong>{{name}}</strong>",
+      "conversationUnAssigned": "<strong>{{name}}</strong> tog bort dig som ansvarig för konversation {{subject}}"
     }
   }
 }

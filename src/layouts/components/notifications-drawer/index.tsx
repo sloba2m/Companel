@@ -7,7 +7,6 @@ import Stack from '@mui/material/Stack';
 import Badge from '@mui/material/Badge';
 import { useTheme } from '@mui/material';
 import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
 import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -48,10 +47,6 @@ export function NotificationsDrawer({ sx, ...other }: IconButtonProps) {
 
       <IconButton onClick={drawer.onFalse} sx={{ display: { xs: 'inline-flex', sm: 'none' } }}>
         <Iconify icon="mingcute:close-line" />
-      </IconButton>
-
-      <IconButton>
-        <Iconify icon="solar:settings-bold-duotone" />
       </IconButton>
     </Stack>
   );
@@ -105,12 +100,6 @@ export function NotificationsDrawer({ sx, ...other }: IconButtonProps) {
         {renderHead}
 
         {renderList}
-
-        <Box sx={{ p: 1 }}>
-          <Button fullWidth size="large">
-            View all
-          </Button>
-        </Box>
       </Drawer>
     </>
   );

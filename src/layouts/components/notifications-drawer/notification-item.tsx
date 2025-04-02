@@ -10,6 +10,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 
 import { fDateTime } from 'src/utils/format-time';
 
+import { useReadNotification } from 'src/actions/notifications';
+
 // ----------------------------------------------------------------------
 
 const getMessage = (notification: Notification) => {
@@ -43,6 +45,8 @@ const getMessage = (notification: Notification) => {
 };
 
 export function NotificationItem({ notification }: { notification: Notification }) {
+  const { mutate: readMutation } = useReadNotification();
+
   const renderText = (
     <ListItemText
       disableTypography
@@ -77,6 +81,7 @@ export function NotificationItem({ notification }: { notification: Notification 
         alignItems: 'flex-start',
         borderBottom: (theme) => `dashed 1px ${theme.vars.palette.divider}`,
       }}
+      onClick={() => readMutation(notification.id)}
     >
       {renderUnReadBadge}
 

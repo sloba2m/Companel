@@ -68,7 +68,7 @@
     "assignee": "Assignee",
     "assignTo": "Assign to...",
     "assignToMe": "Assign to me",
-    "unAssignConfirm": "Are you sure you want remove <strong>{name}</strong> as assignee?",
+    "unAssignConfirm": "Are you sure you want remove <strong>{{name}}</strong> as assignee?",
     "removeTagConfirm": "Are you sure you want to remove <strong>{tag}</strong>?",
     "menuLabels": {
       "all": "All",
