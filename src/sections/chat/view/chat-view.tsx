@@ -1,4 +1,5 @@
 import type { WorkspaceInbox } from 'src/actions/account';
+import type { LocalStorageFilters } from 'src/pages/inbox';
 
 import { useTranslation } from 'react-i18next';
 import { useMemo, useState, useEffect } from 'react';
@@ -6,6 +7,7 @@ import { useMemo, useState, useEffect } from 'react';
 import { useSearchParams } from 'src/routes/hooks';
 
 import { useResponsive } from 'src/hooks/use-responsive';
+import { setStorage } from 'src/hooks/use-local-storage';
 
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
@@ -49,6 +51,14 @@ export function ChatView() {
   const selectedInboxes = searchParams.getAll('id');
   const selectedStatus = searchParams.get('status') as StatusFilters;
   const selectedChannel = searchParams.get('channel') as ChannelFilters;
+
+  const filters: LocalStorageFilters = {
+    channel: selectedChannel,
+    id: selectedInboxes,
+    status: selectedStatus,
+  };
+
+  setStorage('inboxQuery', filters);
 
   const {
     data: conversationsData,
