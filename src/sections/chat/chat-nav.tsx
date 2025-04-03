@@ -270,10 +270,31 @@ export function ChatNav({
       {loading ? (
         renderLoading
       ) : (
-        <Scrollbar sx={{ pb: 1 }} ref={conversationsEndRef}>
-          {/* {searchContacts.query && !!conversations.allIds.length ? renderListResults : renderList} */}
-          {renderList}
-        </Scrollbar>
+        <>
+          {conversations.length > 0 ? (
+            <Scrollbar sx={{ pb: 1 }} ref={conversationsEndRef}>
+              {renderList}
+            </Scrollbar>
+          ) : (
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: 1,
+              }}
+            >
+              <Iconify icon="ic:outline-inbox" width={32} />
+              <Typography>
+                {selectedInboxes.length
+                  ? t('conversations.new.empty')
+                  : t('conversations.new.pleaseSelect')}
+              </Typography>
+            </Box>
+          )}
+        </>
       )}
     </>
   );

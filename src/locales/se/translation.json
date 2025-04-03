@@ -89,7 +89,9 @@
       "hello": "Hej!",
       "writeAMessage": "Skriv ett meddelande...",
       "writeANote": "Skriv en anteckning...",
-      "searchChat": "Sök i chatten"
+      "searchChat": "Sök i chatten",
+      "empty": "Inkorgen är tom",
+      "pleaseSelect": "Välj en inkorg för att visa konversationer"
     }
   },
   "conversation": {

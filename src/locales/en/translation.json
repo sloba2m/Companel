@@ -110,7 +110,9 @@
       "hello": "Hello!",
       "writeAMessage": "Write a message...",
       "writeANote": "Write a note...",
-      "searchChat": "Search chat"
+      "searchChat": "Search chat",
+      "empty": "Inbox is empty",
+      "pleaseSelect": "Select an inbox to view conversations"
     }
   },
   "conversation": {
