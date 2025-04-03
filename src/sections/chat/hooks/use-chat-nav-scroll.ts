@@ -18,8 +18,6 @@ export function useChatNavScroll(
     const el = conversationsEndRef.current;
     if (!el) return;
 
-    console.log(el.scrollTop + el.clientHeight, el.scrollHeight);
-
     if (el.scrollTop + el.clientHeight === el.scrollHeight && onReachedTop) {
       onReachedTop();
     }

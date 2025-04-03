@@ -80,8 +80,6 @@ export function ChatView() {
     query: chatSearch,
   });
 
-  console.log(chatSearchData);
-
   const isTablet = useResponsive('between', 'sm', 'lg');
 
   const roomNav = useCollapseNav();
