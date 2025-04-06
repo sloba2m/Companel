@@ -21,6 +21,9 @@ export interface LocalStorageFilters {
 }
 
 const getInboxPath = (inboxFilters: LocalStorageFilters): string => {
+  if (!inboxFilters) {
+    return paths.navigation.inbox;
+  }
   const isEmpty = Object.values(inboxFilters).every(
     (value) => value === null || value === '' || (Array.isArray(value) && value.length === 0)
   );

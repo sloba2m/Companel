@@ -3,7 +3,7 @@ import type { WorkspaceInbox } from 'src/actions/account';
 import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
-import { IconButton } from '@mui/material';
+import { IconButton, Stack, Grid } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -49,62 +49,96 @@ export function ChatHeaderCompose({ onOpenMobile, onChange, values }: Props) {
           <Iconify width={16} icon="solar:users-group-rounded-bold" />
         </IconButton>
       )}
-      <Box sx={{ display: 'flex', gap: 2, width: '100%', mt: 0.7 }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 2 }}>
-          {[
-            t('conversations.createForm.inbox'),
-            t('conversations.createForm.to'),
-            'Cc',
-            t('conversations.createForm.contactName'),
-            t('conversations.createForm.subject'),
-          ].map((label) => (
-            <Typography key={label} variant="subtitle2" sx={{ color: 'text.primary', my: 1.1 }}>
-              {label}:
+      <Stack mt={0.7} gap={2} sx={{ flex: 1 }}>
+        <Box sx={{ display: 'flex', gap: 2, width: '100%' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 2, flex: 0 }}>
+            <Typography variant="subtitle2" sx={{ color: 'text.primary', my: 1.1, width: '40px' }}>
+              {t('conversations.createForm.inbox')}:
             </Typography>
-          ))}
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 2, width: '100%', mr: 2 }}>
+            <Autocomplete
+              fullWidth
+              sx={{ flex: 1 }}
+              options={workspaceData?.inboxes ?? []}
+              value={values.inbox}
+              disableClearable
+              getOptionLabel={(option) => option.name}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              onChange={(_, val) => onChange('inbox', val)}
+              renderInput={(params) => (
+                <TextField {...params} label="Inbox" margin="none" size="small" />
+              )}
+            />
+
+          </Box>
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 2 }}>
-          <Autocomplete
-            fullWidth
-            options={workspaceData?.inboxes ?? []}
-            value={values.inbox}
-            disableClearable
-            getOptionLabel={(option) => option.name}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
-            onChange={(_, val) => onChange('inbox', val)}
-            renderInput={(params) => (
-              <TextField {...params} label="Inbox" margin="none" size="small" />
-            )}
-          />
-          <TextField
-            placeholder={`+ ${t('conversations.new.recipients')}`}
-            size="small"
-            value={values.to}
-            onChange={(e) => onChange('to', e.target.value)}
-            sx={{ minWidth: mdDown ? 240 : 400, flexGrow: { xs: 1, md: 'unset' } }}
-          />
-          <TextField
-            placeholder={`+ ${t('conversations.new.recipients')}`}
-            size="small"
-            value={values.cc}
-            onChange={(e) => onChange('cc', e.target.value)}
-            sx={{ minWidth: mdDown ? 240 : 400, flexGrow: { xs: 1, md: 'unset' } }}
-          />
-          <TextField
-            placeholder="Name"
-            size="small"
-            value={values.name}
-            onChange={(e) => onChange('name', e.target.value)}
-            sx={{ minWidth: mdDown ? 240 : 400, flexGrow: { xs: 1, md: 'unset' } }}
-          />
-          <TextField
-            size="small"
-            placeholder="Add Subject"
-            value={values.subject}
-            onChange={(e) => onChange('subject', e.target.value)}
-          />
+        <Box display="flex" sx={{ flex: 1, width: '100%' }} gap={2}>
+          <Box display="flex" sx={{ flex: 1 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 2, flex: 0 }}>
+              {[
+                t('conversations.createForm.to'),
+                'Cc',
+              ].map((label) => (
+                <Typography key={label} variant="subtitle2" sx={{ color: 'text.primary', my: 1.1, width: '40px' }}>
+                  {label}:
+                </Typography>
+              ))}
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 2, flex: 1 }}>
+
+              <TextField
+                placeholder={`+ ${t('conversations.new.recipients')}`}
+                size="small"
+                value={values.to}
+                onChange={(e) => onChange('to', e.target.value)}
+                sx={{ wdith: '100%', ml: 2 }}
+              />
+              <TextField
+                placeholder={`+ ${t('conversations.new.recipients')}`}
+                size="small"
+                value={values.cc}
+                onChange={(e) => onChange('cc', e.target.value)}
+                sx={{ wdith: '100%', ml: 2 }}
+              />
+
+            </Box>
+          </Box>
+          <Box display="flex" sx={{ flex: 1 }} pr={2}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 2, flex: 0 }}>
+              {[
+
+                t('conversations.createForm.contactName'),
+                t('conversations.createForm.subject'),
+              ].map((label) => (
+                <Typography key={label} variant="subtitle2" sx={{ color: 'text.primary', my: 1.1, width: '60px' }}>
+                  {label}:
+                </Typography>
+              ))}
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 2, flex: 1 }}>
+
+              <TextField
+                placeholder="Name"
+                size="small"
+                value={values.name}
+                onChange={(e) => onChange('name', e.target.value)}
+                sx={{ wdith: '100%' }}
+              />
+              <TextField
+                size="small"
+                placeholder="Add Subject"
+                value={values.subject}
+                onChange={(e) => onChange('subject', e.target.value)}
+                sx={{ wdith: '100%' }}
+              />
+            </Box>
+          </Box>
+
         </Box>
-      </Box>
+
+      </Stack >
+
     </>
   );
 }
