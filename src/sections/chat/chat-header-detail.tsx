@@ -138,9 +138,12 @@ export function ChatHeaderDetail({
     if (!conversation?.id) return;
 
     const assign = () =>
-      handleAssignUserMutation(conversation.id, 'assign', user.id, () =>
-        setSnackbar({ message: 'User is assigned', open: true })
-      );
+      handleAssignUserMutation(conversation.id, 'assign', user.id, () => {
+        setSnackbar({ message: 'User is assigned', open: true });
+        router.push(
+          `${paths.navigation.inbox}&id=${conversation.inboxId}&conversationId=${conversation.id}`
+        );
+      });
 
     if (conversation.assignee)
       handleAssignUserMutation(conversation.id, 'unassign', conversation.assignee.id, assign);
@@ -150,9 +153,12 @@ export function ChatHeaderDetail({
   const unassignUser = () => {
     if (!conversation?.id || !conversation.assignee) return;
 
-    handleAssignUserMutation(conversation.id, 'unassign', conversation.assignee.id, () =>
-      setSnackbar({ message: 'User is unassigned', open: true })
-    );
+    handleAssignUserMutation(conversation.id, 'unassign', conversation.assignee.id, () => {
+      setSnackbar({ message: 'User is unassigned', open: true });
+      router.push(
+        `${paths.navigation.inbox}&id=${conversation.inboxId}&conversationId=${conversation.id}`
+      );
+    });
   };
 
   const handleResolveConfirm = () => {
