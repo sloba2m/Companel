@@ -201,7 +201,7 @@ export function ChatHeaderDetail({
       <Stack
         direction="row"
         justifyContent="flex-end"
-        sx={{ gap: 2, flexWrap: 'wrap-reverse', flexGrow: 1 }}
+        sx={{ gap: 2, flexWrap: 'wrap-reverse', flexGrow: 1, alignItems: 'center' }}
       >
         <Autocomplete
           sx={{ minWidth: '200px' }}
@@ -211,7 +211,7 @@ export function ChatHeaderDetail({
           getOptionLabel={(option) => option.fullName}
           isOptionEqualToValue={(option, value) => option.id === value.id}
           renderInput={(params) => (
-            <TextField {...params} label={t('conversations.assignTo')} margin="none" />
+            <TextField {...params} label={t('conversations.assignTo')} margin="none" size="small" />
           )}
           onChange={(_e, _v, reason, details) => {
             if (!details?.option) return;
@@ -238,7 +238,7 @@ export function ChatHeaderDetail({
         <Button
           variant="soft"
           color="primary"
-          size="medium"
+          size="small"
           disabled={isResolved}
           onClick={() => openYesNoDialog(() => handleResolveConfirm())}
         >
