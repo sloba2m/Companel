@@ -23,7 +23,7 @@ export function AuthGuard({ children }: Props) {
       try {
         if (!keycloak.authenticated) {
           const authenticated = await keycloak.init({
-            onLoad: 'check-sso',
+            onLoad: 'login-required',
           });
 
           if (authenticated) setIsAuthenticated(true);
