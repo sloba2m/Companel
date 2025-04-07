@@ -48,9 +48,5 @@ export function AuthGuard({ children }: Props) {
     return <SplashScreen />;
   }
 
-  if (!isAuthenticated) {
-    return null;
-  }
-
   return <>{children}</>;
 }

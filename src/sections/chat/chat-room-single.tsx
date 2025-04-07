@@ -279,6 +279,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
             <List>
               {previousConversations?.map((conv) => (
                 <ListItem
+                  key={conv.id}
                   disablePadding
                   onClick={() => {
                     router.push(
