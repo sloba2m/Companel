@@ -1,3 +1,5 @@
+import type { KeycloakInitOptions } from 'keycloak-js';
+
 import { useState, useEffect } from 'react';
 
 import { usePathname } from 'src/routes/hooks';
@@ -12,6 +14,10 @@ type Props = {
   children: React.ReactNode;
 };
 
+interface ExtendedKeycloakInitOptions extends KeycloakInitOptions {
+  silentCheckSsoRedirectUri?: string;
+}
+
 export function AuthGuard({ children }: Props) {
   const pathname = usePathname();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -23,8 +29,9 @@ export function AuthGuard({ children }: Props) {
       try {
         if (!keycloak.authenticated) {
           const authenticated = await keycloak.init({
-            onLoad: 'login-required',
-          });
+            onLoad: 'check-sso',
+            silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
+          } as ExtendedKeycloakInitOptions);
 
           if (authenticated) setIsAuthenticated(true);
           else keycloak.login({ redirectUri: window.location.origin + pathname });
