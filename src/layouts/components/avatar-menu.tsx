@@ -7,6 +7,8 @@ import { Menu, Avatar, MenuList, MenuItem, useTheme, IconButton } from '@mui/mat
 
 import getKeycloak from 'src/utils/keycloakService';
 
+import { useGetMe } from 'src/actions/account';
+
 import { Iconify } from 'src/components/iconify';
 import { usePopover } from 'src/components/custom-popover';
 import { useSettingsContext } from 'src/components/settings';
@@ -21,6 +23,12 @@ export const AvatarMenu = ({ sx }: AvatarMenuProps) => {
   const settings = useSettingsContext();
   const theme = useTheme();
   const keycloak = getKeycloak();
+  const { data } = useGetMe();
+
+  const initials = data?.fullName
+    .split(' ')
+    .map((word) => word[0])
+    .join('');
 
   const onLogout = () => {
     keycloak.logout({
@@ -31,7 +39,9 @@ export const AvatarMenu = ({ sx }: AvatarMenuProps) => {
   return (
     <>
       <IconButton onClick={popover.onOpen} sx={sx}>
-        <Avatar sx={{ width: 48, height: 48, color: theme.palette.text.primary }}>US</Avatar>
+        <Avatar sx={{ width: 48, height: 48, color: theme.palette.text.primary }}>
+          {initials}
+        </Avatar>
       </IconButton>
       <Menu
         id="simple-menu"
