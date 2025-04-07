@@ -26,6 +26,8 @@ export const fetcher = async (args: string | [string, AxiosRequestConfig]) => {
 
     const keycloak = getKeycloak();
 
+    if (!keycloak || !keycloak.authenticated) return null;
+
     await keycloak.updateToken(30);
     const { token } = keycloak;
 
