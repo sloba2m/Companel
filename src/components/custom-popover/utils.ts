@@ -7,7 +7,7 @@ import type { PopoverArrow } from './types';
 
 const POPOVER_DISTANCE = 0.75;
 
-export type CalculateAnchorOriginProps = {
+type CalculateAnchorOriginProps = {
   paperStyles?: CSSObject;
   anchorOrigin: PopoverOrigin;
   transformOrigin: PopoverOrigin;

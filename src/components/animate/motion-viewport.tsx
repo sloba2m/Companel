@@ -12,7 +12,7 @@ import { varContainer } from './variants';
 
 // ----------------------------------------------------------------------
 
-export type MotionViewportProps = BoxProps &
+type MotionViewportProps = BoxProps &
   MotionProps & {
     disableAnimate?: boolean;
   };

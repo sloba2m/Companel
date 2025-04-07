@@ -1,4 +1,4 @@
-import type { Conversation, IChatConversation } from 'src/types/chat';
+import type { Conversation } from 'src/types/chat';
 
 import { useEffect } from 'react';
 
@@ -23,10 +23,9 @@ type Props = {
   loading: boolean;
   conversation?: Conversation;
   collapseNav: UseNavCollapseReturn;
-  messages: IChatConversation['messages'];
 };
 
-export function ChatRoom({ collapseNav, conversation, messages, loading }: Props) {
+export function ChatRoom({ collapseNav, conversation, loading }: Props) {
   const theme = useTheme();
 
   const { collapseDesktop, openMobile, onCloseMobile, onCollapseDesktop } = collapseNav;

@@ -13,7 +13,7 @@ import type { EditorToolbarProps } from '../types';
 
 // ----------------------------------------------------------------------
 
-export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
+type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
 const HEADING_OPTIONS = ['Heading 1', 'Heading 2', 'Heading 3'];
 

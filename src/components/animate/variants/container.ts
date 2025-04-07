@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------
 
-export type Props = {
+type Props = {
   staggerIn?: number;
   delayIn?: number;
   staggerOut?: number;

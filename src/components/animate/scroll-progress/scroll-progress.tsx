@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 
 // ----------------------------------------------------------------------
 
-export interface ScrollProgressProps extends BoxProps {
+interface ScrollProgressProps extends BoxProps {
   size?: number;
   thickness?: number;
   progress: MotionValue<number>;

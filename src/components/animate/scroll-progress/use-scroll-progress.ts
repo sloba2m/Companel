@@ -5,13 +5,13 @@ import { useScroll } from 'framer-motion';
 
 // ----------------------------------------------------------------------
 
-export type UseScrollProgressReturn = {
+type UseScrollProgressReturn = {
   scrollXProgress: MotionValue<number>;
   scrollYProgress: MotionValue<number>;
   elementRef: React.RefObject<HTMLDivElement>;
 };
 
-export type UseScrollProgress = 'document' | 'container';
+type UseScrollProgress = 'document' | 'container';
 
 export function useScrollProgress(target: UseScrollProgress = 'document'): UseScrollProgressReturn {
   const elementRef = useRef<HTMLDivElement>(null);

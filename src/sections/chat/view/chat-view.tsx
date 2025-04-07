@@ -224,12 +224,7 @@ export function ChatView() {
             </>
           ),
           details: selectedConversationId && (
-            <ChatRoom
-              collapseNav={roomNav}
-              conversation={conversation}
-              loading={messagesLoading}
-              messages={[]}
-            />
+            <ChatRoom collapseNav={roomNav} conversation={conversation} loading={messagesLoading} />
           ),
         }}
       />

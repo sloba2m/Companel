@@ -10,7 +10,7 @@ import { varContainer } from './variants';
 
 // ----------------------------------------------------------------------
 
-export type MotionContainerProps = BoxProps &
+type MotionContainerProps = BoxProps &
   MotionProps & {
     animate?: boolean;
     action?: boolean;

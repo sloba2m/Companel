@@ -10,7 +10,7 @@ import { varAlpha } from 'src/theme/styles';
 
 // ----------------------------------------------------------------------
 
-export type EmptyContentProps = StackProps & {
+type EmptyContentProps = StackProps & {
   title?: string;
   imgUrl?: string;
   filled?: boolean;

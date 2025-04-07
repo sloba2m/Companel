@@ -6,7 +6,7 @@ import SvgIcon from '@mui/material/SvgIcon';
 
 // ----------------------------------------------------------------------
 
-export type SocialIconProps = {
+type SocialIconProps = {
   icon?: 'google' | 'twitter' | 'linkedin' | 'instagram' | 'facebook' | 'github' | string;
   width?: number;
   sx?: SxProps<Theme>;

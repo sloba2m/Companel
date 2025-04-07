@@ -1,5 +1,5 @@
 import type { Theme, SxProps } from '@mui/material/styles';
-import type { Editor, Extension, EditorOptions } from '@tiptap/react';
+import type { Editor, EditorOptions } from '@tiptap/react';
 
 // ----------------------------------------------------------------------
 
@@ -31,14 +31,4 @@ export type EditorToolbarItemProps = {
   label?: string;
   active?: boolean;
   disabled?: boolean;
-};
-
-export type EditorCodeHighlightBlockProps = {
-  extension: Extension;
-  updateAttributes: (attributes: Record<string, any>) => void;
-  node: {
-    attrs: {
-      language: string;
-    };
-  };
 };

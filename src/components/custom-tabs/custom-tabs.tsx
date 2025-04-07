@@ -10,7 +10,7 @@ import { stylesMode } from 'src/theme/styles';
 
 // ----------------------------------------------------------------------
 
-export type CustomTabsProps = TabsProps & {
+type CustomTabsProps = TabsProps & {
   slotProps?: TabsProps['slotProps'] & {
     scroller?: SxProps<Theme>;
     indicator?: SxProps<Theme>;
