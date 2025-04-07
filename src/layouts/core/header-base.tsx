@@ -12,7 +12,6 @@ import { HeaderSection } from './header-section';
 import { MenuButton } from '../components/menu-button';
 import { SignInButton } from '../components/sign-in-button';
 import { SettingsButton } from '../components/settings-button';
-import { NotificationsDrawer } from '../components/notifications-drawer';
 import { LanguagePopover, type LanguagePopoverProps } from '../components/language-popover';
 
 import type { HeaderSectionProps } from './header-section';
@@ -155,8 +154,6 @@ export function HeaderBase({
 
               {/* -- Language popover -- */}
               {localization && <LanguagePopover data-slot="localization" data={data?.langs} />}
-
-              <NotificationsDrawer data-slot="notifications" />
 
               {/* -- Settings button -- */}
               {settings && <SettingsButton data-slot="settings" />}
