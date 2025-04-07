@@ -105,7 +105,11 @@ export const NavItem = forwardRef<HTMLButtonElement, NavItemProps>(
 
 const StyledNavItem = styled(ButtonBase, {
   shouldForwardProp: (prop) =>
-    prop !== 'active' && prop !== 'open' && prop !== 'disabled' && prop !== 'depth',
+    prop !== 'active' &&
+    prop !== 'open' &&
+    prop !== 'disabled' &&
+    prop !== 'depth' &&
+    prop !== 'secondarycolor',
 })<NavItemStateProps>(({ active, open, disabled, depth, theme, secondarycolor }) => {
   const rootItem = depth === 1;
 
