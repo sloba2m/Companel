@@ -34,6 +34,7 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
       editable = true,
       fullItem = false,
       value: content = '',
+      templateSet,
       placeholder = 'Write a message...',
       ...other
     },
@@ -76,8 +77,13 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
         }),
       ],
       onUpdate({ editor: _editor }) {
+        console.log('ovde@');
         const html = _editor.getHTML();
         onChange?.(html);
+      },
+      onCreate({ editor: _editor }) {
+        console.log('ovde');
+        _editor.commands.focus(2);
       },
       ...other,
     });
@@ -117,6 +123,34 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
         }
       );
     };
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        if (editor) {
+          const { doc } = editor.state;
+          let secondParagraphPos = null;
+          let paragraphCount = 0;
+
+          doc.descendants((node, pos) => {
+            if (node.type.name === 'paragraph') {
+              paragraphCount += 1;
+              if (paragraphCount === 2) {
+                secondParagraphPos = pos + 1;
+                return false;
+              }
+            }
+            return true;
+          });
+
+          if (secondParagraphPos !== null) {
+            editor.commands.focus(secondParagraphPos);
+          }
+        }
+      }, 500);
+
+      return () => clearTimeout(timer);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [templateSet]);
 
     return (
       <Portal disablePortal={!fullScreen}>

@@ -16,6 +16,7 @@ export type EditorProps = Partial<EditorOptions> & {
     wrap: SxProps<Theme>;
   };
   conversationId?: string;
+  templateSet?: number;
 };
 
 export type EditorToolbarProps = {

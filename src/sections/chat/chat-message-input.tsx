@@ -71,6 +71,8 @@ export function ChatMessageInput({
   const { mutate: createConversation } = useCreateConversation();
   const { mutate: uploadMutation } = useUploadAttachment();
 
+  const [templateSet, setTemplateSet] = useState(0);
+
   const isNote = basicTabs.value === 'Note';
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -153,6 +155,7 @@ export function ChatMessageInput({
 
         const cleanedHtml = doc.body.innerHTML;
         setMessageInput(cleanedHtml);
+        setTemplateSet((prev) => prev + 1);
       },
     });
   }, [conversationId, generateTemplate]);
@@ -173,6 +176,7 @@ export function ChatMessageInput({
           onChange={(val) => setMessageInput(val)}
           conversationId={conversationId}
           placeholder={t('conversations.new.writeAMessage')}
+          templateSet={templateSet}
         />
       )}
       {basicTabs.value === 'Note' && (
@@ -184,6 +188,7 @@ export function ChatMessageInput({
           onChange={(val) => setNoteInput(val)}
           conversationId={conversationId}
           placeholder={t('conversations.new.writeANote')}
+          templateSet={templateSet}
         />
       )}
       <Stack direction="row" sx={{ justifyContent: 'space-between', p: 1 }}>
