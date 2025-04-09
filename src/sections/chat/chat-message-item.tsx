@@ -45,7 +45,7 @@ export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Prop
       variant="caption"
       sx={{ mb: 1, color: 'text.disabled', ...(!me && { mr: 'auto' }) }}
     >
-      {!me && `${fullName}, `}
+      {`${me ? message.user?.fullName : fullName}, `}
 
       {fDateTime(createdAt)}
     </Typography>
