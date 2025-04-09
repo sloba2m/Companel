@@ -1,6 +1,6 @@
 import LinkExtension from '@tiptap/extension-link';
-import ImageExtension from '@tiptap/extension-image';
 import StarterKitExtension from '@tiptap/starter-kit';
+import ImageResize from 'tiptap-extension-resize-image';
 import { useEditor, EditorContent } from '@tiptap/react';
 import TextAlignExtension from '@tiptap/extension-text-align';
 import PlaceholderExtension from '@tiptap/extension-placeholder';
@@ -66,7 +66,7 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
           placeholder,
           emptyEditorClass: editorClasses.content.placeholder,
         }),
-        ImageExtension.configure({
+        ImageResize.configure({
           HTMLAttributes: { class: editorClasses.content.image, style: 'width: auto' },
         }),
         TextAlignExtension.configure({ types: ['heading', 'paragraph'] }),
