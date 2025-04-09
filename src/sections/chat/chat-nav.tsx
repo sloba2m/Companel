@@ -136,12 +136,13 @@ export function ChatNav({
   const renderList = (
     <nav>
       <Box component="ul">
-        {conversations.map((conversation) => (
+        {conversations.map((conversation, i) => (
           <ChatNavItem
             key={conversation.id}
             conversation={conversation}
             selected={conversation.id === selectedConversationId}
             onCloseMobile={onCloseMobile}
+            odd={i % 2 !== 0}
           />
         ))}
       </Box>

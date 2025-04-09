@@ -16,6 +16,8 @@ import { useResponsive } from 'src/hooks/use-responsive';
 
 import { fDate } from 'src/utils/format-time';
 
+import { varAlpha } from 'src/theme/styles';
+
 import { Iconify } from 'src/components/iconify';
 
 import { AssignedStatus, ConversationStatus } from 'src/types/chat';
@@ -26,9 +28,10 @@ type Props = {
   selected: boolean;
   onCloseMobile: () => void;
   conversation: Conversation;
+  odd: boolean;
 };
 
-export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
+export function ChatNavItem({ selected, conversation, onCloseMobile, odd }: Props) {
   const mdUp = useResponsive('up', 'md');
 
   const router = useRouter();
@@ -66,7 +69,16 @@ export function ChatNavItem({ selected, conversation, onCloseMobile }: Props) {
   }, [assignedStatus]);
 
   return (
-    <Box component="li" sx={{ display: 'flex' }}>
+    <Box
+      component="li"
+      sx={(theme) => ({
+        display: 'flex',
+        borderBottom: `solid 1px ${theme.palette.divider}`,
+        backgroundColor: odd
+          ? varAlpha(theme.palette.background.neutralChannel, 0.3)
+          : theme.palette.background.paper,
+      })}
+    >
       <ListItemButton
         onClick={handleClickConversation}
         sx={{
