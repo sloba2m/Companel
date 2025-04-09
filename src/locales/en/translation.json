@@ -181,6 +181,8 @@
     "email": "Email",
     "websiteUrl": "Website Url",
     "save": "Save",
+    "previousConversation": "Previous conversation",
+    "goBack": "Go back",
     "fields": {
       "emailTemplate": "Template",
       "typeLabel": "Type",

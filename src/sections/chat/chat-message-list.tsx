@@ -2,10 +2,13 @@ import type { Contact } from 'src/types/contacts';
 
 import { useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
-import { Box, Alert } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
+import { Box, Alert, Button, Typography } from '@mui/material';
+
+import { useRouter } from 'src/routes/hooks';
 
 import { fToNow } from 'src/utils/format-time';
 
@@ -31,6 +34,11 @@ type Props = {
 export function ChatMessageList({ messages = [], contact, loading, events, fetchNextPage }: Props) {
   const { t } = useTranslation();
   const { data: user, isLoading } = useGetMe();
+  const router = useRouter();
+  const location = useLocation();
+  const { hash } = location;
+
+  const historyFrom = hash.startsWith('#historyFrom=') ? hash.replace('#historyFrom=', '') : null;
 
   const handleReachedTop = useCallback(() => {
     fetchNextPage();
@@ -138,6 +146,25 @@ export function ChatMessageList({ messages = [], contact, loading, events, fetch
           return null;
         })}
       </Scrollbar>
+
+      {historyFrom && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 10,
+            left: '50%',
+            transform: 'translate(-50%)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography variant="h6">{t('inbox.previousConversation')}</Typography>
+          <Button variant="contained" onClick={() => router.back()}>
+            {t('inbox.goBack')}
+          </Button>
+        </Box>
+      )}
 
       {/* <Lightbox
         slides={slides}

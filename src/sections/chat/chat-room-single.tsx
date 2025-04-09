@@ -283,7 +283,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
                   disablePadding
                   onClick={() => {
                     router.push(
-                      `${paths.navigation.inboxBase}?status=${conv.status === ConversationStatus.RESOLVED ? 'closed' : 'all'}&id=${conv.inboxId}&conversationId=${conv.id}`
+                      `${paths.navigation.inboxBase}?status=${conv.status === ConversationStatus.RESOLVED ? 'closed' : 'all'}&channel=${conv.channelType}&id=${conv.inboxId}&conversationId=${conv.id}#historyFrom=${conversation.id}`
                     );
                   }}
                 >

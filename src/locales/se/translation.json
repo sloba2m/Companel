@@ -190,6 +190,8 @@
     "email": "Email",
     "websiteUrl": "Webbplats-URL",
     "save": "Spara",
+    "previousConversation": "Tidigare konversation",
+    "goBack": "Gå tillbaka",
     "fields": {
       "emailTemplate": "Mall",
       "typeLabel": "Typ",

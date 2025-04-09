@@ -40,7 +40,9 @@ export function Layout({ slots, sx, ...other }: Props) {
     </Stack>
   );
 
-  const renderMain = <Stack sx={{ flex: '1 1 auto', minWidth: 0 }}>{slots.main}</Stack>;
+  const renderMain = (
+    <Stack sx={{ flex: '1 1 auto', minWidth: 0, position: 'relative' }}>{slots.main}</Stack>
+  );
 
   const renderDetails = <Stack sx={{ minHeight: 0 }}>{slots.details}</Stack>;
 
