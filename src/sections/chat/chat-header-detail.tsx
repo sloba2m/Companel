@@ -29,6 +29,7 @@ import { useDebouncedCallback } from 'src/routes/hooks/use-debounce';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { useGetMe } from 'src/actions/account';
 import { useGetUsers } from 'src/actions/users';
 import { useAssignUser, useResolveConversation } from 'src/actions/chat';
 
@@ -71,6 +72,7 @@ export function ChatHeaderDetail({
   const [onYesCallback, setOnYesCallback] = useState<() => void>(() => () => {});
 
   const { data: users } = useGetUsers();
+  const { data: me } = useGetMe();
   const { mutate: assignUserMutation } = useAssignUser();
   const { mutate: resolveMutation } = useResolveConversation();
 
@@ -172,6 +174,12 @@ export function ChatHeaderDetail({
 
   const isResolved = conversation.status === ConversationStatus.RESOLVED;
 
+  const sortedUsers = users?.slice().sort((a, b) => {
+    if (a.id === me?.id) return -1;
+    if (b.id === me?.id) return 1;
+    return 0;
+  });
+
   return (
     <>
       {mdDown && (
@@ -211,7 +219,7 @@ export function ChatHeaderDetail({
       >
         <Autocomplete
           sx={{ minWidth: '200px' }}
-          options={users ?? []}
+          options={sortedUsers ?? []}
           size="small"
           value={conversation.assignee}
           getOptionLabel={(option) => option.fullName}
@@ -229,11 +237,19 @@ export function ChatHeaderDetail({
           renderOption={(props, option, { selected }) => {
             // eslint-disable-next-line react/prop-types
             const { key, ...optionProps } = props;
+            const isMe = option.id === me?.id;
 
             return (
               <li key={key} {...optionProps}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                  {option.fullName}
+                  {isMe ? (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Iconify icon="mdi:hand-back-left" />
+                      {t('conversations.assignToMe')}
+                    </Box>
+                  ) : (
+                    option.fullName
+                  )}
                   {selected && <Iconify icon="mdi:check" />}
                 </Box>
               </li>
