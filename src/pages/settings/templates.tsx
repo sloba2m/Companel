@@ -55,12 +55,6 @@ export default function Page() {
       ...firstColumnMargin,
     },
     {
-      field: 'template',
-      headerName: t('templates.fields.template'),
-      width: 230,
-      sortable: false,
-    },
-    {
       field: 'logo',
       headerName: t('templates.fields.logo'),
       width: 160,
