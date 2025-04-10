@@ -7,9 +7,9 @@ import parse from 'html-react-parser';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
-import { Badge, useTheme } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import { Badge, Tooltip, useTheme } from '@mui/material';
 
 import { getInitials } from 'src/utils/helper';
 import { fDateTime } from 'src/utils/format-time';
@@ -153,9 +153,11 @@ export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Prop
         ...(me && { right: 0, left: 'unset' }),
       }}
     >
-      <IconButton size="small">
-        <Iconify icon="mdi:note" width={16} />
-      </IconButton>
+      <Tooltip title="Add note">
+        <IconButton size="small">
+          <Iconify icon="mdi:note" width={16} />
+        </IconButton>
+      </Tooltip>
     </Stack>
   );
 
