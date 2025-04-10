@@ -175,9 +175,6 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
         {initials}
       </Avatar>
       <Typography variant="subtitle1">{formData?.name}</Typography>
-      <IconButton>
-        <Iconify icon="ic:baseline-settings" />
-      </IconButton>
     </Stack>
   );
 
