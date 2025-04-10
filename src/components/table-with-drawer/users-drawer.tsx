@@ -15,7 +15,7 @@ import {
   FormControlLabel,
 } from '@mui/material';
 
-import { stylesMode } from 'src/theme/styles';
+import { varAlpha, stylesMode } from 'src/theme/styles';
 import { useGetRoles, useGetUserRoles, useUpdateUserRole } from 'src/actions/users';
 
 import { Iconify } from '../iconify';
@@ -99,7 +99,9 @@ export const UsersDrawer = ({ editData, onSave, onClose }: UsersDrawerProps) => 
           sx={(theme) => ({
             p: 2,
             backgroundColor: theme.vars.palette.primary.lighter,
-            [stylesMode.dark]: { backgroundColor: theme.vars.palette.primary.dark },
+            [stylesMode.dark]: {
+              backgroundColor: varAlpha(theme.vars.palette.primary.mainChannel, 0.1),
+            },
           })}
         >
           <FormGroup>
