@@ -116,7 +116,7 @@ export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
             autoPageSize
             columns={columns}
             rows={rows}
-            rowCount={totalCount}
+            rowCount={paginationModel ? totalCount : undefined}
             loading={isLoading}
             paginationMode={paginationModel ? 'server' : 'client'}
             paginationModel={!isLoading ? paginationModel : undefined}

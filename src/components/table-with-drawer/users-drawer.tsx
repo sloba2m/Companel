@@ -61,6 +61,10 @@ export const UsersDrawer = ({ editData, onSave, onClose }: UsersDrawerProps) => 
     userRoleMutation({ action: checked ? 'assign' : 'revoke', roleId, userId: editData.id });
   };
 
+  useEffect(() => {
+    setUserRoles(userRolesData?.map((r) => r.id) ?? []);
+  }, [userRolesData]);
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
