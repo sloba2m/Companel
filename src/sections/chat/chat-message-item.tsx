@@ -153,18 +153,6 @@ export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Prop
       }}
     >
       <IconButton size="small">
-        <Iconify icon="solar:reply-bold" width={16} />
-      </IconButton>
-
-      <IconButton size="small">
-        <Iconify icon="eva:smiling-face-fill" width={16} />
-      </IconButton>
-
-      <IconButton size="small">
-        <Iconify icon="solar:trash-bin-trash-bold" width={16} />
-      </IconButton>
-
-      <IconButton size="small">
         <Iconify icon="mdi:note" width={16} />
       </IconButton>
     </Stack>
