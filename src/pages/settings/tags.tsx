@@ -64,7 +64,13 @@ export default function Page() {
         columns={columns}
         entity={t('navigation.tags')}
         rows={filteredTags ?? []}
-        drawerContent={<TagsDrawer editData={editData} onSave={onSave} />}
+        drawerContent={
+          <TagsDrawer
+            editData={editData}
+            onSave={onSave}
+            onClose={() => tableDrawer.onCloseDrawer()}
+          />
+        }
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
         isInSubMenu

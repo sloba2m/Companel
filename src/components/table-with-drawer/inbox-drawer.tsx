@@ -9,6 +9,7 @@ import {
   Button,
   Checkbox,
   TextField,
+  IconButton,
   Typography,
   Autocomplete,
   FormControlLabel,
@@ -16,14 +17,17 @@ import {
 
 import { useGetTemplates } from 'src/actions/templates';
 
+import { Iconify } from '../iconify';
+
 interface InboxDrawerProps {
   editData: Inbox | null;
   onSave: (data: InboxPayload, id?: string) => void;
+  onClose: () => void;
 }
 
 const typeOptions: EmailProvider[] = ['MICROSOFT_OAUTH', 'MICROSOFT_BASIC'];
 
-export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
+export const InboxDrawer = ({ editData, onSave, onClose }: InboxDrawerProps) => {
   const { t } = useTranslation();
 
   const [formData, setFormData] = useState<InboxPayload>({
@@ -79,9 +83,14 @@ export const InboxDrawer = ({ editData, onSave }: InboxDrawerProps) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
-      <Typography variant="subtitle1">
-        {editData ? t('common.edit') : t('common.create')} {t('inbox.inboxInfo')}
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="subtitle1">
+          {editData ? t('common.edit') : t('common.create')} {t('inbox.inboxInfo')}
+        </Typography>
+        <IconButton onClick={onClose}>
+          <Iconify icon="mdi:close" />
+        </IconButton>
+      </Box>
 
       <TwoColumnBox>
         <Autocomplete

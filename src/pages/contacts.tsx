@@ -87,7 +87,13 @@ export default function Page() {
         columns={columns}
         entity={t('navigation.contacts')}
         rows={contactsData?.content ?? []}
-        drawerContent={<ContactDrawer editData={editData} onSave={onSave} />}
+        drawerContent={
+          <ContactDrawer
+            editData={editData}
+            onSave={onSave}
+            onClose={() => tableDrawer.onCloseDrawer()}
+          />
+        }
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
         isLoading={isLoading}

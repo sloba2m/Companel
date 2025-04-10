@@ -79,7 +79,14 @@ export default function Page() {
         entity={t('navigation.users')}
         columns={columns}
         rows={filteredUsers ?? []}
-        drawerContent={<UsersDrawer key={editData?.id} editData={editData} onSave={onSave} />}
+        drawerContent={
+          <UsersDrawer
+            key={editData?.id}
+            editData={editData}
+            onSave={onSave}
+            onClose={() => tableDrawer.onCloseDrawer()}
+          />
+        }
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
         isLoading={isLoading}

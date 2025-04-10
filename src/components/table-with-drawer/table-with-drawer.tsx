@@ -77,15 +77,11 @@ export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
         }}
       >
         <Typography variant="h4">{entity}</Typography>
-        <Button
-          variant="soft"
-          color="primary"
-          onClick={() =>
-            tableDrawer.isOpenDrawer ? tableDrawer.onCloseDrawer() : tableDrawer.onOpenDrawer()
-          }
-        >
-          {tableDrawer.isOpenDrawer ? t('common.close') : t('common.create')}
-        </Button>
+        {!tableDrawer.isOpenDrawer && (
+          <Button variant="soft" color="primary" onClick={() => tableDrawer.onOpenDrawer()}>
+            {t('common.create')}
+          </Button>
+        )}
       </Box>
       <Card sx={{ display: 'flex', flexGrow: 1, ml: isInSubMenu && lgUp ? '87px' : 0 }}>
         <Stack

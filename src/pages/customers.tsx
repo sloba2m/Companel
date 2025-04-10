@@ -99,7 +99,13 @@ export default function Page() {
         columns={columns}
         rows={customersData?.content ?? []}
         entity={t('navigation.customers')}
-        drawerContent={<CustomerDrawer editData={editData} onSave={onSave} />}
+        drawerContent={
+          <CustomerDrawer
+            editData={editData}
+            onSave={onSave}
+            onClose={() => tableDrawer.onCloseDrawer()}
+          />
+        }
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
         isLoading={isLoading}

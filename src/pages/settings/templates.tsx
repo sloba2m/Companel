@@ -100,7 +100,14 @@ export default function Page() {
         entity={t('navigation.templates')}
         columns={columns}
         rows={filteredTemplates ?? []}
-        drawerContent={<TemplatesDrawer editData={editData} onSave={onSave} key={editData?.id} />}
+        drawerContent={
+          <TemplatesDrawer
+            editData={editData}
+            onSave={onSave}
+            key={editData?.id}
+            onClose={() => tableDrawer.onCloseDrawer()}
+          />
+        }
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
         isInSubMenu

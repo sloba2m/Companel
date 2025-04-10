@@ -3,14 +3,17 @@ import type { Contact, ContactPayload } from 'src/types/contacts';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, TextField, IconButton, Typography } from '@mui/material';
+
+import { Iconify } from '../iconify';
 
 interface ContactDrawerProps {
   editData: Contact | null;
   onSave: (data: ContactPayload, id?: string) => void;
+  onClose: () => void;
 }
 
-export const ContactDrawer = ({ editData, onSave }: ContactDrawerProps) => {
+export const ContactDrawer = ({ editData, onSave, onClose }: ContactDrawerProps) => {
   const { t } = useTranslation();
 
   const [formData, setFormData] = useState<ContactPayload>({
@@ -33,9 +36,14 @@ export const ContactDrawer = ({ editData, onSave }: ContactDrawerProps) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
-      <Typography variant="subtitle1">
-        {editData ? t('common.edit') : t('common.create')} {t('contact.create')}
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="subtitle1">
+          {editData ? t('common.edit') : t('common.create')} {t('contact.create')}
+        </Typography>
+        <IconButton onClick={onClose}>
+          <Iconify icon="mdi:close" />
+        </IconButton>
+      </Box>
       <TextField
         label={t('contacts.name')}
         size="small"

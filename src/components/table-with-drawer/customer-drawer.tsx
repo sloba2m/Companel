@@ -3,14 +3,17 @@ import type { Customer, CustomerPayload } from 'src/types/customers';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, TextField, IconButton, Typography } from '@mui/material';
+
+import { Iconify } from '../iconify';
 
 interface CustomerDrawerProps {
   editData: Customer | null;
   onSave: (data: CustomerPayload, id?: string) => void;
+  onClose: () => void;
 }
 
-export const CustomerDrawer = ({ editData, onSave }: CustomerDrawerProps) => {
+export const CustomerDrawer = ({ editData, onSave, onClose }: CustomerDrawerProps) => {
   const { t } = useTranslation();
 
   const [formData, setFormData] = useState<CustomerPayload>({
@@ -35,9 +38,14 @@ export const CustomerDrawer = ({ editData, onSave }: CustomerDrawerProps) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
-      <Typography variant="subtitle1">
-        {editData ? t('common.edit') : t('common.create')} {t('customer.create')}
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="subtitle1">
+          {editData ? t('common.edit') : t('common.create')} {t('customer.create')}
+        </Typography>
+        <IconButton onClick={onClose}>
+          <Iconify icon="mdi:close" />
+        </IconButton>
+      </Box>
       <TextField
         label={t('customer.name')}
         size="small"

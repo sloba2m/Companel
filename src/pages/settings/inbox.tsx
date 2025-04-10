@@ -102,7 +102,13 @@ export default function Page() {
         columns={columns}
         rows={filteredInboxes}
         entity={t('navigation.inbox')}
-        drawerContent={<InboxDrawer editData={editData} onSave={onSave} />}
+        drawerContent={
+          <InboxDrawer
+            editData={editData}
+            onSave={onSave}
+            onClose={() => tableDrawer.onCloseDrawer()}
+          />
+        }
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
         isLoading={isLoading}

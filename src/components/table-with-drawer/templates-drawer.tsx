@@ -4,7 +4,16 @@ import parse from 'html-react-parser';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Stack, Alert, Button, TextField, Typography, AlertTitle } from '@mui/material';
+import {
+  Box,
+  Stack,
+  Alert,
+  Button,
+  TextField,
+  IconButton,
+  Typography,
+  AlertTitle,
+} from '@mui/material';
 
 import { Editor } from '../editor';
 import { Iconify } from '../iconify';
@@ -13,9 +22,10 @@ import { UploadBox } from '../upload-box';
 interface TemplatesDrawerProps {
   editData: Template | null;
   onSave: (data: TemplatePayload, id?: string) => void;
+  onClose: () => void;
 }
 
-export const TemplatesDrawer = ({ editData, onSave }: TemplatesDrawerProps) => {
+export const TemplatesDrawer = ({ editData, onSave, onClose }: TemplatesDrawerProps) => {
   const { t } = useTranslation();
 
   const [formData, setFormData] = useState<TemplatePayload>({
@@ -42,9 +52,14 @@ export const TemplatesDrawer = ({ editData, onSave }: TemplatesDrawerProps) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
-      <Typography variant="subtitle1">
-        {editData ? t('common.edit') : t('common.create')} {t('templates.fields.template')}
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="subtitle1">
+          {editData ? t('common.edit') : t('common.create')} {t('templates.fields.template')}
+        </Typography>
+        <IconButton onClick={onClose}>
+          <Iconify icon="mdi:close" />
+        </IconButton>
+      </Box>
 
       <TextField
         label={t('templates.fields.name')}

@@ -10,6 +10,7 @@ import {
   Switch,
   FormGroup,
   TextField,
+  IconButton,
   Typography,
   FormControlLabel,
 } from '@mui/material';
@@ -17,12 +18,15 @@ import {
 import { stylesMode } from 'src/theme/styles';
 import { useGetRoles, useGetUserRoles, useUpdateUserRole } from 'src/actions/users';
 
+import { Iconify } from '../iconify';
+
 interface UsersDrawerProps {
   editData: User | null;
   onSave: (data: UserPayload, id?: string) => void;
+  onClose: () => void;
 }
 
-export const UsersDrawer = ({ editData, onSave }: UsersDrawerProps) => {
+export const UsersDrawer = ({ editData, onSave, onClose }: UsersDrawerProps) => {
   const { t } = useTranslation();
 
   const [formData, setFormData] = useState<UserPayload>({
@@ -59,9 +63,14 @@ export const UsersDrawer = ({ editData, onSave }: UsersDrawerProps) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
-      <Typography variant="subtitle1">
-        {editData ? t('common.edit') : t('common.create')} {t('user.create')}
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="subtitle1">
+          {editData ? t('common.edit') : t('common.create')} {t('user.create')}
+        </Typography>
+        <IconButton onClick={onClose}>
+          <Iconify icon="mdi:close" />
+        </IconButton>
+      </Box>
 
       <TextField
         label={t('user.firstName')}
