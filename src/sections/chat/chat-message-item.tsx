@@ -11,6 +11,7 @@ import { Badge, useTheme } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
+import { getInitials } from 'src/utils/helper';
 import { fDateTime } from 'src/utils/format-time';
 
 import { Iconify } from 'src/components/iconify';
@@ -166,11 +167,8 @@ export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Prop
       key={message.id}
     >
       {!me && (
-        <Avatar alt={fullName} sx={{ width: 32, height: 32, mr: 2 }}>
-          {contact?.name
-            .split(' ')
-            .map((word) => word[0])
-            .join('')}
+        <Avatar alt={fullName} sx={{ width: 32, height: 32, mr: 2, fontSize: '1rem' }}>
+          {getInitials(contact?.name)}
         </Avatar>
       )}
 

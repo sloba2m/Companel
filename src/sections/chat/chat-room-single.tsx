@@ -31,6 +31,8 @@ import { useRouter } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import { getInitials } from 'src/utils/helper';
+
 import { useCreateTag } from 'src/actions/tags';
 import { useUpdateContact } from 'src/actions/contacts';
 import {
@@ -62,10 +64,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
   const collapseConv = useBoolean(true);
   const { value: isEdit, onTrue: onEditTrue, onFalse: onEditFalse } = useBoolean(false);
   const { contact } = conversation;
-  const initials = contact?.name
-    .split(' ')
-    .map((word) => word[0])
-    .join('');
+  const initials = getInitials(contact?.name);
 
   const [formData, setFormData] = useState<ContactPayload>({
     name: contact?.name ?? '',

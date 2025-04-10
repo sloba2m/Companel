@@ -128,3 +128,18 @@ export const merge = (target: any, ...sources: any[]): any => {
 
   return merge(target, ...sources);
 };
+
+export const getInitials = (name?: string): string => {
+  if (!name) return '';
+
+  const nameParts = name.split(' ').filter(Boolean);
+
+  if (nameParts.length === 1) {
+    return nameParts[0][0].toUpperCase();
+  }
+
+  const firstInitial = nameParts[0][0];
+  const lastInitial = nameParts[nameParts.length - 1][0];
+
+  return (firstInitial + lastInitial).toUpperCase();
+};

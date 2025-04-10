@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Menu, Avatar, MenuList, MenuItem, useTheme, IconButton } from '@mui/material';
 
+import { getInitials } from 'src/utils/helper';
 import getKeycloak from 'src/utils/keycloakService';
 
 import { useGetMe } from 'src/actions/account';
@@ -25,10 +26,7 @@ export const AvatarMenu = ({ sx }: AvatarMenuProps) => {
   const keycloak = getKeycloak();
   const { data } = useGetMe();
 
-  const initials = data?.fullName
-    .split(' ')
-    .map((word) => word[0])
-    .join('');
+  const initials = getInitials(data?.fullName);
 
   const onLogout = () => {
     keycloak.logout({

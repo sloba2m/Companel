@@ -29,6 +29,8 @@ import { useDebouncedCallback } from 'src/routes/hooks/use-debounce';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { getInitials } from 'src/utils/helper';
+
 import { useGetMe } from 'src/actions/account';
 import { useGetUsers } from 'src/actions/users';
 import { useAssignUser, useResolveConversation } from 'src/actions/chat';
@@ -115,10 +117,7 @@ export function ChatHeaderDetail({
 
   const { contact } = conversation;
 
-  const initials = contact?.name
-    .split(' ')
-    .map((word) => word[0])
-    .join('');
+  const initials = getInitials(contact?.name);
   const renderSingle = (
     <Stack direction="row" alignItems="center" spacing={2} mr={6}>
       {smUp && <Avatar alt={contact?.name}>{initials}</Avatar>}
