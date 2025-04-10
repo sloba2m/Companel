@@ -18,6 +18,7 @@ export interface LocalStorageFilters {
   id?: string[] | null;
   status?: string | null;
   channel?: string | null;
+  conversationId?: string | null;
 }
 
 const getInboxPath = (inboxFilters: LocalStorageFilters): string => {

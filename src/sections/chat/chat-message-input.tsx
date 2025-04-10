@@ -8,6 +8,7 @@ import {
   Stack,
   Button,
   Divider,
+  useTheme,
   IconButton,
   Typography,
 } from '@mui/material';
@@ -25,6 +26,7 @@ import { useTabs } from 'src/routes/hooks/use-tabs';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { varAlpha } from 'src/theme/styles';
 import {
   useSendMessage,
   useGenerateTemplate,
@@ -60,6 +62,7 @@ export function ChatMessageInput({
   const router = useRouter();
   const basicTabs = useTabs('Message');
   const isTablet = useResponsive('between', 'sm', 'md');
+  const theme = useTheme();
 
   const [messageInput, setMessageInput] = useState('');
   const [noteInput, setNoteInput] = useState('');
@@ -182,7 +185,12 @@ export function ChatMessageInput({
       {basicTabs.value === 'Note' && (
         <Editor
           key="note"
-          sx={{ maxHeight: 720, borderTop: 'none' }}
+          sx={{
+            maxHeight: 720,
+            borderTop: 'none',
+            outline: `1px solid ${varAlpha(theme.palette.warning.lightChannel, 0.7)}`,
+            outlineOffset: -1,
+          }}
           value={noteInput}
           resetValue={noteInput === ''}
           onChange={(val) => setNoteInput(val)}
@@ -205,14 +213,14 @@ export function ChatMessageInput({
           />
           {attachments.map((att) => (
             <Box
-              sx={(theme) => ({
+              sx={{
                 display: 'flex',
                 gap: 1,
                 alignItems: 'center',
                 px: 1,
                 backgroundColor: theme.vars.palette.background.default,
                 borderRadius: 1,
-              })}
+              }}
             >
               <Typography variant="body2">{att.fileName}</Typography>
             </Box>

@@ -56,6 +56,7 @@ export function ChatView() {
     channel: selectedChannel,
     id: selectedInboxes,
     status: selectedStatus,
+    conversationId: selectedConversationId,
   };
 
   setStorage('inboxQuery', filters);
