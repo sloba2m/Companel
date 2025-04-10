@@ -33,8 +33,6 @@ interface TableWithDrawerProps<RowData extends GridValidRowModel & WithId> {
 const DRAWER_WIDTH = '400px';
 const MOBILE_DRAWER_WIDTH = '300px';
 
-const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
-
 export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
   columns,
   rows,
