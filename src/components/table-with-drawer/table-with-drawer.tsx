@@ -115,13 +115,13 @@ export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
                 outline: 'none !important',
               },
             }}
-            pageSizeOptions={paginationModel ? PAGE_SIZE_OPTIONS : []}
+            autoPageSize
             columns={columns}
             rows={rows}
-            rowCount={paginationModel ? totalCount : undefined}
+            rowCount={totalCount}
             loading={isLoading}
             paginationMode={paginationModel ? 'server' : 'client'}
-            paginationModel={paginationModel}
+            paginationModel={!isLoading ? paginationModel : undefined}
             onPaginationModelChange={onPaginationModelChange}
             slotProps={{
               pagination: {
