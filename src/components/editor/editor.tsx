@@ -1,3 +1,4 @@
+import { Resizable } from 're-resizable';
 import LinkExtension from '@tiptap/extension-link';
 import StarterKitExtension from '@tiptap/starter-kit';
 import ImageResize from 'tiptap-extension-resize-image';
@@ -162,35 +163,53 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
             ...slotProps?.wrap,
           }}
         >
-          <StyledRoot
-            error={!!error}
-            disabled={!editable}
-            fullScreen={fullScreen}
-            className={editorClasses.root}
-            sx={{
-              ...sx,
-              '.ProseMirror': {
-                height: 250,
-                overflowY: 'auto',
+          <Resizable
+            enable={{ top: true }}
+            minHeight={150}
+            maxHeight={720}
+            defaultSize={{ height: 250, width: '100%' }}
+            style={{ width: '100%' }}
+            handleStyles={{
+              top: {
+                height: '8px',
+                top: '-4px',
+                background: 'transparent',
+                cursor: 'ns-resize',
               },
             }}
           >
-            <Toolbar
-              editor={editor}
-              fullItem={fullItem}
+            <StyledRoot
+              error={!!error}
+              disabled={!editable}
               fullScreen={fullScreen}
-              onUpload={handleUpload}
-              onToggleFullScreen={handleToggleFullScreen}
-            />
-            <EditorContent
-              ref={ref}
-              spellCheck="false"
-              autoComplete="off"
-              autoCapitalize="off"
-              editor={editor}
-              className={editorClasses.content.root}
-            />
-          </StyledRoot>
+              className={editorClasses.root}
+              sx={{
+                ...sx,
+                height: 'inherit',
+                '.ProseMirror': {
+                  height: '100%',
+                  overflowY: 'auto',
+                },
+              }}
+            >
+              <Toolbar
+                editor={editor}
+                fullItem={fullItem}
+                fullScreen={fullScreen}
+                onUpload={handleUpload}
+                onToggleFullScreen={handleToggleFullScreen}
+              />
+              <EditorContent
+                ref={ref}
+                spellCheck="false"
+                autoComplete="off"
+                autoCapitalize="off"
+                editor={editor}
+                height="100%"
+                className={editorClasses.content.root}
+              />
+            </StyledRoot>
+          </Resizable>
 
           {helperText && (
             <FormHelperText error={!!error} sx={{ px: 2 }}>
