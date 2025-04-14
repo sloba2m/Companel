@@ -29,9 +29,17 @@ type Props = {
   events: Event[];
   contact?: Contact | null;
   fetchNextPage: () => void;
+  conversationName: string;
 };
 
-export function ChatMessageList({ messages = [], contact, loading, events, fetchNextPage }: Props) {
+export function ChatMessageList({
+  messages = [],
+  contact,
+  loading,
+  events,
+  fetchNextPage,
+  conversationName,
+}: Props) {
   const { t } = useTranslation();
   const { data: user, isLoading } = useGetMe();
   const router = useRouter();
@@ -159,7 +167,7 @@ export function ChatMessageList({ messages = [], contact, loading, events, fetch
             justifyContent: 'center',
           }}
         >
-          <Typography variant="h6">{t('inbox.previousConversation')}</Typography>
+          <Typography variant="h6">{conversationName}</Typography>
           <Button variant="contained" onClick={() => router.back()}>
             {t('inbox.goBack')}
           </Button>

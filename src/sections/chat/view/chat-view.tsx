@@ -190,6 +190,7 @@ export function ChatView() {
                   events={chatSearch === '' ? eventHistoryData ?? [] : []}
                   contact={conversation?.contact}
                   loading={messagesLoading}
+                  conversationName={conversation?.subject ?? '-'}
                 />
               ) : (
                 <EmptyContent
