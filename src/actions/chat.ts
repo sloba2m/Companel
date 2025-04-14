@@ -14,6 +14,7 @@ import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tansta
 import { fetcher, mutationFetcher } from 'src/utils/axios';
 
 import { useMessageStore } from 'src/stores/messageStore';
+import { useConversationStore } from 'src/stores/conversationStore';
 
 import { ChannelFilters } from 'src/sections/chat/chat-nav';
 
@@ -38,6 +39,7 @@ export const useGetConversations = (
   { inboxIds, filter, contactId, channelType }: UseGetConversationsParams,
   options?: { enabled?: boolean }
 ) => {
+  const { setConversations } = useConversationStore();
   const params: Record<string, any> = {
     contactId,
   };
@@ -67,7 +69,7 @@ export const useGetConversations = (
     params.channelType = channelType;
   }
 
-  return useInfiniteQuery<ConversationData>({
+  const res = useInfiniteQuery<ConversationData>({
     queryKey: ['conversations', { inboxIds, filter, contactId, channelType }],
     queryFn: async ({ pageParam }) => {
       const url =
@@ -79,6 +81,17 @@ export const useGetConversations = (
     getNextPageParam: (lastPage) => lastPage.links?.next ?? undefined,
     enabled: options?.enabled !== false,
   });
+
+  const conversations = useMemo(
+    () => res.data?.pages.flatMap((page) => page.items) ?? [],
+    [res.data]
+  );
+
+  useEffect(() => {
+    setConversations(conversations);
+  }, [conversations, setConversations]);
+
+  return res;
 };
 
 interface MessagesData {

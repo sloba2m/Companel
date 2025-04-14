@@ -12,6 +12,7 @@ import { setStorage } from 'src/hooks/use-local-storage';
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { useMessageStore } from 'src/stores/messageStore';
+import { useConversationStore } from 'src/stores/conversationStore';
 import {
   useSearchChat,
   useGetMessages,
@@ -62,19 +63,13 @@ export function ChatView() {
 
   setStorage('inboxQuery', filters);
 
-  const {
-    data: conversationsData,
-    isLoading: conversationsLoading,
-    fetchNextPage: fetchNextConversationsPage,
-  } = useGetConversations(
-    { inboxIds: selectedInboxes, filter: selectedStatus, channelType: selectedChannel },
-    { enabled: !!selectedInboxes.length }
-  );
+  const { isLoading: conversationsLoading, fetchNextPage: fetchNextConversationsPage } =
+    useGetConversations(
+      { inboxIds: selectedInboxes, filter: selectedStatus, channelType: selectedChannel },
+      { enabled: !!selectedInboxes.length }
+    );
 
-  const conversations = useMemo(
-    () => conversationsData?.pages.flatMap((page) => page.items) ?? [],
-    [conversationsData]
-  );
+  const { conversations } = useConversationStore();
 
   const conversation = conversations.find((item) => item.id === selectedConversationId);
 

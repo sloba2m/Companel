@@ -1,4 +1,4 @@
-import type { Message } from 'src/types/chat';
+import type { Message, Conversation } from 'src/types/chat';
 import type { Notification } from 'src/types/notifications';
 
 import SockJS from 'sockjs-client/dist/sockjs';
@@ -8,6 +8,7 @@ import getKeycloak from 'src/utils/keycloakService';
 
 import { useMessageStore } from 'src/stores/messageStore';
 import { useNotificationStore } from 'src/stores/notification';
+import { useConversationStore } from 'src/stores/conversationStore';
 
 class WebSocketService {
   private client: Client | null = null;
@@ -65,9 +66,15 @@ class WebSocketService {
     this.reconnectDelay = 1000;
 
     this.subscribe('/user/queue/conversations', (msg) => {
-      const { type, payload } = JSON.parse(msg.body);
-      if (type === 'CONVERSATION_CREATED') console.log('conversation created');
-      else if (type === 'CONVERSATION_UPDATED') console.log('conversation updated');
+      const body = JSON.parse(msg.body);
+      const type = body.type as string;
+      const { addConversation, updateConversation } = useConversationStore.getState();
+      const conversation = body.payload as Conversation;
+      if (type === 'CONVERSATION_CREATED') {
+        addConversation(conversation);
+      } else if (type === 'CONVERSATION_UPDATED') {
+        updateConversation(conversation);
+      }
     });
 
     this.subscribe('/user/queue/notifications', (msg) => {
