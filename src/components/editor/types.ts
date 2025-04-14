@@ -17,6 +17,7 @@ export type EditorProps = Partial<EditorOptions> & {
   };
   conversationId?: string;
   templateSet?: number;
+  isResizible: boolean;
 };
 
 export type EditorToolbarProps = {

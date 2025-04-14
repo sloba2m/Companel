@@ -17,6 +17,7 @@ import { useUploadAttachment } from 'src/actions/chat';
 import { Toolbar } from './toolbar';
 import { StyledRoot } from './styles';
 import { editorClasses } from './classes';
+import ConditionalWrapper from '../utils/conditional-wrapper';
 
 import type { EditorProps } from './types';
 
@@ -37,6 +38,7 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
       value: content = '',
       templateSet,
       placeholder = 'Write a message...',
+      isResizible,
       ...other
     },
     ref
@@ -163,20 +165,27 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
             ...slotProps?.wrap,
           }}
         >
-          <Resizable
-            enable={{ top: true }}
-            minHeight={150}
-            maxHeight={720}
-            defaultSize={{ height: 250, width: '100%' }}
-            style={{ width: '100%' }}
-            handleStyles={{
-              top: {
-                height: '8px',
-                top: '-4px',
-                background: 'transparent',
-                cursor: 'ns-resize',
-              },
-            }}
+          <ConditionalWrapper
+            condition={isResizible}
+            wrapper={(children) => (
+              <Resizable
+                enable={{ top: true }}
+                minHeight={150}
+                maxHeight={720}
+                defaultSize={{ height: 250, width: '100%' }}
+                style={{ width: '100%' }}
+                handleStyles={{
+                  top: {
+                    height: '8px',
+                    top: '-4px',
+                    background: 'transparent',
+                    cursor: 'ns-resize',
+                  },
+                }}
+              >
+                {children}
+              </Resizable>
+            )}
           >
             <StyledRoot
               error={!!error}
@@ -209,7 +218,7 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
                 className={editorClasses.content.root}
               />
             </StyledRoot>
-          </Resizable>
+          </ConditionalWrapper>
 
           {helperText && (
             <FormHelperText error={!!error} sx={{ px: 2 }}>

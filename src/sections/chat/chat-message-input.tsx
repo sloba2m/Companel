@@ -180,6 +180,7 @@ export function ChatMessageInput({
           conversationId={conversationId}
           placeholder={t('conversations.new.writeAMessage')}
           templateSet={templateSet}
+          isResizible
         />
       )}
       {basicTabs.value === 'Note' && (
@@ -197,6 +198,7 @@ export function ChatMessageInput({
           conversationId={conversationId}
           placeholder={t('conversations.new.writeANote')}
           templateSet={templateSet}
+          isResizible
         />
       )}
       <Stack direction="row" sx={{ justifyContent: 'space-between', p: 1 }}>

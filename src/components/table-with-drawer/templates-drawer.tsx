@@ -83,6 +83,7 @@ export const TemplatesDrawer = ({ editData, onSave, onClose }: TemplatesDrawerPr
         value={formData.template}
         placeholder={`${t('templates.create')}...`}
         onChange={(value) => setFormData((prev) => ({ ...prev, template: value }))}
+        isResizible={false}
       />
 
       <Stack direction="row" spacing={2}>
