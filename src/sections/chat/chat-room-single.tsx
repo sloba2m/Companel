@@ -36,8 +36,8 @@ import { getInitials } from 'src/utils/helper';
 import { useCreateTag } from 'src/actions/tags';
 import { useUpdateContact } from 'src/actions/contacts';
 import {
-  useGetConversations,
   useAddTagToConversation,
+  useGetConversationsNoStore,
   useRemoveTagFromConversation,
 } from 'src/actions/chat';
 
@@ -81,7 +81,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
   const { mutate: addTagMutation } = useAddTagToConversation();
   const { mutate: removeTagMutation } = useRemoveTagFromConversation();
   const { mutate: createTag } = useCreateTag();
-  const { data: allContactConversations } = useGetConversations({
+  const { data: allContactConversations } = useGetConversationsNoStore({
     contactId: contact?.id,
     filter: StatusFilters.ALL,
     channelType: ChannelFilters.ALL,

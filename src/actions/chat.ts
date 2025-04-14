@@ -35,14 +35,13 @@ interface UseGetConversationsParams {
   contactId?: string;
 }
 
-export const useGetConversations = (
-  { inboxIds, filter, contactId, channelType }: UseGetConversationsParams,
-  options?: { enabled?: boolean }
-) => {
-  const { setConversations } = useConversationStore();
-  const params: Record<string, any> = {
-    contactId,
-  };
+const buildConversationParams = ({
+  inboxIds,
+  filter,
+  contactId,
+  channelType,
+}: UseGetConversationsParams): Record<string, any> => {
+  const params: Record<string, any> = { contactId };
 
   if (inboxIds?.length) {
     params.inboxIds = inboxIds;
@@ -69,8 +68,16 @@ export const useGetConversations = (
     params.channelType = channelType;
   }
 
-  const res = useInfiniteQuery<ConversationData>({
-    queryKey: ['conversations', { inboxIds, filter, contactId, channelType }],
+  return params;
+};
+
+const useConversationsQuery = (
+  params: Record<string, any>,
+  queryKey: any,
+  enabled: boolean = true
+) =>
+  useInfiniteQuery<ConversationData>({
+    queryKey,
     queryFn: async ({ pageParam }) => {
       const url =
         typeof pageParam === 'string' && pageParam !== '' ? pageParam : '/v2/conversation';
@@ -79,8 +86,16 @@ export const useGetConversations = (
     },
     initialPageParam: '',
     getNextPageParam: (lastPage) => lastPage.links?.next ?? undefined,
-    enabled: options?.enabled !== false,
+    enabled,
   });
+
+export const useGetConversations = (
+  args: UseGetConversationsParams,
+  options?: { enabled?: boolean }
+) => {
+  const { setConversations } = useConversationStore();
+  const params = buildConversationParams(args);
+  const res = useConversationsQuery(params, ['conversations', args], options?.enabled);
 
   const conversations = useMemo(
     () => res.data?.pages.flatMap((page) => page.items) ?? [],
@@ -92,6 +107,14 @@ export const useGetConversations = (
   }, [conversations, setConversations]);
 
   return res;
+};
+
+export const useGetConversationsNoStore = (
+  args: UseGetConversationsParams,
+  options?: { enabled?: boolean }
+) => {
+  const params = buildConversationParams(args);
+  return useConversationsQuery(params, ['conversations', args], options?.enabled);
 };
 
 interface MessagesData {
