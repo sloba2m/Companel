@@ -75,7 +75,7 @@ export function ChatNavItem({ selected, conversation, onCloseMobile, odd }: Prop
         display: 'flex',
         borderBottom: `solid 1px ${theme.palette.divider}`,
         backgroundColor: odd
-          ? varAlpha(theme.palette.background.neutralChannel, 0.3)
+          ? varAlpha(theme.palette.background.neutralChannel, 0.6)
           : theme.palette.background.paper,
       })}
     >

@@ -80,12 +80,10 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
         }),
       ],
       onUpdate({ editor: _editor }) {
-        console.log('ovde@');
         const html = _editor.getHTML();
         onChange?.(html);
       },
       onCreate({ editor: _editor }) {
-        console.log('ovde');
         _editor.commands.focus(2);
       },
       ...other,
