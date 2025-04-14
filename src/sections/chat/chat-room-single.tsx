@@ -225,7 +225,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
         <>
           <ListItemText primary={t('contact.phoneNumber')} secondary={formData.phoneNumber} />
           <ListItemText primary={t('contact.email')} secondary={formData.email} />
-          <ListItemText primary={t('customer.create')} secondary={contact.customer?.name} />
+          <ListItemText primary={t('customer.create')} secondary={contact?.customer?.name} />
         </>
       )}
     </Stack>

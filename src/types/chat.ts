@@ -10,7 +10,7 @@ export interface Conversation {
   channelType: 'EMAIL' | 'WIDGET';
   status: ConversationStatus;
   subject: string;
-  contact: Contact;
+  contact: Contact | null;
   assignee: User | null;
   tags: Tag[];
   createdAt: string;
