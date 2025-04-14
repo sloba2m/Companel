@@ -105,6 +105,7 @@ export function ChatNav({
     const params = new URLSearchParams(searchParams.toString());
 
     params.delete('id');
+    params.delete('conversationId');
 
     const newInboxes = selectedInboxes.includes(value)
       ? selectedInboxes.filter((item) => item !== value)
