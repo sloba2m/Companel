@@ -17,6 +17,7 @@ import {
 
 import { YesNoDialog } from 'src/components/Dialog/YesNoDialog';
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
+import { CustomerInfoDrawer } from 'src/components/table-with-drawer/customer-info-drawer';
 import {
   CustomerDrawer,
   TableWithDrawer,
@@ -44,8 +45,16 @@ export default function Page() {
   const { mutate: deleteMutation } = useDeleteCustomer();
 
   const tableDrawer = useTableDrawer<Customer>(deleteMutation);
-  const { handleEdit, handleDelete, editData, onYesNoToggle, yesNoOpen, handleDeleteConfirm } =
-    tableDrawer;
+  const {
+    handleEdit,
+    handleDelete,
+    editData,
+    onYesNoToggle,
+    yesNoOpen,
+    handleDeleteConfirm,
+    viewData,
+    handleView,
+  } = tableDrawer;
 
   const columns: GridColDef<Customer>[] = [
     {
@@ -100,13 +109,24 @@ export default function Page() {
         rows={customersData?.content ?? []}
         entity={t('navigation.customers')}
         drawerContent={
-          <CustomerDrawer
-            editData={editData}
-            onSave={onSave}
-            onClose={() => tableDrawer.onCloseDrawer()}
-          />
+          <>
+            {editData && (
+              <CustomerDrawer
+                editData={editData}
+                onSave={onSave}
+                onClose={() => tableDrawer.onCloseDrawer()}
+              />
+            )}
+            {viewData && (
+              <CustomerInfoDrawer
+                customer={viewData}
+                onClose={() => tableDrawer.onCloseDrawer()}
+                onEdit={handleEdit}
+              />
+            )}
+          </>
         }
-        onRowClick={() => console.log('row clicked')}
+        onRowClick={(row) => handleView(row)}
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
         isLoading={isLoading}
