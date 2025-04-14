@@ -16,6 +16,8 @@ import { useDebouncedCallback } from 'src/routes/hooks/use-debounce';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { varAlpha } from 'src/theme/styles';
+
 interface TableWithDrawerProps<RowData extends GridValidRowModel & WithId> {
   columns: GridColDef<RowData>[];
   rows: RowData[];
@@ -125,6 +127,14 @@ export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
               '& .MuiDataGrid-row:hover': {
                 cursor: 'pointer',
               },
+              '& .MuiDataGrid-row.odd-row': {
+                backgroundColor: (theme) => varAlpha(theme.palette.background.neutralChannel, 0.3),
+
+                '&:hover': {
+                  backgroundColor: (theme) =>
+                    varAlpha(theme.palette.background.neutralChannel, 0.6),
+                },
+              },
             }}
             autoPageSize
             columns={columns}
@@ -140,6 +150,9 @@ export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
                 labelRowsPerPage: t('common.rowsPerPage'),
               },
             }}
+            getRowClassName={(params) =>
+              params.indexRelativeToCurrentPage % 2 === 0 ? 'even-row' : 'odd-row'
+            }
           />
         </Stack>
 
