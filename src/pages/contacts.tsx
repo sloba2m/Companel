@@ -17,6 +17,7 @@ import {
 
 import { YesNoDialog } from 'src/components/Dialog/YesNoDialog';
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
+import { ContactInfoDrawer } from 'src/components/table-with-drawer/contact-info-drawer';
 import {
   ContactDrawer,
   TableWithDrawer,
@@ -44,8 +45,16 @@ export default function Page() {
   const { mutate: deleteMutation } = useDeleteContact();
 
   const tableDrawer = useTableDrawer<Contact>(deleteMutation);
-  const { handleEdit, handleDelete, editData, handleDeleteConfirm, onYesNoToggle, yesNoOpen } =
-    tableDrawer;
+  const {
+    handleEdit,
+    handleDelete,
+    editData,
+    handleDeleteConfirm,
+    onYesNoToggle,
+    yesNoOpen,
+    handleView,
+    viewData,
+  } = tableDrawer;
 
   const columns: GridColDef<Contact>[] = [
     {
@@ -88,12 +97,20 @@ export default function Page() {
         entity={t('navigation.contacts')}
         rows={contactsData?.content ?? []}
         drawerContent={
-          <ContactDrawer
-            editData={editData}
-            onSave={onSave}
-            onClose={() => tableDrawer.onCloseDrawer()}
-          />
+          <>
+            {editData && (
+              <ContactDrawer
+                editData={editData}
+                onSave={onSave}
+                onClose={() => tableDrawer.onCloseDrawer()}
+              />
+            )}
+            {viewData && (
+              <ContactInfoDrawer contact={viewData} onClose={() => tableDrawer.onCloseDrawer()} />
+            )}
+          </>
         }
+        onRowClick={(row) => handleView(row)}
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
         isLoading={isLoading}

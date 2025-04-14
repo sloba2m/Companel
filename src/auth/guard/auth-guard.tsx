@@ -7,6 +7,7 @@ import { usePathname } from 'src/routes/hooks';
 import getKeycloak from 'src/utils/keycloakService';
 
 import { useGetMe } from 'src/actions/account';
+import websocketService from 'src/services/webSocketService';
 
 import { SplashScreen } from 'src/components/loading-screen';
 
@@ -20,7 +21,7 @@ interface ExtendedKeycloakInitOptions extends KeycloakInitOptions {
 
 export function AuthGuard({ children }: Props) {
   const pathname = usePathname();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const keycloak = getKeycloak();
   useGetMe();
 
@@ -33,10 +34,25 @@ export function AuthGuard({ children }: Props) {
             silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
           } as ExtendedKeycloakInitOptions);
 
-          if (authenticated) setIsAuthenticated(true);
-          else keycloak.login({ redirectUri: window.location.origin + pathname });
-        } else setIsAuthenticated(true);
-      } catch (error) {
+          if (authenticated) {
+            setIsAuthenticated(true);
+
+            if (!websocketService.isReconnecting() && !websocketService.isConnected()) {
+              websocketService.init();
+              websocketService.connect();
+            }
+          } else {
+            keycloak.login({ redirectUri: window.location.origin + pathname });
+          }
+        } else {
+          setIsAuthenticated(true);
+
+          if (!websocketService.isReconnecting() && !websocketService.isConnected()) {
+            websocketService.init();
+            websocketService.connect();
+          }
+        }
+      } catch (error: any) {
         if (
           process.env.NODE_ENV === 'development' &&
           error.message === `A 'Keycloak' instance can only be initialized once.`

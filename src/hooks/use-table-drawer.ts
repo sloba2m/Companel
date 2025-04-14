@@ -16,6 +16,8 @@ export type UseTableDrawerReturn<T extends WithId> = {
   onYesNoToggle: () => void;
   isOpenDrawer: boolean;
   editData: T | null;
+  viewData: T | null;
+  handleView: (data: T) => void;
 };
 
 export const useTableDrawer = <T extends WithId>(
@@ -23,6 +25,7 @@ export const useTableDrawer = <T extends WithId>(
 ): UseTableDrawerReturn<T> => {
   const { onFalse, onTrue, value } = useBoolean(false);
   const [editData, setEditData] = useState<T | null>(null);
+  const [viewData, setViewData] = useState<T | null>(null);
 
   const { value: yesNoOpen, onToggle: onYesNoToggle } = useBoolean(false);
   const idToDelete = useRef<string | null>(null);
@@ -49,6 +52,11 @@ export const useTableDrawer = <T extends WithId>(
     setEditData(data);
   };
 
+  const handleView = (data: T) => {
+    onTrue();
+    setViewData(data);
+  };
+
   return {
     onCloseDrawer,
     onOpenDrawer: onTrue,
@@ -59,5 +67,7 @@ export const useTableDrawer = <T extends WithId>(
     onYesNoToggle,
     isOpenDrawer: value,
     editData,
+    viewData,
+    handleView,
   };
 };

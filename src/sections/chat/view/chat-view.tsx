@@ -11,6 +11,7 @@ import { setStorage } from 'src/hooks/use-local-storage';
 
 import { CONFIG } from 'src/config-global';
 import { DashboardContent } from 'src/layouts/dashboard';
+import { useMessageStore } from 'src/stores/messageStore';
 import {
   useSearchChat,
   useGetMessages,
@@ -77,11 +78,8 @@ export function ChatView() {
 
   const conversation = conversations.find((item) => item.id === selectedConversationId);
 
-  const {
-    data: messages,
-    isLoading: messagesLoading,
-    fetchNextPage,
-  } = useGetMessages(selectedConversationId);
+  const { isLoading: messagesLoading, fetchNextPage } = useGetMessages(selectedConversationId);
+  const { messages } = useMessageStore();
 
   const { data: eventHistoryData } = useGetEventHistory(selectedConversationId);
 
@@ -105,12 +103,7 @@ export function ChatView() {
         .reverse();
     }
 
-    return (
-      messages?.pages
-        .flatMap((page) => page.items)
-        .slice()
-        .reverse() ?? []
-    );
+    return messages;
   }, [chatSearch, chatSearchData, messages]);
 
   const [composeFormState, setComposeFormState] = useState<ComposeFormState>({

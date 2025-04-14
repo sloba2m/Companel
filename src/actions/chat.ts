@@ -8,9 +8,12 @@ import type {
   Conversation,
 } from 'src/types/chat';
 
+import { useMemo, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 
 import { fetcher, mutationFetcher } from 'src/utils/axios';
+
+import { useMessageStore } from 'src/stores/messageStore';
 
 import { ChannelFilters } from 'src/sections/chat/chat-nav';
 
@@ -83,8 +86,11 @@ interface MessagesData {
   links: LinksInfo;
 }
 
-export const useGetMessages = (conversationId: string) =>
-  useInfiniteQuery<MessagesData>({
+export const useGetMessages = (conversationId: string) => {
+  console.log('first');
+  const { setMessages } = useMessageStore();
+
+  const res = useInfiniteQuery<MessagesData>({
     queryKey: ['messages', conversationId],
     queryFn: async ({ pageParam }) => {
       const url =
@@ -97,6 +103,22 @@ export const useGetMessages = (conversationId: string) =>
     getNextPageParam: (lastPage) => lastPage.links?.next ?? undefined,
     enabled: conversationId !== '',
   });
+
+  const reversedMessages = useMemo(
+    () =>
+      res.data?.pages
+        .flatMap((page) => page.items)
+        .slice()
+        .reverse() ?? [],
+    [res.data]
+  );
+
+  useEffect(() => {
+    setMessages(reversedMessages);
+  }, [reversedMessages, setMessages]);
+
+  return res;
+};
 
 interface TagToConversationInput {
   conversationId: string;

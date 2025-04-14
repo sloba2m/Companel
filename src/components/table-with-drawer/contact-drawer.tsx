@@ -57,7 +57,7 @@ export const ContactDrawer = ({ editData, onSave, onClose }: ContactDrawerProps)
         onChange={handleChange('phoneNumber')}
       />
       <TextField
-        label={t('contacts.phoneNumber')}
+        label={t('contacts.email')}
         size="small"
         type="email"
         value={formData.email ?? ''}

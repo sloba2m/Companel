@@ -28,6 +28,7 @@ interface TableWithDrawerProps<RowData extends GridValidRowModel & WithId> {
   totalCount?: number;
   onPaginationModelChange?: (model: GridPaginationModel, details: GridCallbackDetails) => void;
   onSearch?: (value: string) => void;
+  onRowClick: (row: RowData) => void;
 }
 
 const DRAWER_WIDTH = '400px';
@@ -45,6 +46,7 @@ export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
   totalCount,
   onPaginationModelChange,
   onSearch,
+  onRowClick,
 }: TableWithDrawerProps<RowData>) => {
   const { t } = useTranslation();
   const mdUp = useResponsive('up', 'md');
@@ -115,6 +117,7 @@ export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
             }}
             autoPageSize
             columns={columns}
+            onRowClick={(params) => onRowClick(params.row)}
             rows={rows}
             rowCount={paginationModel ? totalCount : undefined}
             loading={isLoading}
