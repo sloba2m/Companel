@@ -33,7 +33,7 @@ export default function Page() {
   const { t } = useTranslation();
   const [search, setSearch] = useState('');
 
-  const { data: templatesData } = useGetTemplates();
+  const { data: templatesData, isLoading } = useGetTemplates();
   const { mutate: createMutation } = useCreateTemplate();
   const { mutate: uploadLogoMutation } = useUploadLogo();
   const { mutate: updateMutation } = useUpdateTemplate();
@@ -102,6 +102,7 @@ export default function Page() {
             onClose={() => tableDrawer.onCloseDrawer()}
           />
         }
+        isLoading={isLoading}
         onRowClick={() => console.log('row clicked')}
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}

@@ -25,7 +25,7 @@ export default function Page() {
 
   const [search, setSearch] = useState('');
 
-  const { data: tagsData } = useGetTags();
+  const { data: tagsData, isLoading } = useGetTags();
   const { mutate: createMutation } = useCreateTag();
   const { mutate: updateMutation } = useUpdateTag();
   const { mutate: deleteMutation } = useDeleteTag();
@@ -73,6 +73,7 @@ export default function Page() {
         columns={columns}
         entity={t('navigation.tags')}
         rows={filteredTags ?? []}
+        isLoading={isLoading}
         drawerContent={
           <>
             {editData && (
