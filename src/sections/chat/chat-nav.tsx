@@ -30,6 +30,7 @@ import { useRouter, useSearchParams } from 'src/routes/hooks';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { useInboxStore } from 'src/stores/inboxStore';
 import { useGetWorkspaceData } from 'src/actions/account';
 
 import { Iconify } from 'src/components/iconify';
@@ -91,7 +92,8 @@ export function ChatNav({
 
   const { openMobile, onCloseMobile, onCloseDesktop } = collapseNav;
 
-  const { data: workspaceData, isLoading } = useGetWorkspaceData();
+  const { isLoading } = useGetWorkspaceData();
+  const { inboxes } = useInboxStore();
 
   useEffect(() => {
     if (!mdUp) {
@@ -235,9 +237,9 @@ export function ChatNav({
           <Typography variant="body1" fontWeight="fontWeightBold" sx={{ ml: 1, mb: 0.5 }}>
             Inbox selector
           </Typography>
-          {!isLoading && workspaceData && (
+          {!isLoading && (
             <>
-              {workspaceData?.inboxes.map((inbox) => (
+              {inboxes.map((inbox) => (
                 <MenuItem key={inbox.id} onClick={() => handleInboxChange(inbox.id)}>
                   <Checkbox checked={selectedInboxes.includes(inbox.id)} />
                   {inbox.name}

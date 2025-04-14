@@ -38,7 +38,6 @@ export function AuthGuard({ children }: Props) {
             setIsAuthenticated(true);
 
             if (!websocketService.isReconnecting() && !websocketService.isConnected()) {
-              websocketService.init();
               websocketService.connect();
             }
           } else {
@@ -48,7 +47,6 @@ export function AuthGuard({ children }: Props) {
           setIsAuthenticated(true);
 
           if (!websocketService.isReconnecting() && !websocketService.isConnected()) {
-            websocketService.init();
             websocketService.connect();
           }
         }

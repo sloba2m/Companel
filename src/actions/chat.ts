@@ -87,7 +87,6 @@ interface MessagesData {
 }
 
 export const useGetMessages = (conversationId: string) => {
-  console.log('first');
   const { setMessages } = useMessageStore();
 
   const res = useInfiniteQuery<MessagesData>({

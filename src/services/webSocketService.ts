@@ -20,14 +20,7 @@ class WebSocketService {
 
   private token: string | null = null;
 
-  private test: string | null = null;
-
   keycloak = getKeycloak();
-
-  public init(): void {
-    console.log('WebSocketService init');
-    this.test = 'test';
-  }
 
   public isReconnecting(): boolean {
     return this.reconnectTimeout !== null;
@@ -77,10 +70,6 @@ class WebSocketService {
 
     this.subscribe('/user/queue/notifications', (msg) => {
       console.log('notification received', JSON.parse(msg.body));
-    });
-
-    this.subscribe('/user/queue/inboxes', (msg) => {
-      console.log('inbox updated', JSON.parse(msg.body));
     });
 
     this.subscribe('/user/queue/messages', (msg) => {
