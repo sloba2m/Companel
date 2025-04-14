@@ -107,6 +107,7 @@ export default function Page() {
             )}
             {viewData && (
               <ContactInfoDrawer
+                key={viewData.id}
                 contact={viewData}
                 onClose={() => tableDrawer.onCloseDrawer()}
                 onEdit={handleEdit}

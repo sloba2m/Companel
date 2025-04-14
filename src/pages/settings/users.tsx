@@ -14,6 +14,7 @@ import { useGetUsers, useCreateUser, useUpdateUser, useDeleteUser } from 'src/ac
 
 import { YesNoDialog } from 'src/components/Dialog/YesNoDialog';
 import { UsersDrawer, TableWithDrawer } from 'src/components/table-with-drawer';
+import { UserInfoDrawer } from 'src/components/table-with-drawer/user-info-drawer';
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
 
 // ----------------------------------------------------------------------
@@ -31,8 +32,16 @@ export default function Page() {
   const { mutate: deleteMutation } = useDeleteUser();
 
   const tableDrawer = useTableDrawer<User>(deleteMutation);
-  const { handleEdit, handleDelete, editData, handleDeleteConfirm, onYesNoToggle, yesNoOpen } =
-    tableDrawer;
+  const {
+    handleEdit,
+    handleDelete,
+    editData,
+    handleDeleteConfirm,
+    onYesNoToggle,
+    yesNoOpen,
+    viewData,
+    handleView,
+  } = tableDrawer;
 
   const filteredUsers = usersData?.filter((user) =>
     user.fullName.toLowerCase().includes(search.toLowerCase())
@@ -80,14 +89,26 @@ export default function Page() {
         columns={columns}
         rows={filteredUsers ?? []}
         drawerContent={
-          <UsersDrawer
-            key={editData?.id}
-            editData={editData}
-            onSave={onSave}
-            onClose={() => tableDrawer.onCloseDrawer()}
-          />
+          <>
+            {editData && (
+              <UsersDrawer
+                key={editData?.id}
+                editData={editData}
+                onSave={onSave}
+                onClose={() => tableDrawer.onCloseDrawer()}
+              />
+            )}
+            {viewData && (
+              <UserInfoDrawer
+                key={viewData.id}
+                user={viewData}
+                onClose={() => tableDrawer.onCloseDrawer()}
+                onEdit={handleEdit}
+              />
+            )}
+          </>
         }
-        onRowClick={() => console.log('row clicked')}
+        onRowClick={(row) => handleView(row)}
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
         isLoading={isLoading}
