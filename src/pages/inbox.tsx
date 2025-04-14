@@ -6,6 +6,9 @@ import { useRouter } from 'src/routes/hooks';
 
 import { getStorage } from 'src/hooks/use-local-storage';
 
+import { useInboxStore } from 'src/stores/inboxStore';
+import { useGetWorkspaceData } from 'src/actions/account';
+
 import { LoadingScreen } from 'src/components/loading-screen';
 
 import { ChatView } from 'src/sections/chat/view';
@@ -54,8 +57,20 @@ export default function Page() {
   const storage = getStorage('inboxQuery') as LocalStorageFilters;
   const [redirected, setRedirected] = useState(false);
 
+  useGetWorkspaceData();
+  const { inboxes } = useInboxStore();
+
   useEffect(() => {
-    router.push(getInboxPath(storage));
+    const firstInboxId = inboxes?.[0]?.id;
+
+    const newStorage: LocalStorageFilters = {
+      id: storage?.id?.length ? storage.id : firstInboxId ? [firstInboxId] : [],
+      status: storage?.status ?? 'all',
+      channel: storage?.channel ?? 'all',
+      conversationId: storage?.conversationId ?? null,
+    };
+
+    router.push(getInboxPath(newStorage));
     setRedirected(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
