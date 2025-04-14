@@ -190,6 +190,7 @@ export function ChatMessageInput({
             maxHeight: 720,
             borderTop: 'none',
             outline: `1px solid ${varAlpha(theme.palette.warning.lightChannel, 0.7)}`,
+            backgroundColor: varAlpha(theme.palette.warning.lightChannel, 0.1),
             outlineOffset: -1,
           }}
           value={noteInput}
