@@ -3,6 +3,7 @@ import type { Message } from 'src/types/chat';
 import type { Contact } from 'src/types/contacts';
 
 import parse from 'html-react-parser';
+import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -29,6 +30,7 @@ type Props = {
 
 export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Props) {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const { me, senderDetails, hasImage } = useMessage({
     message,
@@ -46,7 +48,7 @@ export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Prop
       variant="caption"
       sx={{ mb: 1, color: 'text.disabled', ...(!me && { mr: 'auto' }) }}
     >
-      {`${me ? message.user?.fullName : fullName}, `}
+      {`${me ? message.user?.fullName ?? t('inbox.deletedUser') : fullName ?? t('inbox.deletedContact')}, `}
 
       {fDateTime(createdAt)}
     </Typography>

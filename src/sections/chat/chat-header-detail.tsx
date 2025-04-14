@@ -122,7 +122,10 @@ export function ChatHeaderDetail({
     <Stack direction="row" alignItems="center" spacing={2} mr={6}>
       {smUp && <Avatar alt={contact?.name}>{initials}</Avatar>}
 
-      <ListItemText primary={contact?.name} secondary={contact?.email} />
+      <ListItemText
+        primary={contact?.name ?? t('inbox.deletedContact')}
+        secondary={contact?.email ?? '-'}
+      />
     </Stack>
   );
 

@@ -183,6 +183,8 @@
     "save": "Save",
     "previousConversation": "Previous conversation",
     "goBack": "Go back",
+    "deletedContact": "Deleted contact",
+    "deletedUser": "Deleted user",
     "fields": {
       "emailTemplate": "Template",
       "typeLabel": "Type",

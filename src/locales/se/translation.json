@@ -192,6 +192,8 @@
     "save": "Spara",
     "previousConversation": "Tidigare konversation",
     "goBack": "Gå tillbaka",
+    "deletedContact": "Raderad kontakt",
+    "deletedUser": "Raderad användare",
     "fields": {
       "emailTemplate": "Mall",
       "typeLabel": "Typ",

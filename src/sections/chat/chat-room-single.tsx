@@ -173,7 +173,9 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
       <Avatar alt={contact?.name} sx={{ width: 48, height: 48 }}>
         {initials}
       </Avatar>
-      <Typography variant="subtitle1">{formData?.name}</Typography>
+      <Typography variant="subtitle1">
+        {contact ? formData?.name : t('inbox.deletedContact')}
+      </Typography>
     </Stack>
   );
 
@@ -181,13 +183,13 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
     <Stack spacing={2} sx={{ px: 2, py: 2.5 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography>{t('conversations.previous.contactInfo')}</Typography>
-        {!isEdit && (
+        {!isEdit && conversation.contact && (
           <IconButton onClick={onEditTrue}>
             <Iconify icon="ic:baseline-edit" fontSize="small" />
           </IconButton>
         )}
       </Box>
-      {isEdit ? (
+      {isEdit && formData ? (
         <>
           <TextField
             fullWidth
@@ -225,7 +227,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
         <>
           <ListItemText primary={t('contact.phoneNumber')} secondary={formData.phoneNumber} />
           <ListItemText primary={t('contact.email')} secondary={formData.email} />
-          <ListItemText primary={t('customer.create')} secondary={contact?.customer?.name} />
+          <ListItemText primary={t('customer.create')} secondary={contact?.customer?.name ?? '-'} />
         </>
       )}
     </Stack>
