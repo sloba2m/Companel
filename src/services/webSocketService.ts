@@ -1,4 +1,5 @@
 import type { Message } from 'src/types/chat';
+import type { Notification } from 'src/types/notifications';
 
 import SockJS from 'sockjs-client/dist/sockjs';
 import { Client, type IFrame, type IMessage, type StompSubscription } from '@stomp/stompjs';
@@ -6,6 +7,7 @@ import { Client, type IFrame, type IMessage, type StompSubscription } from '@sto
 import getKeycloak from 'src/utils/keycloakService';
 
 import { useMessageStore } from 'src/stores/messageStore';
+import { useNotificationStore } from 'src/stores/notification';
 
 class WebSocketService {
   private client: Client | null = null;
@@ -69,13 +71,15 @@ class WebSocketService {
     });
 
     this.subscribe('/user/queue/notifications', (msg) => {
-      console.log('notification received', JSON.parse(msg.body));
+      const body = JSON.parse(msg.body);
+      const notification = body.payload as Notification;
+      const { addNotification } = useNotificationStore.getState();
+      addNotification(notification);
     });
 
     this.subscribe('/user/queue/messages', (msg) => {
       const body = JSON.parse(msg.body);
       const message = body.payload as Message;
-      console.log('message received', message);
       const { addMessages } = useMessageStore.getState();
       addMessages([message]);
     });

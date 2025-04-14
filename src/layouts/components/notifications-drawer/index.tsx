@@ -13,6 +13,7 @@ import IconButton from '@mui/material/IconButton';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import { useNotificationStore } from 'src/stores/notification';
 import { useGetNotifications } from 'src/actions/notifications';
 
 import { Iconify } from 'src/components/iconify';
@@ -27,7 +28,8 @@ export function NotificationsDrawer({ sx, ...other }: IconButtonProps) {
   const drawer = useBoolean();
   const theme = useTheme();
 
-  const { data: notifications } = useGetNotifications();
+  useGetNotifications();
+  const { notifications } = useNotificationStore();
 
   const totalUnRead = (notifications ?? []).filter((item) => item.isRead === false).length;
 
