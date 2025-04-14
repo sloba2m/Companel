@@ -19,6 +19,7 @@ import {
 
 import { YesNoDialog } from 'src/components/Dialog/YesNoDialog';
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
+import { TemplateInfoDrawer } from 'src/components/table-with-drawer/templates-info-drawer';
 import {
   TableWithDrawer,
   TemplatesDrawer,
@@ -39,8 +40,16 @@ export default function Page() {
   const { mutate: updateMutation } = useUpdateTemplate();
   const { mutate: deleteMutation } = useDeleteTemplate();
   const tableDrawer = useTableDrawer<Template>(deleteMutation);
-  const { handleEdit, editData, handleDelete, yesNoOpen, onYesNoToggle, handleDeleteConfirm } =
-    tableDrawer;
+  const {
+    handleEdit,
+    editData,
+    handleDelete,
+    yesNoOpen,
+    onYesNoToggle,
+    handleDeleteConfirm,
+    handleView,
+    viewData,
+  } = tableDrawer;
 
   const filteredTemplates = templatesData?.filter((template) =>
     template.name.toLowerCase().includes(search.toLowerCase())
@@ -95,15 +104,27 @@ export default function Page() {
         columns={columns}
         rows={filteredTemplates ?? []}
         drawerContent={
-          <TemplatesDrawer
-            editData={editData}
-            onSave={onSave}
-            key={editData?.id}
-            onClose={() => tableDrawer.onCloseDrawer()}
-          />
+          <>
+            {editData && (
+              <TemplatesDrawer
+                editData={editData}
+                onSave={onSave}
+                key={editData?.id}
+                onClose={() => tableDrawer.onCloseDrawer()}
+              />
+            )}
+            {viewData && (
+              <TemplateInfoDrawer
+                key={viewData.id}
+                template={viewData}
+                onClose={() => tableDrawer.onCloseDrawer()}
+                onEdit={handleEdit}
+              />
+            )}
+          </>
         }
         isLoading={isLoading}
-        onRowClick={() => console.log('row clicked')}
+        onRowClick={(row) => handleView(row)}
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
         isInSubMenu
