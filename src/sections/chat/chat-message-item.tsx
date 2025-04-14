@@ -22,7 +22,7 @@ import { useMessage } from './hooks/use-message';
 
 type Props = {
   message: Message;
-  contact?: Contact;
+  contact?: Contact | null;
   onOpenLightbox: (value: string) => void;
   user: User;
 };

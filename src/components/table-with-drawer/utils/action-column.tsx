@@ -17,7 +17,12 @@ export function getActionColumn<T extends GridValidRowModel>(
     headerAlign: 'center',
     renderCell: (params) => (
       <>
-        <IconButton onClick={() => onEdit(params.row)}>
+        <IconButton
+          onClick={(e) => {
+            e.stopPropagation();
+            onEdit(params.row);
+          }}
+        >
           <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
             <path
               fill="currentColor"
@@ -26,7 +31,12 @@ export function getActionColumn<T extends GridValidRowModel>(
           </svg>
         </IconButton>
         {onDelete && (
-          <IconButton onClick={() => onDelete(params.row)}>
+          <IconButton
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(params.row);
+            }}
+          >
             <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
               <path
                 fill="currentColor"

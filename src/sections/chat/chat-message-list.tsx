@@ -27,7 +27,7 @@ type Props = {
   loading: boolean;
   messages: Message[];
   events: Event[];
-  contact?: Contact;
+  contact?: Contact | null;
   fetchNextPage: () => void;
 };
 

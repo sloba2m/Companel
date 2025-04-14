@@ -106,6 +106,7 @@ export default function Page() {
             onClose={() => tableDrawer.onCloseDrawer()}
           />
         }
+        onRowClick={() => console.log('row clicked')}
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
         isLoading={isLoading}

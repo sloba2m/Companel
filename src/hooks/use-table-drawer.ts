@@ -49,11 +49,13 @@ export const useTableDrawer = <T extends WithId>(
 
   const handleEdit = (data: T) => {
     onTrue();
+    setViewData(null);
     setEditData(data);
   };
 
   const handleView = (data: T) => {
     onTrue();
+    setEditData(null);
     setViewData(data);
   };
 

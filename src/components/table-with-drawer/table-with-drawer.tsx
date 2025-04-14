@@ -114,6 +114,9 @@ export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
               '&.MuiDataGrid-root .MuiDataGrid-cell:focus-within': {
                 outline: 'none !important',
               },
+              '& .MuiDataGrid-row:hover': {
+                cursor: 'pointer',
+              },
             }}
             autoPageSize
             columns={columns}

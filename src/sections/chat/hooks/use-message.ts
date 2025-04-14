@@ -6,7 +6,7 @@ import type { Contact } from 'src/types/contacts';
 type Props = {
   currentUserId: string;
   message: Message;
-  contact?: Contact;
+  contact?: Contact | null;
 };
 
 export function useMessage({ message, contact, currentUserId }: Props) {
