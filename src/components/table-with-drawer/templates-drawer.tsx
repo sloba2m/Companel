@@ -51,7 +51,16 @@ export const TemplatesDrawer = ({ editData, onSave, onClose }: TemplatesDrawerPr
     : editData?.logoUrl;
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2, gap: 2 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        p: 2,
+        gap: 2,
+        overflowY: 'auto',
+      }}
+    >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="subtitle1">
           {editData ? t('common.edit') : t('common.create')} {t('templates.fields.template')}

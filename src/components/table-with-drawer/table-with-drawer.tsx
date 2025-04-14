@@ -83,7 +83,15 @@ export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
           </Button>
         )}
       </Box>
-      <Card sx={{ display: 'flex', flexGrow: 1, ml: isInSubMenu && lgUp ? '87px' : 0 }}>
+      <Card
+        sx={{
+          display: 'flex',
+          flexGrow: 1,
+          ml: isInSubMenu && lgUp ? '87px' : 0,
+          height: '100%',
+          position: 'relative',
+        }}
+      >
         <Stack
           direction="column"
           sx={(theme) => ({
@@ -139,6 +147,9 @@ export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
           <Box
             sx={(theme) => ({
               minHeight: 0,
+              position: 'absolute',
+              height: '100%',
+              right: 0,
               flex: '1 1 auto',
               width: DRAWER_WIDTH,
               display: { xs: 'none', md: 'flex' },
