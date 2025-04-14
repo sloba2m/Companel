@@ -119,7 +119,14 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
         { file, conversationId },
         {
           onSuccess: (data) => {
-            editor?.chain().focus().setImage({ src: data.url }).run();
+            editor
+              ?.chain()
+              .focus()
+              .setImage({
+                src: data.url,
+                ...({ style: 'width: 300px' } as Record<string, any>),
+              })
+              .run();
           },
         }
       );

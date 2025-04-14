@@ -87,6 +87,7 @@ export function ImageBlock({ editor, onUpload }: Props) {
               if (acceptedFiles.length > 0) {
                 const file = acceptedFiles[0];
                 onUpload(file);
+                handleClosePopover();
               }
             }}
           />
