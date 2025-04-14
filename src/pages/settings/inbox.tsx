@@ -16,6 +16,7 @@ import { CONFIG } from 'src/config-global';
 import { useGetInboxes, useCreateInbox, useUpdateInbox, useDeleteInbox } from 'src/actions/inbox';
 
 import { YesNoDialog } from 'src/components/Dialog/YesNoDialog';
+import { InboxInfoDrawer } from 'src/components/table-with-drawer/inbox-info-drawer';
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
 import { InboxDrawer, TableWithDrawer, firstColumnMargin } from 'src/components/table-with-drawer';
 
@@ -23,7 +24,7 @@ import { InboxDrawer, TableWithDrawer, firstColumnMargin } from 'src/components/
 
 const metadata = { title: `Inbox settings - ${CONFIG.site.name}` };
 
-type InboxWithId = Inbox & WithId;
+export type InboxWithId = Inbox & WithId;
 
 export default function Page() {
   const { t } = useTranslation();
@@ -41,8 +42,16 @@ export default function Page() {
   const { mutate: deleteMutation } = useDeleteInbox();
 
   const tableDrawer = useTableDrawer<InboxWithId>(deleteMutation);
-  const { handleEdit, handleDelete, editData, handleDeleteConfirm, yesNoOpen, onYesNoToggle } =
-    tableDrawer;
+  const {
+    handleEdit,
+    handleDelete,
+    editData,
+    handleDeleteConfirm,
+    yesNoOpen,
+    onYesNoToggle,
+    handleView,
+    viewData,
+  } = tableDrawer;
 
   const inboxesWithId: InboxWithId[] =
     inboxesData?.content.map((inbox) => ({
@@ -103,13 +112,25 @@ export default function Page() {
         rows={filteredInboxes}
         entity={t('navigation.inbox')}
         drawerContent={
-          <InboxDrawer
-            editData={editData}
-            onSave={onSave}
-            onClose={() => tableDrawer.onCloseDrawer()}
-          />
+          <>
+            {editData && (
+              <InboxDrawer
+                editData={editData}
+                onSave={onSave}
+                onClose={() => tableDrawer.onCloseDrawer()}
+              />
+            )}
+            {viewData && (
+              <InboxInfoDrawer
+                key={viewData.id}
+                inbox={viewData}
+                onClose={() => tableDrawer.onCloseDrawer()}
+                onEdit={handleEdit}
+              />
+            )}
+          </>
         }
-        onRowClick={() => console.log('row clicked')}
+        onRowClick={(row) => handleView(row)}
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
         isLoading={isLoading}
