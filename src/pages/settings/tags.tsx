@@ -12,6 +12,7 @@ import { CONFIG } from 'src/config-global';
 import { useGetTags, useCreateTag, useUpdateTag, useDeleteTag } from 'src/actions/tags';
 
 import { YesNoDialog } from 'src/components/Dialog/YesNoDialog';
+import { TagInfoDrawer } from 'src/components/table-with-drawer/tag-info-drawer';
 import { getActionColumn } from 'src/components/table-with-drawer/utils/action-column';
 import { TagsDrawer, TableWithDrawer, firstColumnMargin } from 'src/components/table-with-drawer';
 
@@ -29,8 +30,16 @@ export default function Page() {
   const { mutate: updateMutation } = useUpdateTag();
   const { mutate: deleteMutation } = useDeleteTag();
   const tableDrawer = useTableDrawer<Tag>(deleteMutation);
-  const { handleEdit, editData, handleDelete, handleDeleteConfirm, yesNoOpen, onYesNoToggle } =
-    tableDrawer;
+  const {
+    handleEdit,
+    editData,
+    handleDelete,
+    handleDeleteConfirm,
+    yesNoOpen,
+    onYesNoToggle,
+    viewData,
+    handleView,
+  } = tableDrawer;
 
   const onSave = (name: string, id?: string) => {
     if (editData && id) updateMutation({ id, name });
@@ -65,13 +74,25 @@ export default function Page() {
         entity={t('navigation.tags')}
         rows={filteredTags ?? []}
         drawerContent={
-          <TagsDrawer
-            editData={editData}
-            onSave={onSave}
-            onClose={() => tableDrawer.onCloseDrawer()}
-          />
+          <>
+            {editData && (
+              <TagsDrawer
+                editData={editData}
+                onSave={onSave}
+                onClose={() => tableDrawer.onCloseDrawer()}
+              />
+            )}
+            {viewData && (
+              <TagInfoDrawer
+                key={viewData.id}
+                tag={viewData}
+                onClose={() => tableDrawer.onCloseDrawer()}
+                onEdit={handleEdit}
+              />
+            )}
+          </>
         }
-        onRowClick={() => console.log('row clicked')}
+        onRowClick={(row) => handleView(row)}
         onSearch={(val) => setSearch(val)}
         tableDrawer={tableDrawer}
         isInSubMenu
