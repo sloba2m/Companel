@@ -65,7 +65,7 @@ export default function Page() {
 
     const newStorage: LocalStorageFilters = {
       id: storage?.id?.length ? storage.id : firstInboxId ? [firstInboxId] : [],
-      status: storage?.status ?? 'all',
+      status: storage?.status ?? 'mine',
       channel: storage?.channel ?? 'all',
       conversationId: storage?.conversationId ?? null,
     };
