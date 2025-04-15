@@ -27,7 +27,13 @@ export const CustomerDrawer = ({ editData, onSave, onClose }: CustomerDrawerProp
   useEffect(() => {
     if (editData) {
       const { name, customCustomerId, phoneNumber, email, domain } = editData;
-      setFormData({ name, customCustomerId, phoneNumber, email, domain });
+      setFormData({
+        name: name ?? '',
+        customCustomerId: customCustomerId ?? '',
+        phoneNumber: phoneNumber ?? '',
+        email: email ?? '',
+        domain: domain ?? '',
+      });
     }
   }, [editData]);
 

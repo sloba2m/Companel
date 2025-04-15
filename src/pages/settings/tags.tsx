@@ -76,19 +76,18 @@ export default function Page() {
         isLoading={isLoading}
         drawerContent={
           <>
-            {editData && (
-              <TagsDrawer
-                editData={editData}
-                onSave={onSave}
-                onClose={() => tableDrawer.onCloseDrawer()}
-              />
-            )}
-            {viewData && (
+            {viewData ? (
               <TagInfoDrawer
                 key={viewData.id}
                 tag={viewData}
                 onClose={() => tableDrawer.onCloseDrawer()}
                 onEdit={handleEdit}
+              />
+            ) : (
+              <TagsDrawer
+                editData={editData}
+                onSave={onSave}
+                onClose={() => tableDrawer.onCloseDrawer()}
               />
             )}
           </>

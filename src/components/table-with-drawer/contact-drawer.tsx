@@ -30,7 +30,7 @@ export const ContactDrawer = ({ editData, onSave, onClose }: ContactDrawerProps)
   useEffect(() => {
     if (editData) {
       const { name, phoneNumber, email } = editData;
-      setFormData({ name, phoneNumber, email });
+      setFormData({ name, phoneNumber: phoneNumber ?? '', email });
     }
   }, [editData]);
 

@@ -90,20 +90,19 @@ export default function Page() {
         rows={filteredUsers ?? []}
         drawerContent={
           <>
-            {editData && (
-              <UsersDrawer
-                key={editData?.id}
-                editData={editData}
-                onSave={onSave}
-                onClose={() => tableDrawer.onCloseDrawer()}
-              />
-            )}
-            {viewData && (
+            {viewData ? (
               <UserInfoDrawer
                 key={viewData.id}
                 user={viewData}
                 onClose={() => tableDrawer.onCloseDrawer()}
                 onEdit={handleEdit}
+              />
+            ) : (
+              <UsersDrawer
+                key={editData?.id}
+                editData={editData}
+                onSave={onSave}
+                onClose={() => tableDrawer.onCloseDrawer()}
               />
             )}
           </>

@@ -105,20 +105,19 @@ export default function Page() {
         rows={filteredTemplates ?? []}
         drawerContent={
           <>
-            {editData && (
-              <TemplatesDrawer
-                editData={editData}
-                onSave={onSave}
-                key={editData?.id}
-                onClose={() => tableDrawer.onCloseDrawer()}
-              />
-            )}
-            {viewData && (
+            {viewData ? (
               <TemplateInfoDrawer
                 key={viewData.id}
                 template={viewData}
                 onClose={() => tableDrawer.onCloseDrawer()}
                 onEdit={handleEdit}
+              />
+            ) : (
+              <TemplatesDrawer
+                editData={editData}
+                onSave={onSave}
+                key={editData?.id}
+                onClose={() => tableDrawer.onCloseDrawer()}
               />
             )}
           </>

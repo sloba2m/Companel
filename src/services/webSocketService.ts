@@ -41,13 +41,11 @@ class WebSocketService {
 
     this.client = new Client({
       webSocketFactory: () => new SockJS(`${import.meta.env.VITE_API_DOMAIN}/ws`),
-      debug: (str) => console.log(str),
       connectHeaders: {
         Authorization: `Bearer ${this.token}`,
       },
     });
 
-    console.log(this.token);
     this.client.connectHeaders = {
       Authorization: `Bearer ${this.token}`,
     };

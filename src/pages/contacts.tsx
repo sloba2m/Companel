@@ -98,19 +98,18 @@ export default function Page() {
         rows={contactsData?.content ?? []}
         drawerContent={
           <>
-            {editData && (
-              <ContactDrawer
-                editData={editData}
-                onSave={onSave}
-                onClose={() => tableDrawer.onCloseDrawer()}
-              />
-            )}
-            {viewData && (
+            {viewData ? (
               <ContactInfoDrawer
                 key={viewData.id}
                 contact={viewData}
                 onClose={() => tableDrawer.onCloseDrawer()}
                 onEdit={handleEdit}
+              />
+            ) : (
+              <ContactDrawer
+                editData={editData}
+                onSave={onSave}
+                onClose={() => tableDrawer.onCloseDrawer()}
               />
             )}
           </>

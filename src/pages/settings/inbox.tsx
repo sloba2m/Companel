@@ -113,19 +113,18 @@ export default function Page() {
         entity={t('navigation.inbox')}
         drawerContent={
           <>
-            {editData && (
-              <InboxDrawer
-                editData={editData}
-                onSave={onSave}
-                onClose={() => tableDrawer.onCloseDrawer()}
-              />
-            )}
-            {viewData && (
+            {viewData ? (
               <InboxInfoDrawer
                 key={viewData.id}
                 inbox={viewData}
                 onClose={() => tableDrawer.onCloseDrawer()}
                 onEdit={handleEdit}
+              />
+            ) : (
+              <InboxDrawer
+                editData={editData}
+                onSave={onSave}
+                onClose={() => tableDrawer.onCloseDrawer()}
               />
             )}
           </>

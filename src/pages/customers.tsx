@@ -110,19 +110,18 @@ export default function Page() {
         entity={t('navigation.customers')}
         drawerContent={
           <>
-            {editData && (
-              <CustomerDrawer
-                editData={editData}
-                onSave={onSave}
-                onClose={() => tableDrawer.onCloseDrawer()}
-              />
-            )}
-            {viewData && (
+            {viewData ? (
               <CustomerInfoDrawer
                 key={viewData.id}
                 customer={viewData}
                 onClose={() => tableDrawer.onCloseDrawer()}
                 onEdit={handleEdit}
+              />
+            ) : (
+              <CustomerDrawer
+                editData={editData}
+                onSave={onSave}
+                onClose={() => tableDrawer.onCloseDrawer()}
               />
             )}
           </>
