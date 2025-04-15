@@ -10,7 +10,6 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import { useInboxStore } from 'src/stores/inboxStore';
 import { useGetWorkspaceData } from 'src/actions/account';
 
 import { Iconify } from 'src/components/iconify';
@@ -33,8 +32,7 @@ export function ChatHeaderCompose({ onOpenMobile, onChange, values }: Props) {
   const { t } = useTranslation();
   const mdDown = useResponsive('down', 'md');
 
-  useGetWorkspaceData();
-  const { inboxes } = useInboxStore();
+  const { data: workspaceData } = useGetWorkspaceData();
 
   return (
     <>
@@ -71,7 +69,7 @@ export function ChatHeaderCompose({ onOpenMobile, onChange, values }: Props) {
             <Autocomplete
               fullWidth
               sx={{ flex: 1 }}
-              options={inboxes}
+              options={workspaceData?.inboxes ?? []}
               value={values.inbox}
               disableClearable
               getOptionLabel={(option) => option.name}
