@@ -96,12 +96,9 @@ export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
       >
         <Stack
           direction="column"
-          sx={(theme) => ({
-            width: tableDrawer.isOpenDrawer && mdUp ? `calc(100% - ${DRAWER_WIDTH})` : '100%',
-            transition: theme.transitions.create(['width'], {
-              duration: theme.transitions.duration.short,
-            }),
-          })}
+          sx={{
+            width: '100%',
+          }}
         >
           <Stack
             direction={mdUp ? 'row' : 'column'}
@@ -156,36 +153,15 @@ export const TableWithDrawer = <RowData extends GridValidRowModel & WithId>({
           />
         </Stack>
 
-        {mdUp ? (
-          <Box
-            sx={(theme) => ({
-              minHeight: 0,
-              position: 'absolute',
-              height: '100%',
-              right: 0,
-              flex: '1 1 auto',
-              width: DRAWER_WIDTH,
-              display: { xs: 'none', md: 'flex' },
-              borderLeft: `solid 1px ${theme.vars.palette.divider}`,
-              transition: theme.transitions.create(['width'], {
-                duration: theme.transitions.duration.short,
-              }),
-              ...(!tableDrawer.isOpenDrawer && { width: '0px' }),
-            })}
-          >
-            {tableDrawer.isOpenDrawer && drawerContent}
-          </Box>
-        ) : (
-          <Drawer
-            anchor="right"
-            open={tableDrawer.isOpenDrawer}
-            onClose={tableDrawer.onCloseDrawer}
-            slotProps={{ backdrop: { invisible: true } }}
-            PaperProps={{ sx: { width: MOBILE_DRAWER_WIDTH } }}
-          >
-            {drawerContent}
-          </Drawer>
-        )}
+        <Drawer
+          anchor="right"
+          open={tableDrawer.isOpenDrawer}
+          onClose={tableDrawer.onCloseDrawer}
+          slotProps={{ backdrop: { invisible: true } }}
+          PaperProps={{ sx: { width: mdUp ? DRAWER_WIDTH : MOBILE_DRAWER_WIDTH } }}
+        >
+          {drawerContent}
+        </Drawer>
       </Card>
     </Container>
   );
