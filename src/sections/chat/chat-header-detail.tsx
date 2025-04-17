@@ -78,7 +78,7 @@ export function ChatHeaderDetail({
   const { mutate: assignUserMutation } = useAssignUser();
   const { mutate: resolveMutation } = useResolveConversation();
 
-  const { collapseDesktop, onCollapseDesktop, onOpenMobile } = collapseNav;
+  const { onOpenMobile } = collapseNav;
 
   const openYesNoDialog = (callback: () => void) => {
     setOnYesCallback(() => callback);
@@ -86,11 +86,7 @@ export function ChatHeaderDetail({
   };
 
   const handleToggleNav = useCallback(() => {
-    if (lgUp) {
-      onCollapseDesktop();
-    } else {
-      onOpenMobile();
-    }
+    onOpenMobile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lgUp]);
 
@@ -271,11 +267,7 @@ export function ChatHeaderDetail({
 
         <Box sx={{ margin: 'auto 0' }}>
           <IconButton onClick={handleToggleNav} size="small">
-            <Iconify
-              width={24}
-              icon="ic:baseline-arrow-back-ios-new"
-              sx={{ transform: `rotate(${!collapseDesktop ? '180deg' : '0'})` }}
-            />
+            <Iconify width={24} icon="ic:baseline-arrow-back-ios-new" />
           </IconButton>
         </Box>
       </Stack>
