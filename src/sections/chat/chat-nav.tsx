@@ -6,8 +6,9 @@ import type {
   InfiniteQueryObserverResult,
 } from '@tanstack/react-query';
 
+import parse from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
-import { useState, useEffect, useCallback } from 'react';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -22,20 +23,27 @@ import {
   TextField,
   IconButton,
   Typography,
+  Autocomplete,
   InputAdornment,
 } from '@mui/material';
 
 import { paths } from 'src/routes/paths';
 import { useRouter, useSearchParams } from 'src/routes/hooks';
+import { useDebouncedCallback } from 'src/routes/hooks/use-debounce';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { transform } from 'src/utils/htmlHelper';
+
+import { useSearchInboxes } from 'src/actions/chat';
 import { useInboxStore } from 'src/stores/inboxStore';
 import { useGetWorkspaceData } from 'src/actions/account';
 
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { CustomTabs } from 'src/components/custom-tabs';
+
+import { ChannelFilters } from 'src/types/chat';
 
 import { ChatNavItem } from './chat-nav-item';
 import { ChatNavItemSkeleton } from './chat-skeleton';
@@ -53,12 +61,6 @@ export enum StatusFilters {
   UNHANDLED = 'unhandled',
   MINE = 'mine',
   CLOSED = 'closed',
-}
-
-export enum ChannelFilters {
-  ALL = 'all',
-  EMAIL = 'EMAIL',
-  WIDGET = 'WIDGET',
 }
 
 type Props = {
@@ -94,6 +96,8 @@ export function ChatNav({
 
   const { isLoading } = useGetWorkspaceData();
   const { inboxes } = useInboxStore();
+
+  const [inboxSearch, setInboxSearch] = useState('');
 
   useEffect(() => {
     if (!mdUp) {
@@ -167,6 +171,21 @@ export function ChatNav({
   }, [fetchNextPage]);
   const { conversationsEndRef } = useChatNavScroll(conversations, handleReachedTop);
 
+  const debouncedSearch = useDebouncedCallback((value: string) => {
+    setInboxSearch(value);
+  }, 300);
+
+  const { data: inboxSearchData } = useSearchInboxes(inboxSearch);
+
+  const searchOptions = useMemo(() => {
+    if (!inboxSearchData) return [];
+
+    return [
+      ...inboxSearchData.messages.map((msg) => ({ ...msg, type: 'message' })),
+      ...inboxSearchData.conversations.map((conv) => ({ ...conv, type: 'conversation' })),
+    ];
+  }, [inboxSearchData]);
+
   const renderContent = (
     <>
       <Box
@@ -177,19 +196,87 @@ export function ChatNav({
           gap: 1,
         }}
       >
-        <TextField
-          placeholder={t('conversations.new.searchInboxes')}
-          margin="none"
-          size="small"
+        <Autocomplete
           sx={{ flexGrow: 1 }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Iconify icon="ic:baseline-search" width={24} />
-              </InputAdornment>
-            ),
+          freeSolo
+          disableClearable
+          options={searchOptions}
+          groupBy={(option) => option.type}
+          renderGroup={(params) => (
+            <li key={params.key}>
+              <Typography
+                variant="subtitle2"
+                sx={{ px: 2, py: 1, backgroundColor: 'background.neutral' }}
+              >
+                {params.group === 'message' ? t('inbox.messages') : t('inbox.conversations')}
+              </Typography>
+              {params.children}
+            </li>
+          )}
+          getOptionLabel={(option) =>
+            typeof option === 'string'
+              ? option
+              : option.highlights?.[0]?.fragments?.[0]?.replace(/\n/g, ' ') || ''
+          }
+          onInputChange={(event, value) => {
+            debouncedSearch(value);
           }}
+          onChange={(e, value) => {
+            if (typeof value === 'string' || !value) return;
+
+            if ('message' in value) {
+              // it's a SearchChat
+              // console.log('Selected message:', value.message);
+            } else if ('conversation' in value) {
+              // it's a SearchInboxHighlight
+              // console.log('Selected conversation:', value.conversation);
+            }
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              placeholder={t('conversations.new.searchInboxes')}
+              size="small"
+              margin="none"
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Iconify icon="ic:baseline-search" width={24} />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          )}
+          renderOption={(props, option) => {
+            if (typeof option === 'string') return null;
+
+            const isMessage = 'message' in option;
+            const key = isMessage ? option.message.id : option.conversation.id;
+            const highlight = option.highlights?.[0]?.fragments?.[0] ?? '';
+
+            return (
+              <MenuItem {...props} key={key}>
+                <Typography variant="caption" sx={{ mr: 1 }}>
+                  {isMessage ? `${option.message.sender.name}:` : ''}
+                </Typography>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {parse(highlight, { replace: transform })}
+                </Box>
+              </MenuItem>
+            );
+          }}
+          loadingText={t('inbox.noResults')}
+          loading
         />
+
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <IconButton onClick={() => router.push(paths.navigation.inbox)}>
             <Iconify icon="ic:baseline-add" width={24} />

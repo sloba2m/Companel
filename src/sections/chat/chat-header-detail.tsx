@@ -1,11 +1,10 @@
 import type { User } from 'src/types/users';
-import type { DOMNode } from 'html-react-parser';
 import type { SnackbarCloseReason } from '@mui/material';
 import type { SearchChat, Conversation } from 'src/types/chat';
 
+import parse from 'html-react-parser';
 import { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import parse, { domToReact } from 'html-react-parser';
 
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
@@ -32,6 +31,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { useResponsive } from 'src/hooks/use-responsive';
 
 import { getInitials } from 'src/utils/helper';
+import { transform } from 'src/utils/htmlHelper';
 
 import { useGetMe } from 'src/actions/account';
 import { useGetUsers } from 'src/actions/users';
@@ -181,30 +181,6 @@ export function ChatHeaderDetail({
     if (b.id === me?.id) return 1;
     return 0;
   });
-
-  const transform = (node: DOMNode) => {
-    if (node.type === 'tag' && node.name === 'br') {
-      return <></>;
-    }
-
-    if (node.type === 'tag' && node.name === 'div') {
-      return (
-        <Box sx={{ display: 'flex' }}>
-          {domToReact(node.children as DOMNode[], { replace: transform })}
-        </Box>
-      );
-    }
-
-    if (node.type === 'tag' && node.name === 'p') {
-      return (
-        <Box component="p" sx={{ my: 0 }}>
-          {domToReact(node.children as DOMNode[], { replace: transform })}
-        </Box>
-      );
-    }
-
-    return node;
-  };
 
   return (
     <>

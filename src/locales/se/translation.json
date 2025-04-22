@@ -195,6 +195,8 @@
     "deletedContact": "Raderad kontakt",
     "deletedUser": "Raderad användare",
     "noResults": "Inga resultat",
+    "messages": "Meddelanden",
+    "conversations": "Konversationer",
     "fields": {
       "emailTemplate": "Mall",
       "typeLabel": "Typ",

@@ -65,6 +65,12 @@ export enum RevisionType {
   STATUS_UPDATE = 'STATUS_UPDATE',
 }
 
+export enum ChannelFilters {
+  ALL = 'all',
+  EMAIL = 'EMAIL',
+  WIDGET = 'WIDGET',
+}
+
 export interface Event {
   status: string;
   assigneeId: string;
@@ -93,7 +99,25 @@ interface SearchHighlight {
   fragments: string[];
 }
 
+export interface SearchMessage extends Message {
+  sender: {
+    id: string;
+    type: string;
+    name: string;
+  };
+}
+
 export interface SearchChat {
-  message: Message;
+  message: SearchMessage;
   highlights: SearchHighlight[];
+}
+
+export interface SearchInboxHighlight {
+  conversation: Conversation;
+  highlights: SearchHighlight[];
+}
+
+export interface SearchInboxes {
+  conversations: SearchInboxHighlight[];
+  messages: SearchChat[];
 }

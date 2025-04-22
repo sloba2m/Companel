@@ -6,6 +6,7 @@ import type {
   SearchChat,
   MessageType,
   Conversation,
+  SearchInboxes,
 } from 'src/types/chat';
 
 import { useMemo, useEffect } from 'react';
@@ -16,7 +17,7 @@ import { fetcher, mutationFetcher } from 'src/utils/axios';
 import { useMessageStore } from 'src/stores/messageStore';
 import { useConversationStore } from 'src/stores/conversationStore';
 
-import { ChannelFilters } from 'src/sections/chat/chat-nav';
+import { ChannelFilters } from 'src/types/chat';
 
 interface LinksInfo {
   self: string;
@@ -329,4 +330,11 @@ export const useSearchChat = ({ conversationId, query }: UseSearchChatInput) =>
     queryKey: ['chat-search', { conversationId, query }],
     queryFn: () => fetcher([`/search/conversation/${conversationId}`, { params: { query } }]),
     enabled: conversationId !== '' && query !== '',
+  });
+
+export const useSearchInboxes = (query: string) =>
+  useQuery<SearchInboxes>({
+    queryKey: ['inbox-search', { query }],
+    queryFn: () => fetcher([`/search/conversation`, { params: { query } }]),
+    enabled: query !== '',
   });

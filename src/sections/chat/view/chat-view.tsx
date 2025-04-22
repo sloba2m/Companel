@@ -1,3 +1,4 @@
+import type { ChannelFilters } from 'src/types/chat';
 import type { WorkspaceInbox } from 'src/actions/account';
 import type { LocalStorageFilters } from 'src/pages/inbox';
 
@@ -32,7 +33,7 @@ import { ChatHeaderDetail } from '../chat-header-detail';
 import { ChatHeaderCompose } from '../chat-header-compose';
 import { useCollapseNav } from '../hooks/use-collapse-nav';
 
-import type { StatusFilters, ChannelFilters } from '../chat-nav';
+import type { StatusFilters } from '../chat-nav';
 
 // ----------------------------------------------------------------------
 

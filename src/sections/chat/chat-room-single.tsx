@@ -43,10 +43,10 @@ import {
 
 import { Iconify } from 'src/components/iconify';
 
-import { ConversationStatus } from 'src/types/chat';
+import { ChannelFilters, ConversationStatus } from 'src/types/chat';
 
 import { CollapseButton } from './styles';
-import { StatusFilters, ChannelFilters } from './chat-nav';
+import { StatusFilters } from './chat-nav';
 
 // ----------------------------------------------------------------------
 

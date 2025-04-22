@@ -186,6 +186,8 @@
     "deletedContact": "Deleted contact",
     "deletedUser": "Deleted user",
     "noResults": "No results",
+    "messages": "Messages",
+    "conversations": "Conversations",
     "fields": {
       "emailTemplate": "Template",
       "typeLabel": "Type",
