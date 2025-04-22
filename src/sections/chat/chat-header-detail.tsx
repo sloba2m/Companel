@@ -1,9 +1,11 @@
 import type { User } from 'src/types/users';
-import type { Conversation } from 'src/types/chat';
+import type { DOMNode } from 'html-react-parser';
 import type { SnackbarCloseReason } from '@mui/material';
+import type { SearchChat, Conversation } from 'src/types/chat';
 
 import { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import parse, { domToReact } from 'html-react-parser';
 
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
@@ -52,6 +54,7 @@ type Props = {
   conversation?: Conversation;
   collapseNav: UseNavCollapseReturn;
   collapseMenuNav: UseNavCollapseReturn;
+  chatSearchData?: SearchChat[];
   onChatSearch: (value: string) => void;
 };
 
@@ -60,6 +63,7 @@ export function ChatHeaderDetail({
   conversation,
   loading,
   collapseMenuNav,
+  chatSearchData,
   onChatSearch,
 }: Props) {
   const { t } = useTranslation();
@@ -178,6 +182,30 @@ export function ChatHeaderDetail({
     return 0;
   });
 
+  const transform = (node: DOMNode) => {
+    if (node.type === 'tag' && node.name === 'br') {
+      return <></>;
+    }
+
+    if (node.type === 'tag' && node.name === 'div') {
+      return (
+        <Box sx={{ display: 'flex' }}>
+          {domToReact(node.children as DOMNode[], { replace: transform })}
+        </Box>
+      );
+    }
+
+    if (node.type === 'tag' && node.name === 'p') {
+      return (
+        <Box component="p" sx={{ my: 0 }}>
+          {domToReact(node.children as DOMNode[], { replace: transform })}
+        </Box>
+      );
+    }
+
+    return node;
+  };
+
   return (
     <>
       {mdDown && (
@@ -195,19 +223,56 @@ export function ChatHeaderDetail({
       )}
       {renderSingle}
 
-      <TextField
-        placeholder={t('conversations.new.searchChat')}
-        margin="none"
-        size="small"
+      <Autocomplete
         sx={{ flexGrow: 10 }}
-        onChange={(e) => debouncedSearch(e.target.value)}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Iconify icon="ic:baseline-search" width={24} />
-            </InputAdornment>
-          ),
+        freeSolo
+        disableClearable
+        options={chatSearchData || []}
+        getOptionLabel={(option) =>
+          typeof option === 'string'
+            ? option
+            : option.highlights?.[0]?.fragments?.[0]?.replace(/\n/g, ' ') || ''
+        }
+        onInputChange={(event, value) => {
+          debouncedSearch(value);
         }}
+        onChange={(e, value) => {
+          if (value) {
+            // console.log('clao');
+          }
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            placeholder={t('conversations.new.searchChat')}
+            size="small"
+            margin="none"
+            InputProps={{
+              ...params.InputProps,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Iconify icon="ic:baseline-search" width={24} />
+                </InputAdornment>
+              ),
+            }}
+          />
+        )}
+        renderOption={(props, option) => (
+          <MenuItem {...props} key={option.message.id}>
+            <Box
+              sx={{
+                display: 'flex',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {parse(option.highlights[0].fragments[0], { replace: transform })}
+            </Box>
+          </MenuItem>
+        )}
+        loadingText={t('inbox.noResults')}
+        loading
       />
 
       <Stack

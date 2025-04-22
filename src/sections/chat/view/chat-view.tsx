@@ -1,8 +1,8 @@
 import type { WorkspaceInbox } from 'src/actions/account';
 import type { LocalStorageFilters } from 'src/pages/inbox';
 
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMemo, useState, useEffect } from 'react';
 
 import { useSearchParams } from 'src/routes/hooks';
 
@@ -90,17 +90,6 @@ export function ChatView() {
 
   const conversationsNav = useCollapseNav();
 
-  const reversedMessages = useMemo(() => {
-    if (chatSearch !== '' && chatSearchData) {
-      return chatSearchData
-        .map((result) => result.message)
-        .slice()
-        .reverse();
-    }
-
-    return messages;
-  }, [chatSearch, chatSearchData, messages]);
-
   const [composeFormState, setComposeFormState] = useState<ComposeFormState>({
     inbox: undefined,
     to: '',
@@ -124,13 +113,13 @@ export function ChatView() {
   };
 
   useEffect(() => {
-    if (conversation && reversedMessages.length && conversation.unreadMessages > 0) {
+    if (conversation && messages.length && conversation.unreadMessages > 0) {
       readMessageMutation({
         conversationId: conversation.id,
-        messageId: reversedMessages[reversedMessages.length - 1].id,
+        messageId: messages[messages.length - 1].id,
       });
     }
-  }, [conversation, readMessageMutation, reversedMessages]);
+  }, [conversation, readMessageMutation, messages]);
 
   return (
     <DashboardContent
@@ -160,6 +149,7 @@ export function ChatView() {
               conversation={conversation}
               loading={messagesLoading}
               onChatSearch={(val) => setChatSearch(val)}
+              chatSearchData={chatSearchData}
             />
           ) : (
             <ChatHeaderCompose
@@ -186,8 +176,8 @@ export function ChatView() {
                 <ChatMessageList
                   key={`${selectedConversationId}MessageList`}
                   fetchNextPage={fetchNextPage}
-                  messages={reversedMessages}
-                  events={chatSearch === '' ? eventHistoryData ?? [] : []}
+                  messages={messages}
+                  events={eventHistoryData ?? []}
                   contact={conversation?.contact}
                   loading={messagesLoading}
                   conversationName={conversation?.subject ?? '-'}
@@ -205,11 +195,7 @@ export function ChatView() {
                 resetComposeState={resetComposeState}
                 composeFormState={composeFormState}
                 conversationId={selectedConversationId}
-                lastMessageId={
-                  reversedMessages.length
-                    ? reversedMessages[reversedMessages.length - 1].id
-                    : undefined
-                }
+                lastMessageId={messages.length ? messages[messages.length - 1].id : undefined}
               />
             </>
           ),

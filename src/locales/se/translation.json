@@ -194,6 +194,7 @@
     "goBack": "Gå tillbaka",
     "deletedContact": "Raderad kontakt",
     "deletedUser": "Raderad användare",
+    "noResults": "Inga resultat",
     "fields": {
       "emailTemplate": "Mall",
       "typeLabel": "Typ",

@@ -185,6 +185,7 @@
     "goBack": "Go back",
     "deletedContact": "Deleted contact",
     "deletedUser": "Deleted user",
+    "noResults": "No results",
     "fields": {
       "emailTemplate": "Template",
       "typeLabel": "Type",
