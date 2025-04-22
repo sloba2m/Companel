@@ -221,6 +221,9 @@ export function ChatNav({
           onInputChange={(event, value) => {
             debouncedSearch(value);
           }}
+          ListboxComponent={({ children, ...paperProps }) => (
+            <Scrollbar {...paperProps}>{children}</Scrollbar>
+          )}
           onChange={(e, value) => {
             if (typeof value === 'string' || !value) return;
 
