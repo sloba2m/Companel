@@ -44,5 +44,4 @@ export const useGetMe = () =>
   useQuery<User>({
     queryKey: ['me'],
     queryFn: () => fetcher('/me'),
-    staleTime: Infinity,
   });
