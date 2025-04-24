@@ -56,27 +56,28 @@ export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Prop
 
   const renderBody = (
     <Badge
-    // badgeContent={
-    //   message.note ? (
-    //     <Tooltip title={message.note}>
-    //       <IconButton disableTouchRipple sx={{ backgroundColor: theme.vars.palette.grey[300] }}>
-    //         <Iconify
-    //           icon="mdi:speaker-notes"
-    //           width={16}
-    //           sx={{ color: theme.vars.palette.grey[600] }}
-    //         />
-    //       </IconButton>
-    //     </Tooltip>
-    //   ) : (
-    //     0
-    //   )
-    // }
+      sx={{ width: '100%' }}
+      // badgeContent={
+      //   message.note ? (
+      //     <Tooltip title={message.note}>
+      //       <IconButton disableTouchRipple sx={{ backgroundColor: theme.vars.palette.grey[300] }}>
+      //         <Iconify
+      //           icon="mdi:speaker-notes"
+      //           width={16}
+      //           sx={{ color: theme.vars.palette.grey[600] }}
+      //         />
+      //       </IconButton>
+      //     </Tooltip>
+      //   ) : (
+      //     0
+      //   )
+      // }
     >
       <Stack
         sx={{
           p: 1.5,
           minWidth: 48,
-          maxWidth: 320,
+          width: '100%',
           borderRadius: 1,
           typography: 'body2',
           bgcolor: 'background.neutral',
@@ -177,13 +178,17 @@ export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Prop
         </Avatar>
       )}
 
-      <Stack alignItems={me ? 'flex-end' : 'flex-start'}>
+      <Stack alignItems={me ? 'flex-end' : 'flex-start'} sx={{ width: '50%' }}>
         {renderInfo}
 
         <Stack
           direction="row"
           alignItems="center"
-          sx={{ position: 'relative', '&:hover': { '& .message-actions': { opacity: 1 } } }}
+          sx={{
+            position: 'relative',
+            '&:hover': { '& .message-actions': { opacity: 1 } },
+            width: '100%',
+          }}
         >
           {renderBody}
           {renderActions}
