@@ -3,7 +3,7 @@ import type { InboxWithId } from 'src/pages/settings/inbox';
 
 import { useTranslation } from 'react-i18next';
 
-import { Box, Stack, Button, IconButton } from '@mui/material';
+import { Box, Stack, IconButton } from '@mui/material';
 
 import { Iconify } from '../iconify';
 import { ListItemInfo } from './utils/list-item-info';
@@ -90,14 +90,9 @@ export const InboxInfoDrawer: FC<InboxInfoDrawerProps> = ({ inbox, onClose, onEd
         )}
       </Stack>
 
-      <Button
-        sx={{ alignSelf: 'flex-start' }}
-        variant="soft"
-        color="primary"
-        onClick={() => onEdit(inbox)}
-      >
-        {t('common.edit')}
-      </Button>
+      <IconButton onClick={() => onEdit(inbox)} sx={{ alignSelf: 'flex-start' }}>
+        <Iconify icon="ic:baseline-edit" fontSize="small" />
+      </IconButton>
     </Box>
   );
 };

@@ -3,16 +3,7 @@ import type { User } from 'src/types/users';
 import { useMemo, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import {
-  Box,
-  Card,
-  Stack,
-  Button,
-  Switch,
-  FormGroup,
-  IconButton,
-  FormControlLabel,
-} from '@mui/material';
+import { Box, Card, Stack, Switch, FormGroup, IconButton, FormControlLabel } from '@mui/material';
 
 import { varAlpha, stylesMode } from 'src/theme/styles';
 import { useGetRoles, useGetUserRoles } from 'src/actions/users';
@@ -75,14 +66,9 @@ export const UserInfoDrawer: FC<UserInfoDrawerProps> = ({ user, onClose, onEdit 
           ))}
         </FormGroup>
       </Card>
-      <Button
-        sx={{ alignSelf: 'flex-start' }}
-        variant="soft"
-        color="primary"
-        onClick={() => onEdit(user)}
-      >
-        Edit
-      </Button>
+      <IconButton onClick={() => onEdit(user)} sx={{ alignSelf: 'flex-start' }}>
+        <Iconify icon="ic:baseline-edit" fontSize="small" />
+      </IconButton>
     </Box>
   );
 };

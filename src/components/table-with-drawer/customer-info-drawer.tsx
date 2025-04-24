@@ -3,7 +3,7 @@ import type { Customer } from 'src/types/customers';
 
 import { useTranslation } from 'react-i18next';
 
-import { Box, Stack, Button, IconButton } from '@mui/material';
+import { Box, Stack, IconButton } from '@mui/material';
 
 import { Iconify } from '../iconify';
 import { ListItemInfo } from './utils/list-item-info';
@@ -42,14 +42,9 @@ export const CustomerInfoDrawer: FC<CustomerInfoDrawerProps> = ({ customer, onCl
         <ListItemInfo primary={t('customer.email')} secondary={customer.email} />
         <ListItemInfo primary={t('customer.domain')} secondary={customer.domain} />
       </Stack>
-      <Button
-        sx={{ alignSelf: 'flex-start' }}
-        variant="soft"
-        color="primary"
-        onClick={() => onEdit(customer)}
-      >
-        Edit
-      </Button>
+      <IconButton onClick={() => onEdit(customer)} sx={{ alignSelf: 'flex-start' }}>
+        <Iconify icon="ic:baseline-edit" fontSize="small" />
+      </IconButton>
     </Box>
   );
 };

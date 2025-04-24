@@ -4,7 +4,7 @@ import type { Template } from 'src/types/templates';
 import parse from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Stack, Button, IconButton, Typography } from '@mui/material';
+import { Box, Stack, IconButton, Typography } from '@mui/material';
 
 import { Iconify } from '../iconify';
 import { ListItemInfo } from './utils/list-item-info';
@@ -67,14 +67,9 @@ export const TemplateInfoDrawer: FC<TemplateInfoDrawerProps> = ({ template, onCl
         )}
       </Stack>
 
-      <Button
-        sx={{ alignSelf: 'flex-start' }}
-        variant="soft"
-        color="primary"
-        onClick={() => onEdit(template)}
-      >
-        {t('common.edit')}
-      </Button>
+      <IconButton onClick={() => onEdit(template)} sx={{ alignSelf: 'flex-start' }}>
+        <Iconify icon="ic:baseline-edit" fontSize="small" />
+      </IconButton>
     </Box>
   );
 };

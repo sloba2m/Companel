@@ -3,7 +3,7 @@ import type { Tag } from 'src/types/tags';
 
 import { useTranslation } from 'react-i18next';
 
-import { Box, Stack, Button, IconButton, ListItemText } from '@mui/material';
+import { Box, Stack, IconButton, ListItemText } from '@mui/material';
 
 import { Iconify } from '../iconify';
 
@@ -34,14 +34,10 @@ export const TagInfoDrawer: FC<TagInfoDrawerProps> = ({ tag, onClose, onEdit }) 
       <Stack sx={{ gap: 1 }}>
         <ListItemText primary={t('tags.fields.name')} secondary={tag.name} />
       </Stack>
-      <Button
-        sx={{ alignSelf: 'flex-start' }}
-        variant="soft"
-        color="primary"
-        onClick={() => onEdit(tag)}
-      >
-        Edit
-      </Button>
+
+      <IconButton onClick={() => onEdit(tag)} sx={{ alignSelf: 'flex-start' }}>
+        <Iconify icon="ic:baseline-edit" fontSize="small" />
+      </IconButton>
     </Box>
   );
 };
