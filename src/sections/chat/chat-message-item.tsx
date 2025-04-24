@@ -32,13 +32,11 @@ export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Prop
   const theme = useTheme();
   const { t } = useTranslation();
 
-  const { me, senderDetails, hasImage } = useMessage({
+  const { isUser, senderFullName, hasImage } = useMessage({
     message,
     contact,
     currentUserId: `${user?.id}`,
   });
-
-  const { fullName } = senderDetails;
 
   const { content, createdAt } = message;
 
@@ -46,9 +44,9 @@ export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Prop
     <Typography
       noWrap
       variant="caption"
-      sx={{ mb: 1, color: 'text.disabled', ...(!me && { mr: 'auto' }) }}
+      sx={{ mb: 1, color: 'text.disabled', ...(!isUser && { mr: 'auto' }) }}
     >
-      {`${me ? message.user?.fullName ?? t('inbox.deletedUser') : fullName ?? t('inbox.deletedContact')}, `}
+      {`${senderFullName ?? t('inbox.deletedContact')}, `}
 
       {fDateTime(createdAt)}
     </Typography>
@@ -81,7 +79,7 @@ export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Prop
           borderRadius: 1,
           typography: 'body2',
           bgcolor: 'background.neutral',
-          ...(me && { color: 'grey.800', bgcolor: 'primary.lighter' }),
+          ...(isUser && { color: 'grey.800', bgcolor: 'primary.lighter' }),
           ...(hasImage && { p: 0, bgcolor: 'transparent' }),
           ...(message.type === 'NOTE' && { bgcolor: theme.vars.palette.warning.lighter }),
         }}
@@ -154,7 +152,7 @@ export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Prop
         position: 'absolute',
         transition: () =>
           theme.transitions.create(['opacity'], { duration: theme.transitions.duration.shorter }),
-        ...(me && { right: 0, left: 'unset' }),
+        ...(isUser && { right: 0, left: 'unset' }),
       }}
     >
       <Tooltip title="Add note">
@@ -168,17 +166,17 @@ export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Prop
   return (
     <Stack
       direction="row"
-      justifyContent={me ? 'flex-end' : 'unset'}
+      justifyContent={isUser ? 'flex-end' : 'unset'}
       sx={{ mb: 5 }}
       key={message.id}
     >
-      {!me && (
-        <Avatar alt={fullName} sx={{ width: 32, height: 32, mr: 2, fontSize: '1rem' }}>
+      {!isUser && (
+        <Avatar alt={senderFullName} sx={{ width: 32, height: 32, mr: 2, fontSize: '1rem' }}>
           {getInitials(contact?.name)}
         </Avatar>
       )}
 
-      <Stack alignItems={me ? 'flex-end' : 'flex-start'} sx={{ width: '50%' }}>
+      <Stack alignItems={isUser ? 'flex-end' : 'flex-start'} sx={{ width: '50%' }}>
         {renderInfo}
 
         <Stack

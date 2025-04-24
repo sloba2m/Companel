@@ -10,12 +10,11 @@ type Props = {
 };
 
 export function useMessage({ message, contact, currentUserId }: Props) {
-  const senderDetails =
-    message.user?.id === currentUserId ? { type: 'me' } : { fullName: contact?.name };
+  const senderFullName = message.user?.fullName ?? message.contact?.name;
 
-  const me = senderDetails.type === 'me';
+  const isUser = !!message.user;
 
   // const hasImage = message.contentType === 'image';
 
-  return { hasImage: false, me, senderDetails };
+  return { hasImage: false, isUser, senderFullName };
 }
