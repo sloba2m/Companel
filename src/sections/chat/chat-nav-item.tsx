@@ -116,7 +116,7 @@ export function ChatNavItem({ selected, conversation, onCloseMobile, odd }: Prop
               width: '100%',
             }}
           >
-            <Typography>Facebook</Typography>
+            <Typography>{conversation.channelType}</Typography>
             <Typography
               noWrap
               variant="body2"
@@ -128,7 +128,7 @@ export function ChatNavItem({ selected, conversation, onCloseMobile, odd }: Prop
           </Box>
           <ListItemText
             sx={{ width: '100%' }}
-            primary={conversation.contact?.name}
+            primary={conversation.contact?.name ?? '-'}
             primaryTypographyProps={{ noWrap: true, component: 'span', variant: 'subtitle2' }}
             secondary={conversation.subject}
             secondaryTypographyProps={{
