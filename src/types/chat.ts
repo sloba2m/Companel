@@ -43,7 +43,7 @@ export interface Message {
   conversationId: string;
   contact: Contact;
   content: string;
-  type: 'INCOMING' | 'OUTGOING';
+  type: 'INCOMING' | 'OUTGOING' | 'NOTE';
   remoteReceivedAt: string;
   createdAt: string;
   updatedAt: string;

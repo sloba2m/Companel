@@ -82,6 +82,7 @@ export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Prop
           bgcolor: 'background.neutral',
           ...(me && { color: 'grey.800', bgcolor: 'primary.lighter' }),
           ...(hasImage && { p: 0, bgcolor: 'transparent' }),
+          ...(message.type === 'NOTE' && { bgcolor: theme.vars.palette.warning.lighter }),
         }}
       >
         {hasImage ? (
