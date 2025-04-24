@@ -81,11 +81,14 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
   const { mutate: addTagMutation } = useAddTagToConversation();
   const { mutate: removeTagMutation } = useRemoveTagFromConversation();
   const { mutate: createTag } = useCreateTag();
-  const { data: allContactConversations } = useGetConversationsNoStore({
-    contactId: contact?.id,
-    filter: StatusFilters.ALL,
-    channelType: ChannelFilters.ALL,
-  });
+  const { data: allContactConversations } = useGetConversationsNoStore(
+    {
+      contactId: contact?.id,
+      filter: StatusFilters.ALL,
+      channelType: ChannelFilters.ALL,
+    },
+    { enabled: !!contact?.id }
+  );
 
   const previousConversations = useMemo(
     () =>
