@@ -161,29 +161,17 @@ interface TagToConversationInput {
   tagId: string;
 }
 
-export const useAddTagToConversation = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
+export const useAddTagToConversation = () =>
+  useMutation({
     mutationFn: (payload: TagToConversationInput) =>
       mutationFetcher('post', `/conversation/${payload.conversationId}/tag/${payload.tagId}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['conversations'] });
-    },
   });
-};
 
-export const useRemoveTagFromConversation = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
+export const useRemoveTagFromConversation = () =>
+  useMutation({
     mutationFn: (payload: TagToConversationInput) =>
       mutationFetcher('delete', `/conversation/${payload.conversationId}/tag/${payload.tagId}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['conversations'] });
-    },
   });
-};
 
 interface AssignUserInput {
   conversationId: string;
@@ -191,20 +179,13 @@ interface AssignUserInput {
   action: 'assign' | 'unassign';
 }
 
-export const useAssignUser = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
+export const useAssignUser = () =>
+  useMutation({
     mutationFn: (payload: AssignUserInput) =>
       mutationFetcher('post', `/conversation/${payload.conversationId}:${payload.action}`, {
         userId: payload.userId,
       }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['conversations'] });
-      queryClient.invalidateQueries({ queryKey: ['revision'] });
-    },
   });
-};
 
 interface SendMessageInput {
   conversationId: string;
