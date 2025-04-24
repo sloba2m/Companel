@@ -1,6 +1,7 @@
 import type { KeycloakInitOptions } from 'keycloak-js';
 
 import { useState, useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { usePathname } from 'src/routes/hooks';
 
@@ -20,6 +21,7 @@ interface ExtendedKeycloakInitOptions extends KeycloakInitOptions {
 }
 
 export function AuthGuard({ children }: Props) {
+  const queryClient = useQueryClient();
   const pathname = usePathname();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const keycloak = getKeycloak();
@@ -41,6 +43,7 @@ export function AuthGuard({ children }: Props) {
               websocketService.connect();
             }
           } else {
+            queryClient.invalidateQueries();
             keycloak.login({ redirectUri: window.location.origin + pathname });
           }
         } else {
@@ -63,7 +66,7 @@ export function AuthGuard({ children }: Props) {
     };
 
     if (!isAuthenticated) initKeycloak();
-  }, [pathname, isAuthenticated, keycloak]);
+  }, [pathname, isAuthenticated, keycloak, queryClient]);
 
   if (!isAuthenticated) {
     return <SplashScreen />;
