@@ -214,6 +214,13 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
             value={formData.email ?? ''}
             onChange={handleChange('email')}
           />
+          <TextField
+            fullWidth
+            size="small"
+            label={t('customer.create')}
+            value={contact?.customer?.name ?? '-'}
+            disabled
+          />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
             <Button size="small" onClick={onEditFalse}>
               {t('conversations.resolve.cancel')}
