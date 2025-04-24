@@ -12,7 +12,7 @@ import { useRouter } from 'src/routes/hooks';
 
 import { fToNow } from 'src/utils/format-time';
 
-import { useGetMe } from 'src/actions/account';
+import { useUserStore } from 'src/stores/userStore';
 
 import { Scrollbar } from 'src/components/scrollbar';
 
@@ -41,7 +41,7 @@ export function ChatMessageList({
   conversationName,
 }: Props) {
   const { t } = useTranslation();
-  const { data: user, isLoading } = useGetMe();
+  const { user } = useUserStore();
   const router = useRouter();
   const location = useLocation();
   const { hash } = location;
@@ -92,7 +92,7 @@ export function ChatMessageList({
 
   // const lightbox = useLightBox(slides);
 
-  if (loading || isLoading || !user) {
+  if (loading || !user) {
     return (
       <Stack sx={{ flex: '1 1 auto', position: 'relative' }}>
         <LinearProgress

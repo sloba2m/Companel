@@ -1,10 +1,9 @@
-import type { User } from 'src/types/users';
-
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { fetcher } from 'src/utils/axios';
 
+import { useUserStore } from 'src/stores/userStore';
 import { useInboxStore } from 'src/stores/inboxStore';
 
 interface Category {
@@ -40,8 +39,20 @@ export const useGetWorkspaceData = () => {
   return res;
 };
 
-export const useGetMe = () =>
-  useQuery<User>({
+export const useGetMe = (enabled?: boolean) => {
+  const { setUser } = useUserStore();
+
+  const query = useQuery({
     queryKey: ['me'],
     queryFn: () => fetcher('/me'),
+    enabled,
   });
+
+  useEffect(() => {
+    if (query.data) {
+      setUser(query.data);
+    }
+  }, [query.data, setUser, enabled]);
+
+  return query;
+};

@@ -33,8 +33,8 @@ import { useResponsive } from 'src/hooks/use-responsive';
 import { getInitials } from 'src/utils/helper';
 import { transform } from 'src/utils/htmlHelper';
 
-import { useGetMe } from 'src/actions/account';
 import { useGetUsers } from 'src/actions/users';
+import { useUserStore } from 'src/stores/userStore';
 import { useAssignUser, useResolveConversation } from 'src/actions/chat';
 
 import { Iconify } from 'src/components/iconify';
@@ -78,7 +78,7 @@ export function ChatHeaderDetail({
   const [onYesCallback, setOnYesCallback] = useState<() => void>(() => () => {});
 
   const { data: users } = useGetUsers();
-  const { data: me } = useGetMe();
+  const { user: me } = useUserStore();
   const { mutate: assignUserMutation } = useAssignUser();
   const { mutate: resolveMutation } = useResolveConversation();
 

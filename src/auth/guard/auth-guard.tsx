@@ -23,7 +23,7 @@ export function AuthGuard({ children }: Props) {
   const pathname = usePathname();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const keycloak = getKeycloak();
-  useGetMe();
+  useGetMe(isAuthenticated);
 
   useEffect(() => {
     const initKeycloak = async () => {

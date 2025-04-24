@@ -8,7 +8,7 @@ import { Menu, Avatar, MenuList, MenuItem, useTheme, IconButton } from '@mui/mat
 import { getInitials } from 'src/utils/helper';
 import getKeycloak from 'src/utils/keycloakService';
 
-import { useGetMe } from 'src/actions/account';
+import { useUserStore } from 'src/stores/userStore';
 
 import { Iconify } from 'src/components/iconify';
 import { usePopover } from 'src/components/custom-popover';
@@ -24,9 +24,9 @@ export const AvatarMenu = ({ sx }: AvatarMenuProps) => {
   const settings = useSettingsContext();
   const theme = useTheme();
   const keycloak = getKeycloak();
-  const { data } = useGetMe();
+  const { user } = useUserStore();
 
-  const initials = getInitials(data?.fullName);
+  const initials = getInitials(user?.fullName);
 
   const onLogout = () => {
     keycloak.logout({
