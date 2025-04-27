@@ -241,20 +241,14 @@ interface ReadMessageInput {
   messageId: string;
 }
 
-export const useReadMessage = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
+export const useReadMessage = () =>
+  useMutation({
     mutationFn: (payload: ReadMessageInput) =>
       mutationFetcher(
         'post',
         `/conversation/${payload.conversationId}/message/${payload.messageId}:read`
       ),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['conversations'] });
-    },
   });
-};
 
 export const useResolveConversation = () => {
   const queryClient = useQueryClient();
