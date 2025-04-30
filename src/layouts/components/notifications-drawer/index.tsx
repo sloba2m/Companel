@@ -58,7 +58,7 @@ export function NotificationsDrawer({ sx, ...other }: IconButtonProps) {
       <Box component="ul">
         {notifications?.map((notification) => (
           <Box component="li" key={notification.id} sx={{ display: 'flex' }}>
-            <NotificationItem notification={notification} />
+            <NotificationItem notification={notification} closeDrawer={drawer.onFalse} />
           </Box>
         ))}
       </Box>

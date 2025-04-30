@@ -1,3 +1,4 @@
+import type { Conversation } from 'src/types/chat';
 import type { Notification } from 'src/types/notifications';
 
 import i18next from 'i18next';
@@ -8,8 +9,12 @@ import Stack from '@mui/material/Stack';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 
+import { paths } from 'src/routes/paths';
+import { useRouter } from 'src/routes/hooks';
+
 import { fDateTime } from 'src/utils/format-time';
 
+import { useGetConversation } from 'src/actions/chat';
 import { useReadNotification } from 'src/actions/notifications';
 
 // ----------------------------------------------------------------------
@@ -44,8 +49,37 @@ const getMessage = (notification: Notification) => {
   return '';
 };
 
-export function NotificationItem({ notification }: { notification: Notification }) {
+export function NotificationItem({
+  notification,
+  closeDrawer,
+}: {
+  notification: Notification;
+  closeDrawer: () => void;
+}) {
+  const router = useRouter();
+
   const { mutate: readMutation } = useReadNotification();
+  const { mutate: getConvesation } = useGetConversation();
+
+  const handleNotificationClick = () => {
+    if (
+      notification.type === 'CONVERSATION_ASSIGNED' ||
+      notification.type === 'MESSAGE_IN_ASSIGNED_CONVERSATION' ||
+      notification.type === 'CONVERSATION_UN_ASSIGNED'
+    ) {
+      const conversation = notification.references.find((a) => a.keyword === 'conversation');
+      if (!conversation?.referenceId) return;
+      getConvesation(conversation.referenceId, {
+        onSuccess: (data: Conversation) => {
+          closeDrawer();
+          readMutation(notification.id);
+          router.push(
+            `${paths.navigation.inbox}&id=${data.inboxId}&channel=${data.channelType}&status=all&conversationId=${data.id}`
+          );
+        },
+      });
+    }
+  };
 
   const renderText = (
     <ListItemText
@@ -81,7 +115,7 @@ export function NotificationItem({ notification }: { notification: Notification 
         alignItems: 'flex-start',
         borderBottom: (theme) => `dashed 1px ${theme.vars.palette.divider}`,
       }}
-      onClick={() => readMutation(notification.id)}
+      onClick={handleNotificationClick}
     >
       {renderUnReadBadge}
 

@@ -123,6 +123,12 @@ interface MessagesData {
   links: LinksInfo;
 }
 
+export const useGetConversation = () =>
+  useMutation({
+    mutationFn: (conversationId: string) =>
+      mutationFetcher('get', `/conversation/${conversationId}`),
+  });
+
 export const useGetMessages = (conversationId: string) => {
   const { setMessages } = useMessageStore();
 
