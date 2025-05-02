@@ -145,6 +145,7 @@ export function ChatView() {
         slots={{
           header: selectedConversationId ? (
             <ChatHeaderDetail
+              key={selectedConversationId}
               collapseNav={roomNav}
               collapseMenuNav={conversationsNav}
               conversation={conversation}
