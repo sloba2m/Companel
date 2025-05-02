@@ -113,24 +113,27 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
       }
     }, [fullScreen]);
 
-    const handleUpload = (file: File) => {
-      if (!conversationId) return;
-      uploadMutation(
-        { file, conversationId },
-        {
-          onSuccess: (data) => {
-            editor
-              ?.chain()
-              .focus()
-              .setImage({
-                src: data.url,
-                ...({ style: 'width: 300px' } as Record<string, any>),
-              })
-              .run();
-          },
-        }
-      );
-    };
+    const handleUpload = useCallback(
+      (file: File) => {
+        if (!conversationId) return;
+        uploadMutation(
+          { file, conversationId },
+          {
+            onSuccess: (data) => {
+              editor
+                ?.chain()
+                .focus()
+                .setImage({
+                  src: data.url,
+                  ...({ style: 'width: 300px' } as Record<string, any>),
+                })
+                .run();
+            },
+          }
+        );
+      },
+      [conversationId, editor, uploadMutation]
+    );
 
     useEffect(() => {
       const timer = setTimeout(() => {
@@ -159,6 +162,31 @@ export const Editor = forwardRef<HTMLDivElement, EditorProps>(
       return () => clearTimeout(timer);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [templateSet]);
+
+    useEffect(() => {
+      if (!editor) return;
+
+      const handleDrop = (event: DragEvent) => {
+        event.preventDefault();
+
+        if (!event.dataTransfer || !event.dataTransfer.files.length) return;
+
+        const file = event.dataTransfer.files[0];
+
+        // Optional: Validate image type
+        if (!file.type.startsWith('image/')) return;
+
+        handleUpload(file);
+      };
+
+      const { dom } = editor.view;
+      dom.addEventListener('drop', handleDrop);
+
+      // eslint-disable-next-line consistent-return
+      return () => {
+        dom.removeEventListener('drop', handleDrop);
+      };
+    }, [editor, handleUpload]);
 
     return (
       <Portal disablePortal={!fullScreen}>
