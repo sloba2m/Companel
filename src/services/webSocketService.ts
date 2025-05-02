@@ -10,6 +10,11 @@ import { useMessageStore } from 'src/stores/messageStore';
 import { useNotificationStore } from 'src/stores/notification';
 import { useConversationStore } from 'src/stores/conversationStore';
 
+const getConversationIdFromUrl = (): string | null => {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('conversationId');
+};
+
 class WebSocketService {
   private client: Client | null = null;
 
@@ -85,8 +90,13 @@ class WebSocketService {
     this.subscribe('/user/queue/messages', (msg) => {
       const body = JSON.parse(msg.body);
       const message = body.payload as Message;
-      const { addMessages } = useMessageStore.getState();
-      addMessages([message]);
+      const currentConversationId = getConversationIdFromUrl();
+      console.log(currentConversationId);
+
+      if (message.conversationId === currentConversationId) {
+        const { addMessages } = useMessageStore.getState();
+        addMessages([message]);
+      }
     });
   }
 
