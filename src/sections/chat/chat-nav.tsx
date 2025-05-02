@@ -8,6 +8,7 @@ import type {
 
 import parse from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import { useMemo, useState, useEffect, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
@@ -88,6 +89,7 @@ export function ChatNav({
 }: Props) {
   const theme = useTheme();
   const router = useRouter();
+  const location = useLocation();
   const searchParams = useSearchParams();
   const mdUp = useResponsive('up', 'md');
   const { t } = useTranslation();
@@ -186,6 +188,14 @@ export function ChatNav({
     ];
   }, [inboxSearchData]);
 
+  const handleNewConversationClick = () => {
+    const params = new URLSearchParams(location.search);
+    params.delete('conversationId');
+    const newPath = `${location.pathname}?${params.toString()}`;
+
+    router.push(newPath);
+  };
+
   const renderContent = (
     <>
       <Box
@@ -281,7 +291,7 @@ export function ChatNav({
         />
 
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton onClick={() => router.push(paths.navigation.inbox)}>
+          <IconButton onClick={() => handleNewConversationClick()}>
             <Iconify icon="ic:baseline-add" width={24} />
           </IconButton>
         </Box>
