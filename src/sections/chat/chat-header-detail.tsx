@@ -124,7 +124,7 @@ export function ChatHeaderDetail({
 
       <ListItemText
         primary={contact?.name ?? t('inbox.deletedContact')}
-        secondary={contact?.email ?? '-'}
+        secondary={conversation.subject}
       />
     </Stack>
   );
