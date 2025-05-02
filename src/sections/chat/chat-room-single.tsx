@@ -107,7 +107,7 @@ export function ChatRoomSingle({ conversation, allTags }: Props) {
   const handleTagAdd = (tag?: Tag) => {
     if (!tag) return;
     addTagMutation(
-      { conversationId: conversation.id, tagId: tag.id },
+      { conversationId: conversation.id, tagId: tag.id, name: tag.name },
       {
         onError: (_err, variables) => {
           setSelectedTags((prev) => prev.filter((ta) => ta.id !== variables.tagId));

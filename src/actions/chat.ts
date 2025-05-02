@@ -165,19 +165,38 @@ export const useGetMessages = (conversationId: string) => {
 interface TagToConversationInput {
   conversationId: string;
   tagId: string;
+  name?: string;
 }
 
-export const useAddTagToConversation = () =>
-  useMutation({
+export const useAddTagToConversation = () => {
+  const addTagToConversation = useConversationStore((s) => s.addTagToConversation);
+
+  return useMutation({
     mutationFn: (payload: TagToConversationInput) =>
       mutationFetcher('post', `/conversation/${payload.conversationId}/tag/${payload.tagId}`),
-  });
 
-export const useRemoveTagFromConversation = () =>
-  useMutation({
+    onSuccess: (_, payload) => {
+      addTagToConversation(payload.conversationId, {
+        id: payload.tagId,
+        name: payload.name ?? '',
+        createdAt: '',
+      });
+    },
+  });
+};
+
+export const useRemoveTagFromConversation = () => {
+  const removeTagFromConversation = useConversationStore((s) => s.removeTagFromConversation);
+
+  return useMutation({
     mutationFn: (payload: TagToConversationInput) =>
       mutationFetcher('delete', `/conversation/${payload.conversationId}/tag/${payload.tagId}`),
+
+    onSuccess: (_, payload) => {
+      removeTagFromConversation(payload.conversationId, payload.tagId);
+    },
   });
+};
 
 interface AssignUserInput {
   conversationId: string;

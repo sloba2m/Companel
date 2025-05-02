@@ -1,3 +1,4 @@
+import type { Tag } from 'src/types/tags';
 import type { Conversation } from 'src/types/chat';
 
 import { create } from 'zustand';
@@ -8,13 +9,17 @@ interface ConversationStore {
   addConversation: (conversation: Conversation) => void;
   updateConversation: (conversation: Conversation) => void;
   clearConversations: () => void;
+  addTagToConversation: (conversationId: string, tag: Tag) => void;
+  removeTagFromConversation: (conversationId: string, tagId: string) => void;
 }
 
-export const useConversationStore = create<ConversationStore>((set) => ({
+export const useConversationStore = create<ConversationStore>((set, get) => ({
   conversations: [],
   setConversations: (conversations) => set({ conversations }),
+
   addConversation: (newConversation) =>
     set((state) => ({ conversations: [...state.conversations, newConversation] })),
+
   updateConversation: (updatedConversation) => {
     const currentConversationId = getCurrentConversationId();
 
@@ -35,7 +40,35 @@ export const useConversationStore = create<ConversationStore>((set) => ({
       }),
     }));
   },
+
   clearConversations: () => set({ conversations: [] }),
+
+  addTagToConversation: (conversationId, tag) =>
+    set((state) => ({
+      conversations: state.conversations.map((conversation) => {
+        if (conversation.id !== conversationId) return conversation;
+
+        const alreadyExists = conversation.tags.some((t) => t.id === tag.id);
+        if (alreadyExists) return conversation;
+
+        return {
+          ...conversation,
+          tags: [...conversation.tags, tag],
+        };
+      }),
+    })),
+
+  removeTagFromConversation: (conversationId, tagId) =>
+    set((state) => ({
+      conversations: state.conversations.map((conversation) => {
+        if (conversation.id !== conversationId) return conversation;
+
+        return {
+          ...conversation,
+          tags: conversation.tags.filter((t) => t.id !== tagId),
+        };
+      }),
+    })),
 }));
 
 const getCurrentConversationId = (): string | null => {
