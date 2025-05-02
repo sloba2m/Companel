@@ -45,6 +45,7 @@ export const useTableDrawer = <T extends WithId>(
   const onCloseDrawer = () => {
     onFalse();
     setEditData(null);
+    setViewData(null);
   };
 
   const handleEdit = (data: T) => {
