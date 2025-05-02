@@ -176,7 +176,7 @@ export function ChatMessageItem({ message, contact, user, onOpenLightbox }: Prop
         </Avatar>
       )}
 
-      <Stack alignItems={isUser ? 'flex-end' : 'flex-start'} sx={{ width: '50%' }}>
+      <Stack alignItems={isUser ? 'flex-end' : 'flex-start'} sx={{ width: '100%' }}>
         {renderInfo}
 
         <Stack
