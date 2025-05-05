@@ -48,10 +48,6 @@ export const ContactInfoDrawer: FC<ContactInfoDrawerProps> = ({ contact, onClose
           sx={{ pb: 1, borderBottom: (theme) => `solid 1px ${theme.vars.palette.divider}` }}
         />
       </Stack>
-
-      <IconButton onClick={() => onEdit(contact)} sx={{ alignSelf: 'flex-start' }}>
-        <Iconify icon="ic:baseline-edit" fontSize="small" />
-      </IconButton>
     </Box>
   );
 };

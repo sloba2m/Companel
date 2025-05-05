@@ -34,10 +34,6 @@ export const TagInfoDrawer: FC<TagInfoDrawerProps> = ({ tag, onClose, onEdit }) 
       <Stack sx={{ gap: 1 }}>
         <ListItemText primary={t('tags.fields.name')} secondary={tag.name} />
       </Stack>
-
-      <IconButton onClick={() => onEdit(tag)} sx={{ alignSelf: 'flex-start' }}>
-        <Iconify icon="ic:baseline-edit" fontSize="small" />
-      </IconButton>
     </Box>
   );
 };

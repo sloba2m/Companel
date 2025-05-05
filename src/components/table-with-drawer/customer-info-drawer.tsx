@@ -42,9 +42,6 @@ export const CustomerInfoDrawer: FC<CustomerInfoDrawerProps> = ({ customer, onCl
         <ListItemInfo primary={t('customer.email')} secondary={customer.email} />
         <ListItemInfo primary={t('customer.domain')} secondary={customer.domain} />
       </Stack>
-      <IconButton onClick={() => onEdit(customer)} sx={{ alignSelf: 'flex-start' }}>
-        <Iconify icon="ic:baseline-edit" fontSize="small" />
-      </IconButton>
     </Box>
   );
 };

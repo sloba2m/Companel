@@ -66,10 +66,6 @@ export const TemplateInfoDrawer: FC<TemplateInfoDrawerProps> = ({ template, onCl
           </Box>
         )}
       </Stack>
-
-      <IconButton onClick={() => onEdit(template)} sx={{ alignSelf: 'flex-start' }}>
-        <Iconify icon="ic:baseline-edit" fontSize="small" />
-      </IconButton>
     </Box>
   );
 };

@@ -66,9 +66,6 @@ export const UserInfoDrawer: FC<UserInfoDrawerProps> = ({ user, onClose, onEdit 
           ))}
         </FormGroup>
       </Card>
-      <IconButton onClick={() => onEdit(user)} sx={{ alignSelf: 'flex-start' }}>
-        <Iconify icon="ic:baseline-edit" fontSize="small" />
-      </IconButton>
     </Box>
   );
 };

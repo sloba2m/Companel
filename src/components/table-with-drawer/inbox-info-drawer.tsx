@@ -89,10 +89,6 @@ export const InboxInfoDrawer: FC<InboxInfoDrawerProps> = ({ inbox, onClose, onEd
           </>
         )}
       </Stack>
-
-      <IconButton onClick={() => onEdit(inbox)} sx={{ alignSelf: 'flex-start' }}>
-        <Iconify icon="ic:baseline-edit" fontSize="small" />
-      </IconButton>
     </Box>
   );
 };
