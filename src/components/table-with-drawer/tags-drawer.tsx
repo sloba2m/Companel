@@ -48,6 +48,9 @@ export const TagsDrawer = ({ editData, onSave, onClose }: TagsDrawerProps) => {
       >
         {t('tags.save')}
       </Button>
+      <Button variant="soft" size="small" onClick={onClose}>
+        {t('conversations.resolve.cancel')}
+      </Button>
     </Box>
   );
 };

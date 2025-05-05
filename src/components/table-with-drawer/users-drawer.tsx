@@ -133,6 +133,9 @@ export const UsersDrawer = ({ editData, onSave, onClose }: UsersDrawerProps) => 
       >
         {t('user.save')}
       </Button>
+      <Button variant="soft" size="small" onClick={onClose}>
+        {t('conversations.resolve.cancel')}
+      </Button>
     </Box>
   );
 };

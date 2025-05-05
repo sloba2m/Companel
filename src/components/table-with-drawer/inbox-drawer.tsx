@@ -319,6 +319,9 @@ export const InboxDrawer = ({ editData, onSave, onClose }: InboxDrawerProps) => 
       >
         {t('inbox.save')}
       </Button>
+      <Button variant="soft" size="small" onClick={onClose}>
+        {t('conversations.resolve.cancel')}
+      </Button>
     </Box>
   );
 };

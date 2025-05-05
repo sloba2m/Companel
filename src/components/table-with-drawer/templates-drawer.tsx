@@ -134,6 +134,9 @@ export const TemplatesDrawer = ({ editData, onSave, onClose }: TemplatesDrawerPr
         >
           {t('inbox.save')}
         </Button>
+        <Button variant="soft" size="small" onClick={onClose}>
+          {t('conversations.resolve.cancel')}
+        </Button>
       </Box>
     </Scrollbar>
   );

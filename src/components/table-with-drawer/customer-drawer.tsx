@@ -91,6 +91,9 @@ export const CustomerDrawer = ({ editData, onSave, onClose }: CustomerDrawerProp
       >
         {t('customer.save')}
       </Button>
+      <Button variant="soft" size="small" onClick={onClose}>
+        {t('conversations.resolve.cancel')}
+      </Button>
     </Box>
   );
 };

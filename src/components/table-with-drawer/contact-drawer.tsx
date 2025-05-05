@@ -71,6 +71,9 @@ export const ContactDrawer = ({ editData, onSave, onClose }: ContactDrawerProps)
       >
         {t('contact.save')}
       </Button>
+      <Button variant="soft" size="small" onClick={onClose}>
+        {t('conversations.resolve.cancel')}
+      </Button>
     </Box>
   );
 };
